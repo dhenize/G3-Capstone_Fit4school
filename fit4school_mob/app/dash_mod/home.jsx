@@ -1,15 +1,14 @@
-import { Text } from "../components/globalText";
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet } from "react-native";
 
-const home = () => {
+export default function Home() {
   return (
-    <View>
-      <Text>home</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>Welcome to Homepage</Text>
     </View>
-  )
+  );
 }
 
-export default home
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  text: { fontSize: 20 },
+});

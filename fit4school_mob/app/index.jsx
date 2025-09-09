@@ -1,14 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
+import { Redirect } from "expo-router";
 
-export default function Page() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>niceeeeeee</Text>
-        <Text style={styles.subtitle}>This is the first page of your app.</Text>
-      </View>
-    </View>
-  );
+export default function Index() {
+  return <Redirect href="/dash_mod/home" />; //MAIN SCREEN DISPLAY, just change it when debugging
 }
 
 const styles = StyleSheet.create({
