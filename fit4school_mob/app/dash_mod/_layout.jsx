@@ -6,9 +6,9 @@ export default function DashboardLayout() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Slot /> {/* Renders Home, Inbox, AR, etc */}
+        <Slot /> 
       </View>
-      <Footer /> {/* Always visible */}
+      <Footer /> 
     </View>
   );
 }
