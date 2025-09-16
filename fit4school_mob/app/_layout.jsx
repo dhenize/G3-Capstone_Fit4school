@@ -24,8 +24,9 @@ export default function RootLayout() {
   return (
     <Stack
       screenOptions={{
-        headerTitleStyle: { fontFamily: "Lexend_400Regular" },
+        headerShown: false,
       }}
+      
     />
   );
 }

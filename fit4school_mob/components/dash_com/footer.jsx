@@ -75,9 +75,9 @@ export default function Footer() {
               <Ionicons
                 name={tab.icon}
                 size={40}
-                color="black"
+                color="white"
                 style={{
-                  textShadowColor: "#000",
+                  textShadowColor: "white",
                   textShadowOffset: { width: 0, height: 1 },
                   textShadowRadius: 1,
                 }}
@@ -100,9 +100,9 @@ export default function Footer() {
                 <Ionicons
                   name={tab.icon}
                   size={40}
-                  color="black"
+                  color="white"
                   style={{
-                    textShadowColor: "#000",
+                    textShadowColor: "white",
                     textShadowOffset: { width: 0, height: 1 },
                     textShadowRadius: 1,
                   }}
@@ -123,9 +123,9 @@ export default function Footer() {
           <Ionicons
             name="cube-outline"
             size={38}
-            color="black"
+            color="white"
             style={{
-              textShadowColor: "#000",
+              textShadowColor: "white",
               textShadowOffset: { width: 0, height: 1 },
               textShadowRadius: 2,
             }}
