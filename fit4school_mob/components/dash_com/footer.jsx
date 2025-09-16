@@ -118,7 +118,7 @@ export default function Footer() {
       <View style={[styles.arButtonContainer, { bottom: 45 }]}>
         <TouchableOpacity
           style={[styles.arButton, { width: 73, height: 73, borderRadius: 78 / 2 }]}
-          onPress={() => goToPage(2, "/dash_mod/ar")}
+          onPress={() => goToPage(0, "/ar_mod/ar_start")}
         >
           <Ionicons
             name="cube-outline"

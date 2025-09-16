@@ -12,13 +12,13 @@ export default function Home() {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.greet}>
-          <Text style={{ fontSize: 20 }}>Hello</Text>
-          <Text style={{ color: '#0FAFFF', fontSize: 20, fontWeight: 'bold' }}>Juan Dela Cruz</Text>
+          <Text style={{ fontSize: 20, fontWeight: '400' }}>Hello</Text>
+          <Text style={{ color: '#0FAFFF', fontSize: 20, fontWeight: '500' }}>Juan Dela Cruz</Text>
         </View>
         
         <View style={styles.helpbtn}>
           <TouchableOpacity style = {styles.button} onPress={() => alert("Help button pressed")}>
-            <Text style={{ fontSize: 14, fontWeight: 'medium' }}>HELP</Text>
+            <Text style={{ fontSize: 14, fontWeight: '400' }}>HELP</Text>
           </TouchableOpacity>
         </View>
       </View>
