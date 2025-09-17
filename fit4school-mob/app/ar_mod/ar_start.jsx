@@ -16,15 +16,18 @@ export default function TfTest() {
   }, []);
 
   return (
-    <View style={{ flex: 1, padding: '10%' }}>
+    <View style={{ flex: 1, padding: '10%', justifyContent: "space-between" }}>
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          top: '2%',
+          opacity: 0.35
         }}
       >
-        <Ionicons name="heart" size={24} color="red" />
+        <Ionicons name="alert-circle-outline" size={24} color="black" />
+        <Ionicons name="exit" size={24} color="black" />
       </View>
 
       <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -43,6 +46,7 @@ export default function TfTest() {
             shadowOffset: { width: 0, height: 4 },
             alignItems: "center",
             justifyContent: "center",
+            bottom: 25
           }}
           onPress={() => alert("Begin AR Scanner")}
         >
