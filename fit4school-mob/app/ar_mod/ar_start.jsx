@@ -16,7 +16,7 @@ export default function TfTest() {
   }, []);
 
   return (
-    <View style={{ flex: 1, margin: '5%' }}>
+    <View style={{ flex: 1, padding: '10%' }}>
       <View
         style={{
           flexDirection: "row",
@@ -24,7 +24,7 @@ export default function TfTest() {
           alignItems: "center",
         }}
       >
-        <Ionicons name="heart" size={24} color="red" /> {/* babaguhin pa hehehe */}
+        <Ionicons name="heart" size={24} color="red" />
       </View>
 
       <View style={{ alignItems: "center", justifyContent: "center" }}>
