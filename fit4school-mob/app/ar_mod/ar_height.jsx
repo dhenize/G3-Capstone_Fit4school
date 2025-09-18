@@ -1,6 +1,12 @@
 //IMPORTS
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
@@ -10,6 +16,8 @@ import { Camera } from "expo-camera";
 import CamView from "../../components/ar_com/cam_view";
 
 export default function ArStart() {
+  const [text, setText] = useState("");
+
   const router = useRouter();
   const [hasPermission, setHasPermission] = useState(null);
 
@@ -40,7 +48,6 @@ export default function ArStart() {
     );
   }
 
-  
   return (
     <View style={{ flex: 1, padding: "10%", justifyContent: "space-between" }}>
       <CamView hidden={false} />
@@ -60,11 +67,34 @@ export default function ArStart() {
         </TouchableOpacity>
       </View>
 
+      <View style={styles.boxcont}>
+        <View style={styles.box}>
+          <Text style={{ fontSize: 18, fontWeight: 500 }}>
+            Enter height and gender
+          </Text>
+          <Text styles={styles.infos}>
+            To get a more accurate size suggestions, please fill up the
+            information below. Gender is required but height is optional but
+            highly encouraged.
+          </Text>
+
+          <View style={styles.height}>
+            <Text style={styles.infos}>Height</Text>
+            <TextInput
+              style={{}}
+              placeholder="Enter Height"
+              onChangeText={(newText) => setText(newText)}
+              value={text}
+            />
+          </View>
+        </View>
+      </View>
+
       <View style={{ alignItems: "center", justifyContent: "center" }}>
         <TouchableOpacity
           style={{
             alignItems: "center",
-            backgroundColor: "#D9D9D9",
+            backgroundColor: "#61C35C",
             padding: "3%",
             width: "45%",
 
@@ -78,11 +108,38 @@ export default function ArStart() {
             justifyContent: "center",
             bottom: 25,
           }}
-          onPress={() => router.push("/ar_mod/ar_height")}
+          onPress={() => router.push("/ar_mod/ar_calc")}
         >
-          <Text style={{ fontSize: 24, fontWeight: "600" }}>Start</Text>
+          <Text style={{ fontSize: 24, fontWeight: "600" }}>Enter</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  boxcont: {
+    alignItems: "center",
+    top: 200,
+  },
+  box: {
+    padding: "5%",
+    backgroundColor: "#BCF0B9",
+    height: "55%",
+    width: "99%",
+    borderRadius: 5,
+
+    justifyContent: "center",
+  },
+
+  infos: {
+    size: 24,
+    textAlign: "justify",
+    fontSize: 15,
+  },
+
+  height: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+});
