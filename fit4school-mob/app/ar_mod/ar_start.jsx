@@ -53,10 +53,10 @@ export default function ArStart() {
           top: "2%",
         }}
       >
-        <Ionicons name="alert-circle-outline" size={24} color="white" />
+        <Ionicons name="alert-circle-outline" size={28} color="white" />
 
         <TouchableOpacity onPress={() => router.push("/dash_mod/home")}>
-          <Ionicons name="close-outline" size={24} color="white" />
+          <Ionicons name="close-outline" size={28} color="white" />
         </TouchableOpacity>
       </View>
 
