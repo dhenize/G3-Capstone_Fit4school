@@ -1,3 +1,5 @@
+// app/ar_mod/ar_height.jsx
+
 //IMPORTS
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
@@ -227,7 +229,10 @@ export default function ArStart() {
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <TouchableOpacity
             style={styles.enterBtn}
-            onPress={() => router.push("/ar_mod/ar_calc")}
+            onPress={() => router.push({
+              pathname: "/ar_mod/ar_calc",
+              params: { height, unit, gender },
+            })}
           >
             <Text style={{ fontSize: 20, fontWeight: "600" }}>Enter</Text>
           </TouchableOpacity>
