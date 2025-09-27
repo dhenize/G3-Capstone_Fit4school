@@ -6,7 +6,9 @@ import * as tf from "@tensorflow/tfjs";
 import CameraWithTensors from "../../components/ar_com/cam_with_tensors";
 import SilhouetteOverlay from "../../components/ar_com/silhouette_overlay";
 
+
 export default function ArCalc() {
+
   const router = useRouter();
   const params = useLocalSearchParams();
   const { height: hParam, unit: unitParam, gender } = params;

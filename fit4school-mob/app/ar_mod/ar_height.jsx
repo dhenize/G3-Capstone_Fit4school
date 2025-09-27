@@ -11,8 +11,12 @@ import * as tf from "@tensorflow/tfjs";
 import { Camera } from "expo-camera";
 import CamView from "../../components/ar_com/cam_view";
 import { Picker } from "@react-native-picker/picker";
+import HelpModal from "../../components/ar_com/help_modal";
+
 
 export default function ArStart() {
+  const [helpVisible, setHelpVisible] = useState(false);
+
   const [height, setHeight] = useState("");
   const [unit, setUnit] = useState("ft");
   const [gender, setGender] = useState(null);
@@ -99,7 +103,11 @@ export default function ArStart() {
             top: "2%",
           }}
         >
-          <Ionicons name="alert-circle-outline" size={28} color="white" />
+          <TouchableOpacity onPress={() => setHelpVisible(true)}>
+            <Ionicons name="alert-circle-outline" size={28} color="white" />
+          </TouchableOpacity>
+          
+          <HelpModal visible={helpVisible} onClose={() => setHelpVisible(false)} />
 
           <TouchableOpacity onPress={() => router.push("/dash_mod/home")}>
             <Ionicons name="close-outline" size={28} color="white" />
