@@ -110,7 +110,7 @@ export default function Home() {
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/b_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Boy's Uniform</Text>
-                <Text style = {styles.unif_desc}>(Primary)</Text>
+                <Text style = {styles.unif_desc}>(Elementary)</Text>
                 <Text style = {styles.unif_prc}>₱400.00</Text>              
               </View>
             </TouchableOpacity>
@@ -119,7 +119,7 @@ export default function Home() {
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/g_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Girl's Uniform</Text>
-                <Text style = {styles.unif_desc}>(Primary)</Text>
+                <Text style = {styles.unif_desc}>(Elementary)</Text>
                 <Text style = {styles.unif_prc}>₱400.00</Text>              
               </View>
             </TouchableOpacity>
