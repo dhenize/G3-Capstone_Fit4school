@@ -1,8 +1,9 @@
+// components/dash_com/footer.jsx
+
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from "react-native";
 import { useRouter } from "expo-router";
 import Svg, { Path } from "react-native-svg";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function Footer() {
   const router = useRouter();
@@ -32,10 +33,10 @@ export default function Footer() {
   `.replace(/\s+/g, " ");
 
   const tabs = [
-    { name: "Home", icon: "home-outline", path: "/dash_mod/home" },
-    { name: "Inbox", icon: "mail-outline", path: "/dash_mod/inbox" },
-    { name: "Transaction", icon: "receipt-outline", path: "/dash_mod/transact" },
-    { name: "Account", icon: "person-circle-outline", path: "/dash_mod/account" },
+    { name: "Home", icon: require("../../assets/images/icons/h_menu.png"), path: "/dash_mod/home" },
+    { name: "Inbox", icon: require("../../assets/images/icons/n_menu.png"), path: "/dash_mod/inbox" },
+    { name: "Transaction", icon: require("../../assets/images/icons/t_menu.png"), path: "/dash_mod/transact" },
+    { name: "Account", icon: require("../../assets/images/icons/a_menu.png"), path: "/dash_mod/account" },
   ];
 
   const goToPage = (index, path) => {
@@ -72,15 +73,12 @@ export default function Footer() {
               style={[styles.tab, activeIndex === index && styles.activeTab]}
               onPress={() => goToPage(index, tab.path)}
             >
-              <Ionicons
-                name={tab.icon}
-                size={40}
-                color="white"
-                style={{
-                  textShadowColor: "white",
-                  textShadowOffset: { width: 0, height: 1 },
-                  textShadowRadius: 1,
-                }}
+              <Image
+                source={tab.icon}
+                style={[
+                  styles.icon,
+                  activeIndex === index && styles.activeIcon
+                ]}
               />
               <Text style={styles.label}>{tab.name}</Text>
             </TouchableOpacity>
@@ -97,16 +95,13 @@ export default function Footer() {
                 style={[styles.tab, activeIndex === index && styles.activeTab]}
                 onPress={() => goToPage(index, tab.path)}
               >
-                <Ionicons
-                  name={tab.icon}
-                  size={40}
-                  color="white"
-                  style={{
-                    textShadowColor: "white",
-                    textShadowOffset: { width: 0, height: 1 },
-                    textShadowRadius: 1,
-                  }}
-                />
+              <Image
+                source={tab.icon}
+                style={[
+                  styles.icon,
+                  activeIndex === index && styles.activeIcon
+                ]}
+              />
                 <Text style={styles.label}>{tab.name}</Text>
               </TouchableOpacity>
             );
@@ -120,16 +115,10 @@ export default function Footer() {
           style={[styles.arButton, { width: 73, height: 73, borderRadius: 78 / 2 }]}
           onPress={() => goToPage(0, "/ar_mod/ar_height")}
         >
-          <Ionicons
-            name="cube-outline"
-            size={38}
-            color="white"
-            style={{
-              textShadowColor: "white",
-              textShadowOffset: { width: 0, height: 1 },
-              textShadowRadius: 2,
-            }}
-          />
+        <Image
+          source={require("../../assets/images/icons/ar_menu.png")}
+          style={{height: 50, width: 50}}
+        />
         </TouchableOpacity>
         <Text style={styles.arLabel}>AR Fitting</Text>
       </View>
@@ -150,6 +139,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
+  },
+  icon:{
+    height: '39',
+    width: '38',
   },
   tabs: {
     flexDirection: "row",
