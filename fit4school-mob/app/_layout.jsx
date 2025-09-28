@@ -1,15 +1,36 @@
+// app/_layout.jsx
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
-import { Lexend_400Regular } from "@expo-google-fonts/lexend";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import {
+  Lexend_100Thin,
+  Lexend_200ExtraLight,
+  Lexend_300Light,
+  Lexend_400Regular,
+  Lexend_500Medium,
+  Lexend_600SemiBold,
+  Lexend_700Bold,
+  Lexend_800ExtraBold,
+  Lexend_900Black,
+} from "@expo-google-fonts/lexend";
+
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
-    Lexend_400Regular, 
-  });
+  Lexend_100Thin,
+  Lexend_200ExtraLight,
+  Lexend_300Light,
+  Lexend_400Regular,
+  Lexend_500Medium,
+  Lexend_600SemiBold,
+  Lexend_700Bold,
+  Lexend_800ExtraBold,
+  Lexend_900Black,
+});
+
 
   useEffect(() => {
     if (fontsLoaded) {
@@ -17,16 +38,13 @@ export default function RootLayout() {
     }
   }, [fontsLoaded]);
 
-  if (!fontsLoaded) {
-    return null;
-  }
+  if (!fontsLoaded) return null;
 
   return (
     <Stack
       screenOptions={{
         headerShown: false,
       }}
-      
     />
   );
 }

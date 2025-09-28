@@ -1,7 +1,10 @@
+//../../dash_mod/home
+
 //IMPORTS
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
+import { Text } from "../../components/globalText";
 
 
 //MAIN FUNCTION
@@ -11,17 +14,17 @@ export default function Home() {
   
   return (
     <View style={styles.container}>
-      
+
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.greet}>
           <Text style={{ fontSize: 20, fontWeight: '400' }}>Hello</Text>
-          <Text style={{ color: '#0FAFFF', fontSize: 20, fontWeight: '500' }}>{"Juan Dela Cruz" + "!"}</Text>
+          <Text style={{ color: '#0FAFFF', fontSize: 20, fontWeight: '500' }}>Juan Dela Cruz {"!"}</Text>
         </View>
         
         <View style={styles.helpbtn}>
           <TouchableOpacity style = {styles.button} onPress={() => alert("Help button pressed")}>
-            <Text style={{ fontSize: 14, fontWeight: '400' }}>HELP</Text>
+            <Text style={{ fontSize: 13, fontWeight: '400' }}>HELP</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -38,29 +41,29 @@ export default function Home() {
           </View>
 
           <View style = {styles.cpo_desc}>
-            <Text style={{ color: '#0FAFFF', fontSize: 15, fontWeight: '600', textAlign: "left" }}>Your Order is being processed!</Text>
+            <Text style={{ color: '#0FAFFF', fontSize: 14, fontWeight: '600', textAlign: "left" }}>Your Order is being processed!</Text>
             <Text style={{ color: '#0FAFFF', fontSize: 12, fontWeight: '400', textAlign: "left" }}>#04 Boy’s Uniform (Pre-school)</Text>
-            <Text style={{ color: '#0FAFFF', fontSize: 12, fontWeight: '400', textAlign: "left" }}>size 8</Text>
-            <Text style={{ color: '#61C35C', fontSize: 14, fontWeight: '500', textAlign: "left" }}>Quantity: 2</Text>
+            <Text style={{ color: '#0FAFFF', fontSize: 11, fontWeight: '400', textAlign: "left" }}>size 8</Text>
+            <Text style={{ color: '#61C35C', fontSize: 13, fontWeight: '500', textAlign: "left" }}>Quantity: 2</Text>
           </View>
         </View>
 
         <Text style = {{ marginTop: '5%', marginBottom: '3%', fontSize: 16, fontWeight: '500', textAlign: "left "}}>Order Again?</Text>
 
 
-        <TouchableOpacity style>
+        <TouchableOpacity>
           <View style={styles.oa_cont}>
 
             <View style = {styles.oa_pic}>
               <Image 
               source={require("../../assets/images/g2_unif_ex.png")}
-              style={{height: 65, width: 65, borderRadius: 10, borderColor: '#0FAFFF', borderWidth: 2}}
+              style={{height: 50, width: 50, borderRadius: 10, borderColor: '#0FAFFF', borderWidth: 2}}
               />
             </View>
 
             <View style = {styles.oa_desc}>
-              <Text style={{ fontSize: 14, fontWeight: '500', textAlign: "left" }}>#03 Girl’s Uniform (Pre-school)</Text>
-              <Text style={{ fontSize: 12, fontWeight: '500', textAlign: "left" }}>size 10</Text>
+              <Text style={{ fontSize: 13, fontWeight: '400', textAlign: "left" }}>#03 Girl’s Uniform (Pre-school)</Text>
+              <Text style={{ fontSize: 11, fontWeight: '400', textAlign: "left" }}>size 10</Text>
             </View>
 
           </View>          
@@ -69,7 +72,7 @@ export default function Home() {
 
         <View style = {styles.sort_cont}>
           <View>
-              <Text style={{ fontSize: 15, fontWeight: '500', textAlign: "left" }}>{"10 Items"}</Text>            
+              <Text style={{ fontSize: 13, fontWeight: '500', textAlign: "left" }}>{"10 Items"}</Text>            
           </View>
 
           <View style = {styles.drop_cont}>
@@ -86,7 +89,7 @@ export default function Home() {
           </View>
         </View>
 
-        <ScrollView style={{ flex: 1, marginTop: "8%" }} contentContainerStyle={{ paddingBottom: '5%' }}>
+        <ScrollView style={{ flex: 1, marginTop: "7%" }} contentContainerStyle={{ paddingBottom: '5%' }}>
           <View style = {styles.unif_cont}>
             <TouchableOpacity>
               <View style = {styles.unif_grid}>
@@ -191,6 +194,7 @@ const styles = StyleSheet.create({
   container:{
     padding: '8.5%',
     flex: 1,
+    backgroundColor: '#FFFBFB',
   },
   
   //HEADER 
@@ -229,7 +233,8 @@ const styles = StyleSheet.create({
     elevation: 4,
     flexDirection: "row",
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-start',
+    gap: '5%',
   },
 
   cpo_desc:{
@@ -242,7 +247,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     gap: '8%',
-    marginBottom: '5%',
+    marginBottom: '7%',
   },
 
   // SORT AND DROPDOWN CONTATINER
@@ -255,16 +260,19 @@ const styles = StyleSheet.create({
   drop_cont:{
     borderColor: 'black',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 6,
+    height: 40,
+    width: 145,
   },
 
   dropdown:{
     height: 51,
     width: 145,
+    marginTop: -6,
   },
 
   drop_txt:{
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: '600',
   },
 
@@ -285,6 +293,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'space-around',
     flexWrap: 'wrap',
+    
   },
   
   unif_grid:{
@@ -294,11 +303,12 @@ const styles = StyleSheet.create({
 
   unif_desc:{
     fontSize: 15,
-    fontWeight: '500'
+    fontWeight: '400',
   },
 
   unif_prc:{
-    color: '#61C35C'
+    color: '#61C35C',
+    fontWeight: '600',
   },
 
 }); //END OF STYLES

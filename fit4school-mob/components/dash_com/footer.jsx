@@ -1,9 +1,11 @@
 // components/dash_com/footer.jsx
 
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Dimensions, Image } from "react-native";
 import { useRouter } from "expo-router";
 import Svg, { Path } from "react-native-svg";
+import { Text } from "../../components/globalText";
+
 
 export default function Footer() {
   const router = useRouter();
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: "#fff",
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "600",
     marginTop: 6,
   },
@@ -187,7 +189,8 @@ const styles = StyleSheet.create({
   },
   arLabel: {
     color: "#fff",
-    fontWeight: "600",
-    marginTop: 5,
+    fontWeight: "500",
+    marginTop: 8,
+    fontSize: 11,
   },
 });

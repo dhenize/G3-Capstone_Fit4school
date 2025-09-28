@@ -1,14 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+//../../dash_mod/account
+import React from 'react';
 
-const account = () => {
+import { StyleSheet, View } from 'react-native';
+import { Text } from "../../components/globalText";
+
+
+export default function account(){
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Welcome to Account Page</Text>
     </View>
-  )
+  );
 }
 
-export default account
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  //OVERALL CONTAINER
+  container:{
+    padding: '8.5%',
+    flex: 1,
+    backgroundColor: '#FFFBFB',
+  },
+})

@@ -3,13 +3,13 @@
 import React from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Modal,
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Text } from "../../components/globalText";
 
 export default function HelpModal({ visible, onClose }) {
   return (

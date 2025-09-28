@@ -1,6 +1,7 @@
 // app/ar_mod/ar_calc.jsx
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { View, ActivityIndicator, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { Text } from "../../components/globalText";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import * as tf from "@tensorflow/tfjs";
 import CameraWithTensors from "../../components/ar_com/cam_with_tensors";

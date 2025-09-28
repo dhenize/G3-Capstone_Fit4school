@@ -1,6 +1,7 @@
 // app/ar_mod/ar_result.jsx
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Text } from "../../components/globalText";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function ArResult(){

@@ -2,9 +2,10 @@
 
 //IMPORTS
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { Text } from "../../components/globalText";
 
 //For AR Fitting
 import * as tf from "@tensorflow/tfjs";
