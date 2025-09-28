@@ -10,7 +10,7 @@ export default function ArResult(){
   return (
     <View style={styles.container}>
       <View style={{alignItems:'center', marginTop:40}}>
-        <Image source={require("../../assets/images/blouse.png")} style={{width:180, height:180}} resizeMode="contain" />
+        <Image source={require("../../assets/images/g2_unif_ex.png")} style={{width:180, height:180}} resizeMode="contain" />
       </View>
 
       <Text style={styles.sizeLabel}>Your size is</Text>
