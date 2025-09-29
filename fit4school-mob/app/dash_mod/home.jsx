@@ -5,11 +5,13 @@ import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-nat
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { Text } from "../../components/globalText";
+import { useRouter } from "expo-router";
 
 
 //MAIN FUNCTION
 export default function Home() {
   
+  const router = useRouter();
   const [sort, setSort] = useState("all");
   
   return (
@@ -91,7 +93,7 @@ export default function Home() {
 
         <ScrollView style={{ flex: 1, marginTop: "7%" }} contentContainerStyle={{ paddingBottom: '5%' }}>
           <View style = {styles.unif_cont}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/b_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Boy's Uniform</Text>
