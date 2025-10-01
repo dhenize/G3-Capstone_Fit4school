@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
 import eyeIcon from '../../assets/icons/eye.svg';
 import eyeOffIcon from '../../assets/icons/eye-closed.svg';
 
@@ -18,6 +19,10 @@ const AAccMod = () => {
     navigate('/ac_dashboard');
   }
 };
+
+  useEffect(() => {
+  document.title = "Sign In - Fit4School";
+  }, []);
 
   return (
     <div className="flex min-h-screen">

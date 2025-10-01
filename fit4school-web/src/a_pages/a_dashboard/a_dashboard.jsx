@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
 import circleUser from '../../assets/icons/circle-user.svg';
 import dashIcon from '../../assets/icons/dash-icon.png';
 import orderIcon from '../../assets/icons/order-icon.png';
@@ -14,6 +15,10 @@ const ADashboard = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const navigate = useNavigate();
+
+    useEffect(() => {
+    document.title = "Admin - Fit4School";
+  }, []);
 
   return (
     <div className="flex min-h-screen">
