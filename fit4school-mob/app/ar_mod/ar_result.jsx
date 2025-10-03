@@ -1,27 +1,73 @@
 // app/ar_mod/ar_result.jsx
 import React, { useState } from "react";
 import { Text } from "../../components/globalText";
-import { View, StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Modal, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  ScrollView,
+  Modal,
+  Dimensions,
+} from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Carousel from "react-native-reanimated-carousel";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 export default function ArResult() {
-  const { size, chestCm, userHeightCm, gender } = useLocalSearchParams();
+  const {
+    topSize,
+    bottomSize,
+    shoulderCm,
+    hipCm,
+    torsoCm,
+    legCm,
+    userHeight,
+    userUnit,
+    gender,
+  } = useLocalSearchParams();
+
   const router = useRouter();
 
-  //Add to Cart Modal
+  // Add to Cart Modal
   const [atcModal, setAtcModal] = useState(false);
   const [selectSize, setSelectSize] = useState(null);
   const [qty, setQty] = useState(1);
 
-  //Buy Now Modal
+  // Buy Now Modal
   const [bnModal, setBnModal] = useState(false);
 
-  //Uniform Sizes
-  const sizes = ["small", "medium", "large", "size 6", "size 7", "size 8", "size 9", "size 10", "size 11", "size 12", "size 13", "size 14"];
+  // Uniform Sizes
+  const sizes = [
+    "small",
+    "medium",
+    "large",
+    "size 6",
+    "size 7",
+    "size 8",
+    "size 9",
+    "size 10",
+    "size 11",
+    "size 12",
+    "size 13",
+    "size 14",
+  ];
 
+  const resultSlides = [
+    {
+      title: "Top Size",
+      size: topSize || "Unknown",
+      subtitle: `Shoulder: ${shoulderCm || "N/A"} cm | Torso: ${torsoCm || "N/A"} cm`,
+    },
+    {
+      title: "Bottom Size",
+      size: bottomSize || "Unknown",
+      subtitle: `Hip: ${hipCm || "N/A"} cm | Leg: ${legCm || "N/A"} cm`,
+    },
+  ];
 
   return (
     <View style={styles.container}>
@@ -50,20 +96,41 @@ export default function ArResult() {
           />
         </View>
 
-        <Text style={styles.sizeLabel}>Your size is</Text>
+        <Text style={styles.sizeLabel}>Your sizes</Text>
 
-        <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-          <Text style={styles.size}>{size || "Unknown"}</Text>
-          <Text style={{ color: "#757575", marginLeft: "3%" }}>(top)</Text>
-        </View>
-
-        <Text style={styles.sub}>
-          {gender} | Height: {userHeightCm} cm
-        </Text>
-
-        {/* <View style={{ marginTop: 30, alignItems: "center" }}>
-          <Text>Estimated chest: {chestCm} cm</Text>
-        </View> */}
+        {/* Carousel for Top & Bottom results */}
+        <Carousel
+          loop={false}
+          width={screenWidth * 0.8}
+          height={200}
+          autoPlay={false}
+          data={resultSlides}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                backgroundColor: "#fff",
+                borderRadius: 10,
+                padding: 20,
+                alignItems: "center",
+                justifyContent: "center",
+                shadowOpacity: 0.15,
+                shadowRadius: 4,
+                elevation: 2,
+              }}
+            >
+              <Text style={{ fontSize: 18, fontWeight: "600" }}>
+                {item.title}
+              </Text>
+              <Text style={styles.size}>{item.size}</Text>
+              <Text style={{ color: "#757575", marginTop: 8 }}>
+                {item.subtitle}
+              </Text>
+              <Text style={{ color: "#757575", marginTop: 8 }}>
+                {gender} | Height: {userHeight} {userUnit}
+              </Text>
+            </View>
+          )}
+        />
       </View>
 
       {/* Bottom pinned buttons */}
@@ -91,6 +158,7 @@ export default function ArResult() {
         </TouchableOpacity>
       </View>
 
+      {/* --- Add to Cart Modal --- */}
       <Modal
         visible={atcModal}
         transparent
@@ -206,6 +274,7 @@ export default function ArResult() {
         </TouchableWithoutFeedback>
       </Modal>
 
+      {/* --- Buy Now Modal --- */}
       <Modal
         visible={bnModal}
         transparent
@@ -300,7 +369,7 @@ export default function ArResult() {
                       }
                       setBnModal(false);
                       alert(
-                        `✅ Added to Cart\nSize: ${selectSize}, Qty: ${qty}`
+                        `✅ Buy Now\nSize: ${selectSize}, Qty: ${qty}`
                       );
                     }}
                   >
@@ -331,37 +400,32 @@ const styles = StyleSheet.create({
     alignContent: "center",
     padding: "8.5%",
   },
-
   btn_cont: {
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
     marginTop: "5%",
   },
-
   sizeLabel: {
     fontSize: 22,
     fontWeight: "400",
+    marginBottom: 12,
   },
-
   size: {
     fontSize: 44,
     color: "#61C35C",
     fontWeight: "400",
   },
-
   sub: {
     color: "#757575",
     marginTop: 8,
   },
-
   buy_cont: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     bottom: "3%",
   },
-
   atc_btn: {
     backgroundColor: "#0FAFFF",
     alignItems: "center",
@@ -374,7 +438,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 4,
   },
-
   bn_btn: {
     backgroundColor: "#61C35C",
     alignItems: "center",
@@ -387,40 +450,15 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 4,
   },
-
   cart_pic: {
     height: 22,
     width: 22,
   },
-
-  modalContainer: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.9)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  modalCloseButton: {
-    position: "absolute",
-    top: 40,
-    right: 20,
-    zIndex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 20,
-    padding: 5,
-  },
-
-  zoomedImage: {
-    width: screenWidth,
-    height: screenHeight,
-  },
-
   modal_overlay: {
     flex: 1,
     justifyContent: "flex-end",
     backgroundColor: "rgba(0,0,0,0.4)",
   },
-
   modal_cont: {
     alignContent: "center",
     backgroundColor: "#FFFBFB",
@@ -430,37 +468,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: "10%",
     height: "63%",
   },
-
   matc_cont: {
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
   },
-
   matc_pic: {
     height: 90,
     width: 90,
     borderRadius: 10,
   },
-
   matc_prc: {
     color: "#61C35C",
     fontWeight: "600",
     fontSize: 26,
   },
-
   matc_item_desc: {
     fontWeight: "400",
     fontSize: 16,
   },
-
   matc_sizes_cont: {
     justifyContent: "space-between",
     flexWrap: "wrap",
     flexDirection: "row",
     paddingVertical: "3%",
   },
-
   matc_sizes_btn: {
     marginVertical: "1%",
     alignItems: "center",
@@ -471,12 +503,10 @@ const styles = StyleSheet.create({
     height: 32,
     borderColor: "#ccc",
   },
-
   setSelectSize: {
     backgroundColor: "#61C35C",
     borderColor: "#61C35C",
   },
-
   matc_qty_cont: {
     alignContent: "center",
     alignItems: "center",
@@ -484,13 +514,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: "8%",
   },
-
   matc_btn_cont: {
     flexDirection: "row",
     justifyContent: "space-around",
     gap: "3%",
   },
-
   matc_qty_btn: {
     justifyContent: "center",
     alignItems: "center",
@@ -498,12 +526,10 @@ const styles = StyleSheet.create({
     width: 35,
     borderWidth: 1,
   },
-
   matc_qty_desc: {
     fontSize: 20,
     fontWeight: "400",
   },
-
   matc_btn: {
     backgroundColor: "#61C35C",
     alignItems: "center",
@@ -517,3 +543,4 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
 });
+
