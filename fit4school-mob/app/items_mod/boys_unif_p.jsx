@@ -33,6 +33,9 @@ export default function boys_unif() {
     const [selectSize, setSelectSize] = useState(null);
     const [qty, setQty] = useState(1);
 
+    //Buy Now Modal
+    const [bnModal, setBnModal] = useState(false);
+
     //Uniform Pictures
     const carouselItems = [
         { id: 1, image: require("../../assets/images/b_unif_ex.png") },
@@ -153,7 +156,7 @@ export default function boys_unif() {
                 </View>
 
                 <View>
-                    <TouchableOpacity style={styles.bn_btn} onPress={() => setAtcModal(true)}>
+                    <TouchableOpacity style={styles.bn_btn} onPress={() => setBnModal(true)}>
                         <Text style={{ fontSize: 20, color: "white", fontWeight: "400" }}>
                             Buy Now
                         </Text>
@@ -284,6 +287,99 @@ export default function boys_unif() {
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
+
+            
+            <Modal 
+                visible={bnModal}
+                transparent
+                animationType="slide"
+                onRequestClose={() => setBnModal(false)}
+            >
+                <TouchableWithoutFeedback onPress={() => setBnModal(false)}>
+                    <View style={styles.modal_overlay}>
+                        <TouchableWithoutFeedback onPress={() => {}}>
+                            <View style={styles.modal_cont}>
+                                <View style={styles.matc_cont}>
+                                    <View style={styles.matc_pic_cont}>
+                                        <Image source={require("../../assets/images/b_unif_ex.png")}
+                                        style={styles.matc_pic}
+                                        />
+                                    </View>
+
+                                    <View style={styles.matc_desc}>
+                                        <Text style={styles.matc_prc}>₱400.00</Text>
+                                        <Text style={styles.matc_item_desc}>Boy’s Uniform (Pre-school)</Text>
+                                    </View>
+                                </View>
+
+                                <Text style={{fontSize: 16, fontWeight: '600', marginTop: '8%'}}>Size</Text>
+
+                                <ScrollView style={{ maxHeight: 160 }}>
+                                    <View style={styles.matc_sizes_cont}>
+                                        {sizes.map((size) => (
+                                        <TouchableOpacity
+                                            key={size}
+                                            onPress={() => setSelectSize(size)}
+                                            style={[
+                                            styles.matc_sizes_btn,
+                                            selectSize === size && styles.setSelectSize
+                                            ]}
+                                        >
+                                            <Text
+                                            style={[
+                                                { fontWeight: '500', fontSize: 14, color: "black" },
+                                                selectSize === size && { color: "white" }
+                                            ]}
+                                            >
+                                            {size}
+                                            </Text>
+                                        </TouchableOpacity>
+                                        ))}
+                                    </View>
+                                </ScrollView>
+                                
+                                <View style={styles.matc_qty_cont}>
+                                    <View>
+                                        <Text style={{fontWeight: '600', fontSize: 16}}>Quantity</Text>
+                                    </View>
+
+                                    <View style={styles.matc_btn_cont}>
+                                        <TouchableOpacity onPress={() => setQty(Math.max(1, qty - 1))} style={styles.matc_qty_btn}>
+                                            <Text style={styles.matc_qty_desc}>-</Text>
+                                        </TouchableOpacity>
+
+                                        <View style={styles.matc_qty_btn}>
+                                            <Text style={styles.matc_qty_desc}>{qty}</Text>
+                                        </View>
+                                        
+                                        <TouchableOpacity onPress={() => setQty(qty + 1)} style={styles.matc_qty_btn}>
+                                            <Text style={styles.matc_qty_desc}>+</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                <View>
+                                    <TouchableOpacity style={styles.matc_btn}
+                                        onPress={() => {
+                                            if (!selectSize) {
+                                                alert("Please select a size first!");
+                                                return;
+                                            }
+                                            setBnModal(false);
+                                            alert(`✅ Added to Cart\nSize: ${selectSize}, Qty: ${qty}`);
+                                        }}
+                                    >
+                                        <Text style={{ fontSize: 20, color: "white", fontWeight: "600" }}>
+                                            Buy Now
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+            
         </View>
     );
 }
