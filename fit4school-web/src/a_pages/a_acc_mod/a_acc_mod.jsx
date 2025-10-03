@@ -1,7 +1,6 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import eyeIcon from '../../assets/icons/eye.svg';
 import eyeOffIcon from '../../assets/icons/eye-closed.svg';
 
