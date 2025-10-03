@@ -14,21 +14,21 @@ export default function inbox(){
 
       <View style={styles.container}>
         <View style = {styles.srbtn_cont}>
-            <TouchableOpacity>
-              <View style = {styles.sysbtn_cont}>
-                <Text style = {{fontWeight: '600', color: 'white'}}>System</Text>
-              </View>
-            </TouchableOpacity>
+          <TouchableOpacity>
+            <View style = {styles.sysbtn_cont}>
+              <Text style = {{fontWeight: '600', color: 'white'}}>System</Text>
+            </View>
+          </TouchableOpacity>
 
-            <TouchableOpacity>
-              <View style = {styles.rembtn_cont}>
-                <Text style = {{fontWeight: '600'}}>Reminder</Text>
-              </View>
-            </TouchableOpacity>
+          <TouchableOpacity>
+            <View style = {styles.rembtn_cont}>
+              <Text style = {{fontWeight: '600'}}>Reminder</Text>
+            </View>
+          </TouchableOpacity>
         </View>
 
         
-          <ScrollView style={{ flex: 1, paddingVertical: '5%'}}>
+          <ScrollView style={{ flex: 1, marginTop: '10%'}} contentContainerStyle={{ paddingBottom: '%' }}>
             <View style = {styles.notif_cont}>
               <View style = {styles.notif}>
                 <View>
@@ -160,9 +160,6 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOffset: {width: 0, height: 4},
     elevation: 3,
-  },
-  notif_cont:{
-    paddingVertical: '5%',
   },
 
   notif:{
