@@ -1,362 +1,408 @@
 // app/ar_mod/ar_calc.jsx
 import React, { useEffect, useRef, useState } from "react";
-import { View, ActivityIndicator, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import {
+View,
+ActivityIndicator,
+StyleSheet,
+TouchableOpacity,
+Dimensions,
+Alert,
+Modal,
+Text as RNText,
+} from "react-native";
 import { Text } from "../../components/globalText";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import * as tf from "@tensorflow/tfjs";
+import "@tensorflow/tfjs-react-native";
+import * as posedetection from "@tensorflow-models/pose-detection";
 import CameraWithTensors from "../../components/ar_com/cam_with_tensors";
 import SilhouetteOverlay from "../../components/ar_com/silhouette_overlay";
 
+const { width: screenWidth } = Dimensions.get("window");
 
 export default function ArCalc() {
+const router = useRouter();
+const params = useLocalSearchParams();
+const { height: hParam, unit: unitParam, gender } = params;
 
-  const router = useRouter();
-  const params = useLocalSearchParams();
-  const { height: hParam, unit: unitParam, gender } = params;
+// internal states
+const [status, setStatus] = useState("prepare"); // prepare | waiting | capturing | analyzing | done | noPerson
+const [scanPhase, setScanPhase] = useState("front"); // front | side
+const [cameraReady, setCameraReady] = useState(false);
+const cameraAPIRef = useRef(null);
+const detectorRef = useRef(null);
+const [loadingMsg, setLoadingMsg] = useState("");
 
-  const [status, setStatus] = useState("prepare");
-  const [scanPhase, setScanPhase] = useState("front");
-  const [cameraReady, setCameraReady] = useState(false);
-  const [personDetected, setPersonDetected] = useState(false);
-  const framesRef = useRef([]);
-  const scanTimerRef = useRef(null);
-  const detectionTimerRef = useRef(null);
-  const MAX_FRAMES = 15;
-  const SCAN_TIMEOUT_MS = 10000; // 10 seconds
-  const DETECTION_TIMEOUT_MS = 3000; // 3 seconds to detect a person
+// parsed user height in cm (nullable)
+function parseHeightToCm(h, unit) {
+if (!h) return null;
+if (unit === "cm" || String(h).toLowerCase().includes("cm")) {
+const n = parseFloat(String(h).replace(/[^\d.]/g, ""));
+return isNaN(n) ? null : n;
+}
+// assume feet (like "5.5 ft" or "5.10 ft")
+const s = String(h).replace(/[^\d.]/g, "");
+const n = parseFloat(s);
+if (isNaN(n)) return null;
+return n * 30.48;
+}
+const userHeightCmInput = parseHeightToCm(hParam, unitParam);
 
-  function parseHeightToCm(h, unit) {
-    if (!h) return null;
-    if (unit === "cm" || String(h).toLowerCase().includes("cm")) {
-      const n = parseFloat(String(h).replace(/[^\d.]/g, ""));
-      return isNaN(n) ? null : n;
-    }
+// initialize BlazePose detector
+useEffect(() => {
+let mounted = true;
+(async () => {
+setLoadingMsg("Initializing TensorFlow...");
+await tf.ready();
+setLoadingMsg("Loading BlazePose model...");
+// create BlazePose detector (tfjs runtime)
+try {
+detectorRef.current = await posedetection.createDetector(
+posedetection.SupportedModels.BlazePose,
+{
+runtime: "tfjs", // using tfjs-react-native backend
+modelType: "full", // options: 'lite'|'full'; choose full for accuracy (heavier)
+}
+);
+} catch (e) {
+console.warn("Detector init failed, try MoveNet fallback", e);
+// fallback: MoveNet
+try {
+detectorRef.current = await posedetection.createDetector(
+posedetection.SupportedModels.MoveNet,
+{ modelType: posedetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
+);
+} catch (err) {
+console.error("Both detectors failed:", err);
+}
+} finally {
+if (mounted) {
+setLoadingMsg("");
+setStatus("waiting");
+}
+}
+})();
+return () => (mounted = false);
+}, []);
 
-    const s = String(h).replace(/[^\d.]/g, "");
-    const n = parseFloat(s);
-    if (isNaN(n)) return null;
-    return n * 30.48; // ft -> cm
+const handleCameraReady = () => {
+setCameraReady(true);
+setStatus("waiting");
+};
+
+// camera helper will be injected by CameraWithTensors via getCameraRef
+const getCameraRef = (api) => {
+cameraAPIRef.current = api;
+};
+
+// capture-photo -> convert to tensor -> estimate pose -> return poses
+const captureAndEstimate = async () => {
+if (!cameraAPIRef.current) throw new Error("Camera not ready");
+setStatus("capturing");
+setLoadingMsg("Capturing photo...");
+const photo = await cameraAPIRef.current.takePictureAsync();
+if (!photo || !photo.base64) {
+throw new Error("Capture failed");
+}
+
+
+setLoadingMsg("Converting image...");
+const imgTensor = await cameraAPIRef.current.photoToTensor(photo.base64);
+// resize / normalize if needed by model (pose-detection handles many inputs)
+setLoadingMsg("Running pose estimation...");
+// estimate poses
+const poses = await detectorRef.current?.estimatePoses(imgTensor, {
+  maxPoses: 1,
+  flipHorizontal: false,
+});
+
+// dispose tensor
+try {
+  if (imgTensor && !imgTensor.isDisposedInternal) {
+    imgTensor.dispose?.();
   }
+} catch (e) {
+  // ignore
+}
 
-  const userHeightCm = parseHeightToCm(hParam, unitParam);
+return poses && poses.length > 0 ? poses[0] : null;
 
-  useEffect(() => {
-    if (status === "prepare" && cameraReady) {
-      setStatus("waiting");
-      setPersonDetected(false);
-      
-      // Set timeout for person detection
-      detectionTimerRef.current = setTimeout(() => {
-        if (!personDetected) {
-          setStatus("noPerson");
-        }
-      }, DETECTION_TIMEOUT_MS);
-      
-      return () => {
-        if (detectionTimerRef.current) {
-          clearTimeout(detectionTimerRef.current);
-        }
-      };
+
+};
+
+// Convert keypoints to simple measurements (cm)
+// This is a basic approach: we measure pixel distance between landmarks and use userHeightCmInput as scaling reference.
+const landmarksToMeasurements = (pose) => {
+if (!pose || !pose.keypoints) return null;
+
+
+// helper: find landmark by name
+const kp = (name) => pose.keypoints.find((p) => p.name === name);
+const dist = (a, b) => {
+  if (!a || !b) return null;
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  return Math.sqrt(dx * dx + dy * dy);
+};
+
+// Typical landmarks for BlazePose: left_shoulder, right_shoulder, left_hip, right_hip, left_knee, right_knee
+const leftShoulder = kp("left_shoulder");
+const rightShoulder = kp("right_shoulder");
+const leftHip = kp("left_hip");
+const rightHip = kp("right_hip");
+const leftAnkle = kp("left_ankle");
+const rightAnkle = kp("right_ankle");
+const nose = kp("nose");
+const leftKnee = kp("left_knee");
+const rightKnee = kp("right_knee");
+
+// estimate pixel height on the image as nose -> ankle average
+const midAnkle = leftAnkle && rightAnkle ? { x: (leftAnkle.x + rightAnkle.x) / 2, y: (leftAnkle.y + rightAnkle.y) / 2 } : null;
+const pixelHeight = nose && midAnkle ? dist(nose, midAnkle) : null;
+
+// scaling using user's input height (if available)
+const pxToCm = (px) => {
+  if (!userHeightCmInput || !pixelHeight || pixelHeight <= 0) return null;
+  return (px / pixelHeight) * userHeightCmInput;
+};
+
+// shoulder width (px distance)
+const shoulderPx = dist(leftShoulder, rightShoulder);
+const hipPx = dist(leftHip, rightHip);
+// leg length = hip -> ankle (use left)
+const legPx = leftHip && leftAnkle ? dist(leftHip, leftAnkle) : rightHip && rightAnkle ? dist(rightHip, rightAnkle) : null;
+// torso length = shoulder -> hip mid
+const midHip = leftHip && rightHip ? { x: (leftHip.x + rightHip.x) / 2, y: (leftHip.y + rightHip.y) / 2 } : null;
+const torsoPx = leftShoulder && midHip ? dist(leftShoulder, midHip) : null;
+
+const shoulderCm = pxToCm(shoulderPx);
+const hipCm = pxToCm(hipPx);
+const legCm = pxToCm(legPx);
+const torsoCm = pxToCm(torsoPx);
+
+return {
+  shoulderCm: shoulderCm ? Number(shoulderCm.toFixed(1)) : null,
+  hipCm: hipCm ? Number(hipCm.toFixed(1)) : null,
+  legCm: legCm ? Number(legCm.toFixed(1)) : null,
+  torsoCm: torsoCm ? Number(torsoCm.toFixed(1)) : null,
+  pixelHeight,
+};
+
+
+};
+
+// Map measurements to top & bottom sizes (basic approach - editable)
+const calculateTopBottomSizes = (frontMeasurements, sideMeasurements) => {
+// Use front shoulder/hip, and side for torso/leg confirmation
+const shoulder = frontMeasurements?.shoulderCm ?? sideMeasurements?.shoulderCm;
+const hip = frontMeasurements?.hipCm ?? sideMeasurements?.hipCm;
+const torso = sideMeasurements?.torsoCm ?? frontMeasurements?.torsoCm;
+const leg = sideMeasurements?.legCm ?? frontMeasurements?.legCm;
+
+
+// Simple thresholds for top (chest/shoulder based) — you should refine using your actual size chart
+// Example (female top) (approx):
+// Small ~ shoulder < 38 cm, Medium ~ 38-42, Large ~ >42
+let topSize = "Unknown";
+if (shoulder) {
+  if (shoulder < 36) topSize = "small";
+  else if (shoulder < 41) topSize = "medium";
+  else topSize = "large";
+}
+
+// Bottom sizes — use hip measurement (approx) to find numeric size 6..14
+// Mapping approx (hips in cm) — sample mapping (you will replace with your chart)
+// size6: 80, size7: 83, size8: 86, size9: 89, size10: 92, size11: 95, size12: 98, size13: 101, size14: 104
+const bottomMapping = [
+  { size: "size 6", hip: 80 },
+  { size: "size 7", hip: 83 },
+  { size: "size 8", hip: 86 },
+  { size: "size 9", hip: 89 },
+  { size: "size 10", hip: 92 },
+  { size: "size 11", hip: 95 },
+  { size: "size 12", hip: 98 },
+  { size: "size 13", hip: 101 },
+  { size: "size 14", hip: 104 },
+];
+
+let bottomSize = "Unknown";
+if (hip) {
+  let best = bottomMapping[0];
+  let bestDiff = Math.abs(hip - best.hip);
+  for (const m of bottomMapping) {
+    const d = Math.abs(hip - m.hip);
+    if (d < bestDiff) {
+      best = m;
+      bestDiff = d;
     }
-  }, [status, cameraReady]);
+  }
+  bottomSize = best.size;
+}
 
-  useEffect(() => {
-    if (status === "scanning") {
-      // Start scan timer
-      scanTimerRef.current = setTimeout(() => {
-        handleFinishScan();
-      }, SCAN_TIMEOUT_MS);
-      
-      return () => {
-        if (scanTimerRef.current) {
-          clearTimeout(scanTimerRef.current);
-        }
-      };
-    }
-  }, [status]);
+// return measurement details too
+return {
+  topSize,
+  bottomSize,
+  measurements: { shoulder, hip, torso, leg },
+};
 
-  // Simulate person detection (replace with actual detection logic)
-  const detectPerson = (tensor) => {
-    return tf.tidy(() => {
-      // Simple simulation - in a real app, you would use pose detection
-      // For now, we'll simulate detection with a random value
-      const detectionScore = Math.random();
-      return detectionScore > 0.3; // 70% chance of detection
+
+};
+
+// Capture front or side and proceed
+const handleCapturePhase = async () => {
+try {
+if (!cameraAPIRef.current) {
+Alert.alert("Camera not ready", "Please wait for the camera to initialize.");
+return;
+}
+setStatus("capturing");
+const pose = await captureAndEstimate();
+if (!pose) {
+Alert.alert("No pose detected", "Please ensure full body is visible and try again.");
+setStatus("waiting");
+return;
+}
+// Convert pose -> measurements
+const measures = landmarksToMeasurements(pose);
+// store frames: we simply keep last front and side
+if (scanPhase === "front") {
+// keep front
+cameraAPIRef.current._frontMeasures = measures;
+setScanPhase("side");
+setStatus("waiting");
+Alert.alert("Good!", "Front scan saved. Now turn sideways and align with the silhouette.");
+} else {
+cameraAPIRef.current._sideMeasures = measures;
+setStatus("analyzing");
+setLoadingMsg("Combining scans and choosing sizes...");
+// combine
+const front = cameraAPIRef.current._frontMeasures || measures;
+const side = cameraAPIRef.current._sideMeasures || measures;
+const results = calculateTopBottomSizes(front, side);
+
+
+    // Send to result: include original height and unit so result page can show correct unit
+    router.push({
+      pathname: "/ar_mod/ar_result",
+      params: {
+        topSize: results.topSize,
+        bottomSize: results.bottomSize,
+        shoulderCm: results.measurements.shoulder ?? "N/A",
+        hipCm: results.measurements.hip ?? "N/A",
+        torsoCm: results.measurements.torso ?? "N/A",
+        legCm: results.measurements.leg ?? "N/A",
+        userHeight: hParam || "N/A",
+        userUnit: unitParam || "cm",
+        gender: gender || "N/A",
+      },
     });
-  };
-
-  const estimatePersonWidthPx = (tensor) => {
-    return tf.tidy(() => {
-      // Simulate measurement based on detection
-      const baseWidth = 80;
-      const variation = 20;
-      return baseWidth + (Math.random() * variation);
-    });
-  };
-
-  function pxToCm(pxWidth, tensorHeightPx = 200, userHeightCmInput) {
-    if (!userHeightCmInput || pxWidth <= 0) return null;
-    const cmPerPx = userHeightCmInput / tensorHeightPx;
-    return pxWidth * cmPerPx;
   }
+} catch (err) {
+  console.error("Capture error", err);
+  Alert.alert("Capture failed", err.message || "Unknown error");
+  setStatus("waiting");
+} finally {
+  setLoadingMsg("");
+}
 
-  const sizeChart = [
-    { size: "XS", chestIn: 17 },
-    { size: "S", chestIn: 18 },
-    { size: "M", chestIn: 19 },
-    { size: "L", chestIn: 20 },
-    { size: "XL", chestIn: 21 },
-    { size: "2XL", chestIn: 22 },
-    { size: "3XL", chestIn: 23.5 },
-    { size: "4XL", chestIn: 25.5 },
-  ];
 
-  function inchesToCm(inch) {
-    return inch * 2.54;
-  }
+};
 
-  function findBestSize(chestCm) {
-    if (!chestCm) return "Unknown";
-    let best = sizeChart[0];
-    let bestDiff = Math.abs(chestCm - inchesToCm(best.chestIn));
-    for (const entry of sizeChart) {
-      const diff = Math.abs(chestCm - inchesToCm(entry.chestIn));
-      if (diff < bestDiff) {
-        best = entry;
-        bestDiff = diff;
-      }
-    }
-    return best.size;
-  }
+return (
+<View style={{ flex: 1, backgroundColor: "black" }}> <View style={StyleSheet.absoluteFill}> <CameraWithTensors
+       onCameraReady={handleCameraReady}
+       facing="back"
+       getCameraRef={getCameraRef}
+     />
+<SilhouetteOverlay type={scanPhase} isActive={status === "waiting" || status === "capturing"} /> </View>
 
-  const onFrame = async (tensor) => {
-    if (status !== "waiting" && status !== "scanning") return;
-    
-    try {
-      // Detect if a person is present
-      const isPersonDetected = detectPerson(tensor);
-      
-      if (isPersonDetected && status === "waiting") {
-        setPersonDetected(true);
-        setStatus("scanning");
-        if (detectionTimerRef.current) {
-          clearTimeout(detectionTimerRef.current);
-        }
-      }
-      
-      if (status === "scanning" && isPersonDetected) {
-        const pxW = estimatePersonWidthPx(tensor);
-        
-        framesRef.current.push({ 
-          pxWidth: pxW,
-          phase: scanPhase
-        });
 
-        if (framesRef.current.length >= MAX_FRAMES) {
-          if (scanPhase === "front") {
-            setScanPhase("side");
-            setStatus("prepare");
-            framesRef.current = [];
-          } else {
-            handleFinishScan();
-          }
-        }
-      }
-    } catch (e) {
-      console.warn("Frame processing error", e);
-    }
-  };
+  <View style={styles.overlay}>
+    <Text style={styles.title}>
+      {status === "waiting"
+        ? scanPhase === "front"
+          ? "Position yourself to the front silhouette"
+          : "Now turn sideways to align with the silhouette"
+        : status === "capturing"
+        ? `Capturing ${scanPhase}...`
+        : status === "analyzing"
+        ? "Analyzing..."
+        : "Preparing camera..."}
+    </Text>
 
-  const handleFinishScan = () => {
-    setStatus("done");
-    
-    try {
-      if (framesRef.current.length === 0) {
-        // No frames collected, show error
-        router.push({
-          pathname: "/ar_mod/ar_result",
-          params: {
-            size: "Unknown",
-            chestCm: "N/A",
-            userHeightCm: userHeightCm || "N/A",
-            gender: gender || "N/A",
-          },
-        });
-        return;
-      }
-      
-      // Calculate average measurements
-      const frontMeasurements = framesRef.current.filter(f => f.phase === "front");
-      const sideMeasurements = framesRef.current.filter(f => f.phase === "side");
-      
-      const avgFront = frontMeasurements.reduce((sum, f) => sum + f.pxWidth, 0) / frontMeasurements.length;
-      const avgSide = sideMeasurements.reduce((sum, f) => sum + f.pxWidth, 0) / sideMeasurements.length;
-      
-      const tensorHeightPx = 200; 
-      const chestCm = pxToCm(avgFront, tensorHeightPx, userHeightCm);
-      
-      // Adjust size based on gender if needed
-      const predictedSize = findBestSize(chestCm);
+    <Text style={styles.instruction}>
+      {status === "waiting"
+        ? "Align your body to the outline. When ready, tap CAPTURE."
+        : status === "capturing"
+        ? "Please hold still..."
+        : status === "analyzing"
+        ? "Processing scans..."
+        : "Waiting for camera..."}
+    </Text>
 
-      router.push({
-        pathname: "/ar_mod/ar_result",
-        params: {
-          size: predictedSize,
-          chestCm: chestCm ? chestCm.toFixed(1) : "N/A",
-          userHeightCm: userHeightCm ? Math.round(userHeightCm) : "N/A",
-          gender: gender || "N/A",
-        },
-      });
-    } catch (err) {
-      console.error("Finish error", err);
-      router.push({
-        pathname: "/ar_mod/ar_result",
-        params: {
-          size: "Unknown",
-          chestCm: "N/A",
-          userHeightCm: userHeightCm || "N/A",
-          gender,
-        },
-      });
-    }
-  };
+    <View style={styles.scanBox}>
+      <Text style={{ color: "#fff", fontSize: 18 }}>
+        {loadingMsg || (status === "waiting" ? "Ready to capture" : status.toUpperCase())}
+      </Text>
 
-  const handleCameraReady = () => {
-    setCameraReady(true);
-  };
-
-  const restartScan = () => {
-    setStatus("prepare");
-    setPersonDetected(false);
-    framesRef.current = [];
-    
-    if (scanTimerRef.current) {
-      clearTimeout(scanTimerRef.current);
-    }
-    if (detectionTimerRef.current) {
-      clearTimeout(detectionTimerRef.current);
-    }
-  };
-
-  return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
-      {/* Camera View with BACK camera */}
-      <View style={StyleSheet.absoluteFill}>
-        <CameraWithTensors
-          onFrame={onFrame}
-          onCameraReady={handleCameraReady}
-          facing="back"
-        />
-        
-        {/* Silhouette Overlay */}
-        <SilhouetteOverlay 
-          type={scanPhase} 
-          isActive={status === "scanning"}
-        />
-      </View>
-
-      {/* UI Overlay */}
-      <View style={styles.overlay}>
-        <Text style={styles.title}>
-          {status === "waiting" 
-            ? "Waiting for person detection..." 
-            : scanPhase === "front" 
-              ? "Position yourself to the front silhouette" 
-              : "Now turn sideways to align with the silhouette"}
-        </Text>
-        
-        <Text style={styles.instruction}>
-          {status === "waiting" 
-            ? "Please stand in front of the camera for scanning"
-            : status === "noPerson"
-            ? "No person detected. Please stand in front of the camera."
-            : scanPhase === "front" 
-              ? "Facing the camera — align your body to the outline. Remain still while scanning."
-              : "Side view — align your profile to the outline. Remain still while scanning."}
-        </Text>
-
-        <View style={styles.scanBox}>
-          <Text style={{ color: "#fff", fontSize: 18 }}>
-            {status === "prepare" && "Preparing camera..."}
-            {status === "waiting" && "Waiting for person detection..."}
-            {status === "noPerson" && "No person detected. Please try again."}
-            {status === "scanning" && `Scanning ${scanPhase} view... please hold still`}
-            {status === "done" && "Processing..."}
-          </Text>
-          
-          {status !== "done" && status !== "noPerson" && (
-            <ActivityIndicator size="large" color="#fff" />
-          )}
-        </View>
-        
-        {status === "noPerson" && (
-          <TouchableOpacity 
-            style={styles.retryButton}
-            onPress={restartScan}
-          >
-            <Text style={styles.retryText}>Try Again</Text>
-          </TouchableOpacity>
-        )}
-        
-        {status === "prepare" && scanPhase === "side" && (
-          <TouchableOpacity 
-            style={styles.skipButton}
-            onPress={handleFinishScan}
-          >
-            <Text style={styles.skipText}>Skip Side Scan</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      {(status === "waiting" || status === "capturing") && (
+        <ActivityIndicator size="large" color="#fff" style={{ marginTop: 12 }} />
+      )}
     </View>
-  );
+
+
+    <View style={{ alignItems: "center", marginTop: 10 }}>
+      <TouchableOpacity
+        style={styles.captureBtn}
+        onPress={handleCapturePhase}
+        disabled={!cameraReady || status === "capturing" || !!loadingMsg}
+      >
+        <RNText style={{ fontSize: 20, fontWeight: "600", color: 'white'}}>
+          {scanPhase === "front" ? "CAPTURE FRONT" : "CAPTURE SIDE"}
+        </RNText>
+      </TouchableOpacity>
+    </View>
+  </View>
+</View>
+
+
+);
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    justifyContent: "flex-end",
-    padding: 24,
-    backgroundColor: "transparent",
-  },
-  title: { 
-    fontSize: 20, 
-    color: "#fff", 
-    fontWeight: "700", 
-    marginBottom: 8,
-    textAlign: "center"
-  },
-  instruction: { 
-    color: "#fff", 
-    marginBottom: 12,
-    textAlign: "center"
-  },
-  scanBox: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
-    padding: 18,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  skipButton: {
-    backgroundColor: "rgba(255,255,255,0.8)",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  retryButton: {
-    backgroundColor: "#61C35C",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  skipText: {
-    fontWeight: "600",
-  },
-  retryText: {
-    fontWeight: "600",
-    color: "white",
-  },
+overlay: {
+flex: 1,
+justifyContent: "flex-end",
+padding: 24,
+backgroundColor: "transparent",
+},
+title: {
+fontSize: 20,
+color: "#fff",
+fontWeight: "700",
+marginBottom: 8,
+textAlign: "center",
+},
+instruction: {
+color: "#fff",
+marginBottom: 6,
+textAlign: "center",
+},
+scanBox: {
+alignItems: "center",
+justifyContent: "center",
+backgroundColor: "rgba(0,0,0,0.5)",
+padding: 10,
+borderRadius: 10,
+marginBottom: 80,
+},
+captureBtn: {
+backgroundColor: "#61C35C",
+alignItems: 'center',
+padding: "3%",
+width: "65%",
+borderRadius: 8,
+bottom: 65
+},
 });

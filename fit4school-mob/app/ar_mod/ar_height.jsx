@@ -10,7 +10,7 @@ import { Text } from "../../components/globalText";
 //For AR Fitting
 import * as tf from "@tensorflow/tfjs";
 import { Camera } from "expo-camera";
-import CamView from "../../components/ar_com/cam_view";
+{/* import CamView from "../../components/ar_com/cam_view"; */}
 import { Picker } from "@react-native-picker/picker";
 import HelpModal from "../../components/ar_com/help_modal";
 
@@ -89,12 +89,14 @@ export default function ArStart() {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={StyleSheet.absoluteFillObject}>
+      
+      {/* <View style={StyleSheet.absoluteFillObject}>
         <CamView hidden={false} />
-      </View>
-
+      </View> 
+      */}
+      
       <View
-        style={{ flex: 1, padding: "10%", justifyContent: "space-between" }}
+        style={{ flex: 1, padding: "8.5%", justifyContent: "space-between" }}
       >
         <View
           style={{
@@ -191,7 +193,7 @@ export default function ArStart() {
               </View>
 
               {/* Gender Selection */}
-              <View style={{ justifyContent: "center", flexDirection: "row", marginTop: "5%" }}>
+              <View style={{ justifyContent: "space-evenly", flexDirection: "row", marginVertical: "5%" }}>
                 <TouchableOpacity
                   style={styles.radioBtn}
                   onPress={() => setGender("male")}
@@ -243,7 +245,7 @@ export default function ArStart() {
               params: { height, unit, gender },
             })}
           >
-            <Text style={{ fontSize: 20, fontWeight: "600" }}>Enter</Text>
+            <Text style={{ fontSize: 20, fontWeight: "600", color: 'white' }}>Enter</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -254,12 +256,12 @@ export default function ArStart() {
 const styles = StyleSheet.create({
   boxcont: {
     alignItems: "center",
-    top: 230,
+    top: 180,
   },
   box: {
     padding: "6%",
     backgroundColor: "#BCF0B9",
-    height: "56%",
+    height: "60%",
     width: "99%",
     borderRadius: 5,
     justifyContent: "center",
@@ -283,7 +285,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#61C35C",
     padding: "3%",
-    width: "40%",
+    width: "65%",
     borderRadius: 5,
     shadowColor: "black",
     elevation: 5,
@@ -292,6 +294,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     alignItems: "center",
     justifyContent: "center",
-    bottom: 80,
+    bottom: 65,
   },
 });

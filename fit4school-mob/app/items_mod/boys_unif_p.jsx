@@ -146,8 +146,8 @@ export default function boys_unif() {
                 <View>
                     <TouchableOpacity style={styles.atc_btn} onPress={() => setAtcModal(true)}>
                         <Image
-                            source={require("../../assets/images/icons/ar_menu.png")}
-                            style={styles.ar_pic}
+                            source={require("../../assets/images/icons/gen_icons/white-cart.png")}
+                            style={styles.cart_pic}
                         />
                         <Text style={{ fontSize: 10, color: "white", fontWeight: "400" }}>
                             Add to cart
@@ -479,6 +479,11 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         shadowOffset: { width: 0, height: 4 },
         elevation: 4,
+    },
+
+    cart_pic: {
+        height: 22,
+        width: 22,
     },
 
     bn_btn: {
