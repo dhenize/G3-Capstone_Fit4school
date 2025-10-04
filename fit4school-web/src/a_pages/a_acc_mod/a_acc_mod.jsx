@@ -61,13 +61,13 @@ const AAccMod = () => {
           </button>
         </div>
 
-        <div className="flex justify-between items-center mb-8 text-sm">
+        <div className="flex justify-between items-center mb-8 text-xs font-medium">
           <label className="flex items-center">
             <input type="checkbox" className="mr-2 accent-green-600" />Remember Password
           </label>
           
           <button type="button"
-            className="text-blue-500 hover:underline text-sm"
+            className="text-blue-500 hover:underline text-xs font-medium"
             onClick={() => alert("Forgot password clicked")}>Forgot Password?
           </button>
         </div>
