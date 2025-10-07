@@ -75,7 +75,7 @@ const AAccMod = () => {
             <button
               type="button"
               className="text-blue-500 hover:underline"
-              onClick={() => alert('Forgot password clicked')}
+              onClick={() => navigate('/entermail')}
             >
               Forgot Password?
             </button>

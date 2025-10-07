@@ -9,13 +9,17 @@ import AAccounts from './a_pages/a_accounts/a_accounts.jsx';
 import AcDashboard from './ac_pages/ac_dashboard/ac_dashboard.jsx';
 import AcPayments from './ac_pages/ac_payments/ac_payments.jsx';
 import AcArchives from './ac_pages/ac_archives/ac_archives.jsx';
-
+import EnterMail from './al_forgotpass/entermail/entermail.jsx';
+import EnterNum from './al_forgotpass/enternum/enternum.jsx';
+import AForgotPass from './al_forgotpass/a_forgotpass/a_forgotpass.jsx';
+import BForgotPass from './al_forgotpass/b_forgotpass/b_forgotpass.jsx';
 
 function App(){
   return(
     <>
       <Routes>
         <Route path="/" element={<AAccMod />} />
+        <Route path="/a_acc_mod" element={<AAccMod />} />
         <Route path="/a_dashboard" element={<ADashboard />} />
         <Route path="/a_orders" element={<AOrders />} />
         <Route path="/a_uniforms" element={<AUniforms />} />
@@ -25,6 +29,10 @@ function App(){
         <Route path="/ac_dashboard" element={<AcDashboard />} />
         <Route path="/ac_payments" element={<AcPayments />} />
         <Route path="/ac_archives" element={<AcArchives />} />
+        <Route path="/entermail" element={<EnterMail />} />
+        <Route path="/enternum" element={<EnterNum />} />
+        <Route path="/a_forgotpass" element={<AForgotPass />} />
+        <Route path="/b_forgotpass" element={<BForgotPass />} />
       </Routes>
     </>
   );
