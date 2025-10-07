@@ -1,100 +1,179 @@
 //../../dash_mod/inbox
-import React from 'react';
+import React, { useState } from 'react';
 
 import { StyleSheet, TouchableOpacity, View, Image, ScrollView } from 'react-native';
 import { Text } from "../../components/globalText";
 
 
 export default function inbox(){
+
+  const [activeTab, setActiveTab] = useState("system");
+
   return (
     <View style = {{flex: 1, backgroundColor: '#FFFBFB'}}>
       <View style = {styles.titlebox}>
         <Text style = {styles.title}>Inbox</Text>
       </View>
 
-      <View style={styles.container}>
+      <View style={styles.tabs_cont}>
+
         <View style = {styles.srbtn_cont}>
-          <TouchableOpacity>
-            <View style = {styles.sysbtn_cont}>
-              <Text style = {{fontWeight: '600', color: 'white'}}>System</Text>
+          <TouchableOpacity onPress={() => setActiveTab("system")}>
+            <View style = {[styles.sysbtn, activeTab === "system" && styles.activeBtn]}>
+              <Text style = {[styles.sysbtn_txt, activeTab === "system" && styles.activeBtnText]}>System</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity>
-            <View style = {styles.rembtn_cont}>
-              <Text style = {{fontWeight: '600'}}>Reminder</Text>
+          <TouchableOpacity onPress={() => setActiveTab("reminder")}>
+            <View style = {[styles.rembtn, activeTab === "reminder" && styles.activeBtn]}>
+              <Text style = {[styles.rembtn_txt, activeTab === "reminder" && styles.activeBtnText]}>Reminder</Text>
             </View>
           </TouchableOpacity>
         </View>
 
         
           <ScrollView style={{ flex: 1, marginTop: '10%'}} contentContainerStyle={{ paddingBottom: '%' }}>
-            <View style = {styles.notif_cont}>
-              <View style = {styles.notif}>
-                <View>
-                  <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+           
+            {activeTab === "system" ? (
+
+              <View style = {styles.notif_cont}>
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
-                </View>
-              </View>
 
 
-              <View style = {styles.notif}>
-                <View>
-                  <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
-                </View>
-              </View>
 
 
-              <View style = {styles.notif}>
-                <View>
-                  <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
-                </View>
-              </View>
 
 
-              <View style = {styles.notif}>
-                <View>
-                  <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
-                </View>
-              </View>
 
 
-              <View style = {styles.notif}>
-                <View>
-                  <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/success.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your account has been verified!</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your account " + "Juan Dela Cruz"}</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>was successfully verified.</Text>
-                  <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
-                </View>
-              </View>
               
-            </View>
+              </View>
+
+            ) : (
+
+              <View style = {styles.notif_cont}>
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/notif.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your ticket will expire soon!</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your booking " + "#1234 " + "will expire within"}</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>24 hours if left unpaid.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
+                </View>
+
+
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/notif.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your order has arrived!</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your booking " + "#451 " + "is ready for pick up."}</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>Please set your schedule to claim it.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
+                </View>
+
+
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/notif.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your order is now in production.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>The Item you ordered is now in</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>production. Production #245.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
+                </View>
+
+
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/notif.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>We recieved your payment!</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>Thank you customer! Your payment</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>has been validated.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
+                </View>
+
+
+                <View style = {styles.notif}>
+                  <View>
+                    <Image source = {require("../../assets/images/icons/gen_icons/notif.png")} style = {styles.notif_img}/>
+                  </View>
+                  <View>
+                    <Text style = {{color: '#1F72AD', fontSize: 14, fontWeight: '600'}}>Your order has arrived!</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>{"Your booking " + "#451 " + "is ready for pick up."}</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 12, fontWeight: '400'}}>Please set your schedule to claim it.</Text>
+                    <Text style = {{color: '#1F72AD', fontSize: 11, fontWeight: '400', alignSelf: 'flex-end', marginVertical: '2%'}}>Aug. 3, 2025</Text>
+                  </View>
+                </View>
+
+              
+              </View>
+            )}
+            
           </ScrollView>
         
 
@@ -123,7 +202,7 @@ const styles = StyleSheet.create({
   },
 
   //OVERALL CONTAINER
-  container:{
+  tabs_cont:{
     padding: '7%',
     flex: 1,
     backgroundColor: '#FFFBFB',
@@ -135,10 +214,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 
-  sysbtn_cont:{
+  sysbtn:{
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0FAFFF',
+    backgroundColor: '#D9D9D9',
     height: 35,
     width: 155,
     borderRadius: 5,
@@ -148,7 +227,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
 
-  rembtn_cont:{
+  rembtn:{
     alignItems: 'center',
     justifyContent: 'center',
     alignContent: 'center',
@@ -160,6 +239,22 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOffset: {width: 0, height: 4},
     elevation: 3,
+  },
+
+  sysbtn_txt:{
+    fontWeight: '600',
+  },
+
+  rembtn_txt:{
+    fontWeight: '600',
+  },
+
+  activeBtn:{
+    backgroundColor: '#0FAFFF',
+  },
+  
+  activeBtnText:{
+    color: 'white',
   },
 
   notif:{

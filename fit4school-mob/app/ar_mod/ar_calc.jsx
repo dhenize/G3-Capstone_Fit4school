@@ -20,6 +20,7 @@ import SilhouetteOverlay from "../../components/ar_com/silhouette_overlay";
 
 const { width: screenWidth } = Dimensions.get("window");
 
+
 export default function ArCalc() {
 const router = useRouter();
 const params = useLocalSearchParams();
@@ -192,62 +193,52 @@ return {
 };
 
 // Map measurements to top & bottom sizes (basic approach - editable)
+// Map measurements to top & bottom sizes (improved for better variation)
 const calculateTopBottomSizes = (frontMeasurements, sideMeasurements) => {
-// Use front shoulder/hip, and side for torso/leg confirmation
-const shoulder = frontMeasurements?.shoulderCm ?? sideMeasurements?.shoulderCm;
-const hip = frontMeasurements?.hipCm ?? sideMeasurements?.hipCm;
-const torso = sideMeasurements?.torsoCm ?? frontMeasurements?.torsoCm;
-const leg = sideMeasurements?.legCm ?? frontMeasurements?.legCm;
+  // Use front shoulder/hip, and side for torso/leg confirmation
+  const shoulder = frontMeasurements?.shoulderCm ?? sideMeasurements?.shoulderCm;
+  const hip = frontMeasurements?.hipCm ?? sideMeasurements?.hipCm;
+  const torso = sideMeasurements?.torsoCm ?? frontMeasurements?.torsoCm;
+  const leg = sideMeasurements?.legCm ?? frontMeasurements?.legCm;
 
-
-// Simple thresholds for top (chest/shoulder based) — you should refine using your actual size chart
-// Example (female top) (approx):
-// Small ~ shoulder < 38 cm, Medium ~ 38-42, Large ~ >42
-let topSize = "Unknown";
-if (shoulder) {
-  if (shoulder < 36) topSize = "small";
-  else if (shoulder < 41) topSize = "medium";
-  else topSize = "large";
-}
-
-// Bottom sizes — use hip measurement (approx) to find numeric size 6..14
-// Mapping approx (hips in cm) — sample mapping (you will replace with your chart)
-// size6: 80, size7: 83, size8: 86, size9: 89, size10: 92, size11: 95, size12: 98, size13: 101, size14: 104
-const bottomMapping = [
-  { size: "size 6", hip: 80 },
-  { size: "size 7", hip: 83 },
-  { size: "size 8", hip: 86 },
-  { size: "size 9", hip: 89 },
-  { size: "size 10", hip: 92 },
-  { size: "size 11", hip: 95 },
-  { size: "size 12", hip: 98 },
-  { size: "size 13", hip: 101 },
-  { size: "size 14", hip: 104 },
-];
-
-let bottomSize = "Unknown";
-if (hip) {
-  let best = bottomMapping[0];
-  let bestDiff = Math.abs(hip - best.hip);
-  for (const m of bottomMapping) {
-    const d = Math.abs(hip - m.hip);
-    if (d < bestDiff) {
-      best = m;
-      bestDiff = d;
-    }
+  // --- TOP SIZE ---
+  // Small ~ shoulder < 38 cm, Medium ~ 38–42, Large ~ >42
+  let topSize = "Unknown";
+  if (shoulder) {
+    if (shoulder < 36) topSize = "small";
+    else if (shoulder < 41) topSize = "medium";
+    else topSize = "large";
   }
-  bottomSize = best.size;
-}
 
-// return measurement details too
-return {
-  topSize,
-  bottomSize,
-  measurements: { shoulder, hip, torso, leg },
+  // --- BOTTOM SIZE ---
+  // Improve hip detection consistency
+  let adjustedHip = hip;
+  if (adjustedHip && adjustedHip < 70) adjustedHip *= 1.4; // compensate if hip too small
+  if (adjustedHip && adjustedHip > 120) adjustedHip *= 0.9; // trim unrealistically large readings
+
+  // Simple direct thresholds instead of "closest value"
+  let bottomSize = "Unknown";
+  if (adjustedHip) {
+    if (adjustedHip < 82) bottomSize = "size 6";
+    else if (adjustedHip < 86) bottomSize = "size 7";
+    else if (adjustedHip < 89) bottomSize = "size 8";
+    else if (adjustedHip < 92) bottomSize = "size 9";
+    else if (adjustedHip < 95) bottomSize = "size 10";
+    else if (adjustedHip < 98) bottomSize = "size 11";
+    else if (adjustedHip < 101) bottomSize = "size 12";
+    else if (adjustedHip < 104) bottomSize = "size 13";
+    else bottomSize = "size 14";
+  }
+
+  // Return full measurement info
+  return {
+    topSize,
+    bottomSize,
+    measurements: { shoulder, hip: adjustedHip, torso, leg },
+  };
 };
 
 
-};
 
 // Capture front or side and proceed
 const handleCapturePhase = async () => {

@@ -1,5 +1,4 @@
 // components/ar_com/cam_with_tensors.jsx
-
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
@@ -52,7 +51,6 @@ export default function CameraWithTensors({
           }
           const raw = tf.util.encodeString(b64, "base64").buffer;
           const u8 = new Uint8Array(raw);
-
           const imageTensor = decodeJpeg(u8);
           return imageTensor;
         },
@@ -63,8 +61,7 @@ export default function CameraWithTensors({
   if (!permission) {
     return (
       <View style={styles.container}>
-        {" "}
-        <Text>Requesting camera permission...</Text>{" "}
+        <Text>Requesting camera permission...</Text>
       </View>
     );
   }
@@ -72,15 +69,13 @@ export default function CameraWithTensors({
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        {" "}
-        <Text>No access to camera</Text>{" "}
+        <Text>No access to camera</Text>
       </View>
     );
   }
 
   return (
     <View style={[styles.container, style]}>
-      {" "}
       <CameraView
         ref={cameraRef}
         style={styles.camera}
