@@ -3,9 +3,12 @@ import React from 'react';
 
 import { StyleSheet, View, Image, Touchable, TouchableOpacity } from 'react-native';
 import { Text } from "../../components/globalText";
-
+import { useRouter } from "expo-router";
 
 export default function account(){
+
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       
@@ -23,27 +26,27 @@ export default function account(){
       </View>
 
       <View style = {styles.stng_cont}>
-        <TouchableOpacity style = {styles.btns}>
+        <TouchableOpacity style = {styles.btns} onPress={() => router.push("/stngs_mod/settings")}>
           <Text style = {styles.stng_txt}>Settings</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style = {styles.btns}>
+        <TouchableOpacity style = {styles.btns} onPress={() => router.push("/stngs_mod/acc_rec")}>
           <Text style = {styles.stng_txt}>Account Recovery</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style = {styles.btns}>
+        <TouchableOpacity style = {styles.btns} onPress={() => router.push("/stngs_mod/help_cen")}>
           <Text style = {styles.stng_txt}>Help Center</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style = {styles.btns}>
+        <TouchableOpacity style = {styles.btns} onPress={() => router.push("/stngs_mod/priv_not")}>
           <Text style = {styles.stng_txt}>Privacy Notice</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style = {styles.btns}>
+        <TouchableOpacity style = {styles.btns} onPress={() => router.push("/stngs_mod/term_con")}>
           <Text style = {styles.stng_txt}>Terms and Conditions</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style = {styles.btns}>
+        <TouchableOpacity style = {styles.btns} onPress={() => router.push("/stngs_mod/contact")}>
           <Text style = {styles.stng_txt}>Contact Us</Text>
         </TouchableOpacity>
         
