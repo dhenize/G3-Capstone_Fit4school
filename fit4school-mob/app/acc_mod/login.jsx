@@ -8,7 +8,7 @@ export default function Logout() {
     return (
         <View style={styles.container}>
             <Text style={styles.welcomeText}>WELCOME TO</Text>
-            <Text style={styles.titleText}>FT14SCHOOL</Text>
+            <Text style={styles.titleText}>FIT4SCHOOL</Text>
 
             <View style={styles.login_pic}>
                 <Image 
