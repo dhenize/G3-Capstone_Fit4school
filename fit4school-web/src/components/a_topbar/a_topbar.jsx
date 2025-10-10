@@ -8,7 +8,7 @@ const TopBar = () => {
   return (
     <div className="w-full h-12 bg-white shadow flex items-center justify-between px-4">
 
-      {/* Right: icons */}
+      {/* Left icons */}
       <div className="flex ml-auto gap-4">
         <button className="p-2 hover:bg-gray-100 rounded-full transition">
           <img src={clockIcon} alt="Clock" className="w-5 h-5" />

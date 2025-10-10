@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   unif_cont:{
     flexDirection: "row",
     alignContent: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
     
   },
