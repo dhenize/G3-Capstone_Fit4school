@@ -1,136 +1,137 @@
 // signupfillup.jsx
 import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  ScrollView,
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
-const SignupForm = () => {
+export default function SignupForm() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    role: 'Parent'
+    role: 'Parent',
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+  const handleChange = (key, value) => {
+    setFormData(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     // Handle form submission here
     console.log('Form submitted:', formData);
+    Alert.alert('Form Submitted', `Welcome, ${formData.firstName}!`);
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>← Sign in</h2>
-      
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>First Name</label>
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            placeholder="your first name"
-            style={styles.input}
-          />
-        </div>
-        
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Last Name</label>
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            placeholder="your last name"
-            style={styles.input}
-          />
-        </div>
-        
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Role</label>
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            style={styles.select}
-          >
-            <option value="Parent">Parent</option>
-            <option value="Student">Student</option>
-            <option value="Teacher">Teacher</option>
-          </select>
-        </div>
-        
-        <button type="submit" style={styles.button}>
-          CONFIRM
-        </button>
-      </form>
-    </div>
-  );
-};
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>← Sign in</Text>
 
-const styles = {
+      <View style={styles.form}>
+        {/* First Name */}
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>First Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="your first name"
+            value={formData.firstName}
+            onChangeText={text => handleChange('firstName', text)}
+          />
+        </View>
+
+        {/* Last Name */}
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Last Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="your last name"
+            value={formData.lastName}
+            onChangeText={text => handleChange('lastName', text)}
+          />
+        </View>
+
+        {/* Role */}
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Role</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={formData.role}
+              onValueChange={value => handleChange('role', value)}
+              style={styles.picker}
+            >
+              <Picker.Item label="Parent" value="Parent" />
+              <Picker.Item label="Student" value="Student" />
+              <Picker.Item label="Teacher" value="Teacher" />
+            </Picker>
+          </View>
+        </View>
+
+        {/* Button */}
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>CONFIRM</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
   container: {
-    fontFamily: 'Arial, sans-serif',
-    padding: '60px',
-    backgroundColor: 'white',
-    gap: '30px',
-    minHeight: '100vh'
+    flexGrow: 1,
+    padding: 24,
+    backgroundColor: '#fff',
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 30,
-    color: 'black',
-    fontFamily: 'System',
-    alignSelf: 'flex-start',
-    position: 'absolute',
-    top: 0, 
-    left: 10, 
+    color: '#000',
+    marginBottom: 40,
   },
   form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '19px',
-    marginTop: '80px' // Added margin to create space below the title
+    gap: 20,
   },
   inputGroup: {
-    display: 'flex',
-    flexDirection: 'column'
+    marginBottom: 15,
   },
   label: {
-    marginBottom: '5px',
+    marginBottom: 6,
     fontWeight: 'bold',
-    color: '#555'
+    color: '#555',
   },
   input: {
-    padding: '10px',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    fontSize: '16px'
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 16,
+    backgroundColor: '#fff',
   },
-  select: {
-    padding: '16px',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    fontSize: '16px',
-    backgroundColor: 'white'
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    backgroundColor: '#fff',
+  },
+  picker: {
+    height: 48,
+    width: '100%',
   },
   button: {
-    padding: '15px',
+    marginTop: 20,
     backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    borderRadius: '10px',
-    fontSize: '16px',
+    borderRadius: 10,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
     fontWeight: 'bold',
-    cursor: 'pointer',
-    marginTop: '10px'
-  }
-};
-
-export default SignupForm;
+  },
+});
