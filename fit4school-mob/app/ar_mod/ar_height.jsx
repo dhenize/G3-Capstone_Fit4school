@@ -107,13 +107,13 @@ export default function ArStart() {
           }}
         >
           <TouchableOpacity onPress={() => setHelpVisible(true)}>
-            <Ionicons name="alert-circle-outline" size={28} color="white" />
+            <Ionicons name="alert-circle-outline" size={28} color="black" />
           </TouchableOpacity>
           
           <HelpModal visible={helpVisible} onClose={() => setHelpVisible(false)} />
 
           <TouchableOpacity onPress={() => router.push("/dash_mod/home")}>
-            <Ionicons name="close-outline" size={28} color="white" />
+            <Ionicons name="close-outline" size={28} color="black" />
           </TouchableOpacity>
         </View>
 
