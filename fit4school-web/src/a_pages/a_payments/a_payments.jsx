@@ -6,7 +6,7 @@ const APayments = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "Admin Payments - Fit4School";
+    document.title = "Admin | Payments - Fit4School";
 
     const handleResize = () => {
       // Sidebar stays open on desktop, collapses on mobile

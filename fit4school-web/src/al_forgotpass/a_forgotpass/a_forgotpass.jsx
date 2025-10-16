@@ -1,24 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import arrowBack from '../../assets/icons/arrow-back.png';
 
 const AForgotPass = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(new Array(6).fill(''));
-  const [timer, setTimer] = useState(300); // 60 seconds countdown
-  const [canResend, setCanResend] = useState(false);
+  const [otpExpiry, setOtpExpiry] = useState(180); // 3 minutes for OTP to expire
+  const [resendCooldown, setResendCooldown] = useState(0); // 15 seconds cooldown for resend button
+  const [otpExpired, setOtpExpired] = useState(false);
   const inputRefs = useRef([]);
 
-  // Countdown timer
+  // OTP Expiry Timer (5 minutes)
   useEffect(() => {
-    if (timer > 0) {
+    if (otpExpiry > 0 && !otpExpired) {
       const countdown = setInterval(() => {
-        setTimer((prev) => prev - 1);
+        setOtpExpiry((prev) => prev - 1);
       }, 1000);
       return () => clearInterval(countdown);
-    } else {
-      setCanResend(true);
+    } else if (otpExpiry === 0) {
+      setOtpExpired(true);
     }
-  }, [timer]);
+  }, [otpExpiry, otpExpired]);
+
+  // Resend Button Cooldown Timer (30 seconds)
+  useEffect(() => {
+    if (resendCooldown > 0) {
+      const cooldownTimer = setInterval(() => {
+        setResendCooldown((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(cooldownTimer);
+    }
+  }, [resendCooldown]);
 
   // Auto-focus next input when typing
   const handleChange = (element, index) => {
@@ -32,7 +44,7 @@ const AForgotPass = () => {
     }
   };
 
-  // Handle backspace to go to previous input
+  // Handle backspace
   const handleKeyDown = (e, index) => {
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus();
@@ -45,6 +57,12 @@ const AForgotPass = () => {
     const enteredOtp = otp.join('');
     console.log('Entered OTP:', enteredOtp);
 
+    // Check if OTP expired
+    if (otpExpired) {
+      alert('OTP has expired! Please request a new one.');
+      return;
+    }
+
     // Validation
     if (enteredOtp === '123456') {
       alert('OTP verified!');
@@ -56,10 +74,11 @@ const AForgotPass = () => {
 
   // Handle resend OTP
   const handleResendOTP = () => {
-    if (canResend) {
-      alert('OTP has been resent!');
-      setTimer(300); // Reset timer to 300 seconds
-      setCanResend(false);
+    if (resendCooldown === 0) {
+      alert('A new OTP has been sent to your email!');
+      setOtpExpiry(180); // Reset OTP expiry to 3 minutes
+      setResendCooldown(15); // Set 15-second cooldown for resend button
+      setOtpExpired(false); // Reset expired state
       setOtp(new Array(6).fill('')); // Clear OTP inputs
       inputRefs.current[0]?.focus(); // Focus first input
     }
@@ -72,10 +91,27 @@ const AForgotPass = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  useEffect(() => {
+    document.title = 'Forgot Pass | OTP - Fit4School';
+  }, []);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
-      <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-sm text-center">
-        <h3 className="text-xl font-bold mb-4">Forgot Password</h3>
+      <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-sm text-center relative">
+
+        <button
+          type="button"
+          onClick={() => navigate(-1)} 
+          className="absolute top-6 left-5 focus:outline-none"
+        >
+          <img
+            src={arrowBack}
+            alt="Back"
+            className="w-4 h-4 hover:opacity-70 transition-opacity"
+          />
+        </button>
+
+        <h3 className="text-xl font-bold mt-6 mb-4">Forgot Password</h3>
         <p className="text-gray-600 mb-6">Please enter your 6-digit OTP</p>
 
         <form onSubmit={handleSubmit}>
@@ -89,50 +125,67 @@ const AForgotPass = () => {
                 onChange={(e) => handleChange(e.target, i)}
                 onKeyDown={(e) => handleKeyDown(e, i)}
                 ref={(el) => (inputRefs.current[i] = el)}
-                className="w-10 h-12 text-center text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                disabled={otpExpired}
+                className={`w-10 h-12 text-center text-lg border rounded-md focus:outline-none focus:ring-2 ${
+                  otpExpired 
+                    ? 'border-red-300 bg-gray-100 cursor-not-allowed' 
+                    : 'border-gray-300 focus:ring-green-400'
+                }`}
               />
             ))}
           </div>
 
           <button
             type="submit"
-            className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition"
+            disabled={otpExpired}
+            className={`w-full py-2 rounded-md transition ${
+              otpExpired 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'bg-green-500 text-white hover:bg-green-600'
+            }`}
           >
             CONFIRM
           </button>
 
-          {/* Resend OTP with Timer */}
+          {/* OTP Expiry Timer */}
+          <div className="mt-4">
+            {!otpExpired ? (
+              <p className="text-sm text-gray-600">
+                OTP expires in <span className="font-semibold text-orange-600">{formatTime(otpExpiry)}</span>
+              </p>
+            ) : (
+              <p className="text-sm text-red-600 font-semibold">
+                ⚠️ OTP has expired!
+              </p>
+            )}
+          </div>
+
+          {/* Resend OTP Button */}
           <div className="mt-6">
             <button
               type="button"
-              disabled={!canResend}
+              disabled={resendCooldown > 0}
               onClick={handleResendOTP}
               className={`w-full text-sm transition ${
-                canResend 
-                  ? 'text-blue-500 hover:underline cursor-pointer' 
-                  : 'text-gray-400 cursor-not-allowed'
+                resendCooldown > 0
+                  ? 'text-gray-400 cursor-not-allowed' 
+                  : 'text-blue-500 hover:underline cursor-pointer'
               }`}
             >
               Resend OTP
             </button>
             
-            {/* Timer Display */}
-            {!canResend && (
-              <p className="text-sm text-red-400 mt-5">
-                Resend available in {formatTime(timer)}
-              </p>
-            )}
-            
-            {canResend && (
-              <p className="text-sm text-green-600 mt-5">
-                You can now resend OTP!
+            {/* Resend Cooldown Display */}
+            {resendCooldown > 0 && (
+              <p className="text-xs text-gray-500 mt-2">
+                You can resend OTP in {resendCooldown} seconds
               </p>
             )}
           </div>
 
           <button
             type="button"
-            className="w-full mt-12 font-semibold text-blue-500 hover:underline"
+            className="w-full mt-6 font-semibold text-blue-500 hover:underline"
             onClick={() => navigate('/a_acc_mod/')}
           >
             Back to Sign in

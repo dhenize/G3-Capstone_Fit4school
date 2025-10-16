@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import arrowBack from '../../assets/icons/arrow-back.png';
 
 const EnterMail = () => {
   const navigate = useNavigate();
@@ -9,15 +10,32 @@ const EnterMail = () => {
     navigate("/a_forgotpass"); // Redirect to OTP page
   };
 
+  useEffect(() => {
+      document.title = 'Forgot Pass | Enter Email - Fit4School';
+    }, []);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
-      <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-sm text-center">
-        <h3 className="text-xl font-bold mb-4">Forgot Password</h3>
-        
+      <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-sm text-center relative">
+
+    <button
+        type="button"
+        onClick={() => navigate(-1)} 
+        className="absolute top-6 left-5 focus:outline-none"
+      >
+        <img
+          src={arrowBack}
+          alt="Back"
+          className="w-4 h-4 hover:opacity-70 transition-opacity"
+        />
+      </button>
+
     <form
       className="w-full max-w-sm bg-white p-3"
       onSubmit={handleSubmit}
     >
+
+        <h3 className="text-xl font-bold mt-3 mb-4">Forgot Password</h3>
         <p className="text-gray-600 mb-2">Please enter a valid email address</p>
         <input
             className="w-full border p-2 border-gray-300 mb-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"

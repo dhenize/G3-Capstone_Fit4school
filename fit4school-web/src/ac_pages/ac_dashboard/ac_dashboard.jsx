@@ -6,7 +6,7 @@ const AcDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "Accountant Dashboard - Fit4School";
+    document.title = "Accountant | Dashboard - Fit4School";
 
     const handleResize = () => {
       // Sidebar stays open on desktop, collapses on mobile

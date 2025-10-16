@@ -6,7 +6,7 @@ const ADashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "Admin Dashboard - Fit4School";
+    document.title = "Admin | Dashboard - Fit4School";
     
     // Auto-open sidebar on desktop, closed on mobile
     const handleResize = () => {

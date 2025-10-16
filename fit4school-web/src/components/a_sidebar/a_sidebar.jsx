@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import circleUser from '../../assets/icons/circle-user.svg';
 import dashIcon from '../../assets/icons/dash-icon.png';
+import appointIcon from '../../assets/icons/appoint-icon.png';
 import orderIcon from '../../assets/icons/order-icon.png';
 import uniIcon from '../../assets/icons/uni-icon.png';
 import payIcon from '../../assets/icons/pay-icon.png';
@@ -65,6 +66,18 @@ const ASidebar = () => {
             {isSidebarOpen && <p className="ml-3 text-sm">Dashboard</p>}
           </button>
           
+          {/* Appointments */}
+          <button
+            onClick={() => navigate('/a_appointments')}
+            className={`w-full flex items-center p-2 rounded-xl transition ${
+              isActive('/a_appointments') ? 'bg-blue-500' : 'hover:bg-blue-600'
+            } ${isSidebarOpen ? 'justify-start px-4' : 'justify-center'}`}
+            title={!isSidebarOpen ? "Appointments" : ""}
+          >
+            <img src={appointIcon} alt="appointIcon" className="w-4 h-4 flex-shrink-0"/>
+            {isSidebarOpen && <p className="ml-3 text-sm">Appointments</p>}
+          </button>
+
           {/* Orders */}
           <button
             onClick={() => navigate('/a_orders')}

@@ -6,7 +6,7 @@ const AOrders = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "Admin Orders - Fit4School";
+    document.title = "Admin | Orders - Fit4School";
 
     const handleResize = () => {
       // Sidebar stays open on desktop, collapses on mobile

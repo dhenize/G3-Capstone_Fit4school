@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import ASidebar from '../../components/a_sidebar/a_sidebar.jsx';
 import ATopbar from '../../components/a_topbar/a_topbar.jsx';
 
-const AAccounts = () => {
+const AAppointments = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "Admin | Account Management - Fit4School";
+    document.title = "Admin | Appointment Management - Fit4School";
 
     const handleResize = () => {
       // Sidebar stays open on desktop, collapses on mobile
@@ -32,15 +32,15 @@ const AAccounts = () => {
         {/* Topbar */}
         <ATopbar
           onMenuClick={() => setIsSidebarOpen((prev) => !prev)}
-          title="Accounts"
+          title="Appointments"
         />
 
         {/* Main Content */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
-          <h1 className="text-2xl md:text-3xl font-bold mb-6">Accounts</h1>
+          <h1 className="text-2xl md:text-3xl font-bold mb-6">Appointments</h1>
 
           <div className="bg-white rounded-lg shadow p-6 sm:p-4 py-2 hover:shadow-md transition">
-            <p>Welcome to the user accounts!</p>
+            <p>Welcome to the appointments!</p>
           </div>
         </main>
       </div>
@@ -48,4 +48,4 @@ const AAccounts = () => {
   );
 };
 
-export default AAccounts;
+export default AAppointments;

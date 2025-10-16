@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import AAccMod from './a_pages/a_acc_mod/a_acc_mod.jsx';
 import ADashboard from './a_pages/a_dashboard/a_dashboard.jsx';
+import AAppointments from './a_pages/a_appointments/a_appointments.jsx';
 import AOrders from './a_pages/a_orders/a_orders.jsx';
 import AUniforms from './a_pages/a_uniforms/a_uniforms.jsx';
 import APayments from './a_pages/a_payments/a_payments.jsx';
@@ -21,6 +22,7 @@ function App(){
         <Route path="/" element={<AAccMod />} />
         <Route path="/a_acc_mod" element={<AAccMod />} />
         <Route path="/a_dashboard" element={<ADashboard />} />
+        <Route path="/a_appointments" element={<AAppointments />} />
         <Route path="/a_orders" element={<AOrders />} />
         <Route path="/a_uniforms" element={<AUniforms />} />
         <Route path="/a_payments" element={<APayments />} />

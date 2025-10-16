@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import eyeIcon from '../../assets/icons/eye.svg';
 import eyeOffIcon from '../../assets/icons/eye-closed.svg';
+import arrowBack from '../../assets/icons/arrow-back.png';
 
 const BForgotPass = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,10 +30,27 @@ const BForgotPass = () => {
     navigate('/a_acc_mod/'); // Redirect to sign in
   };
 
+  useEffect(() => {
+          document.title = 'Forgot Pass | Change Pass - Fit4School';
+        }, []);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
-      <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-sm text-center">
-        <h3 className="text-xl font-bold mb-4">Reset Password</h3>
+      <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-sm text-center relative">
+
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="absolute top-6 left-5 focus:outline-none"
+        >
+          <img
+            src={arrowBack}
+            alt="Back"
+            className="w-4 h-4 hover:opacity-70 transition-opacity"
+          />
+        </button>
+
+        <h3 className="text-xl font-bold mt-3 mb-4">Reset Password</h3>
         <p className="text-gray-600 mb-6">Enter your new password</p>
 
         <form onSubmit={handleSubmit}>

@@ -6,7 +6,7 @@ const AcArchives = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "Accountant Archives - Fit4School";
+    document.title = "Accountant | Archives - Fit4School";
 
     const handleResize = () => {
       // Sidebar stays open on desktop, collapses on mobile
