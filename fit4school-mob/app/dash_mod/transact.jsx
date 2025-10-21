@@ -7,10 +7,14 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+import { useRouter } from "expo-router";
 import { Text } from "../../components/globalText";
 import Checkbox from "expo-checkbox";
 
+
 export default function transact() {
+  const router = useRouter();
+
   const [isChecked, setIsChecked] = useState(false);
   const [activeTab, setActiveTab] = useState("appointments");
 
@@ -298,12 +302,65 @@ export default function transact() {
               </View>
 
             </View>
-          )}
+          )} : (
+
+
+            <View style={styles.notif_cont}>
+
+              <View style={styles.notif}>
+
+                <Image
+                  source={require("../../assets/images/b_unif_ex.png")}
+                  style={styles.notif_img}
+                />
+
+                <View style={styles.notif_content}>
+
+                  <View style={styles.rowBetween}>
+                    <View>
+                      <Text style={styles.itemTitle}>
+                        Boy’s Uniform (Pre-school)
+                      </Text>
+                      <Text style={styles.itemSubtitle}>size 8</Text>
+                    </View>
+                    <Checkbox
+                      value={isChecked}
+                      onValueChange={setIsChecked}
+                      color={isChecked ? "#49454F" : undefined}
+                    />
+                  </View>
+
+
+                  <View style={[styles.rowBetween, { marginTop: 6 }]}>
+                    <Text style={styles.itemQuantity}>Quantity 2</Text>
+                    <View style={{ alignItems: "flex-end" }}>
+                      <Text style={styles.toClaim}>To claim</Text>
+                      <Text style={styles.itemPrice}>₱800.00</Text>
+                    </View>
+                  </View>
+
+                  <View style = {{flexDirection: 'row', justifyContent: "flex-end"}}>
+                    <TouchableOpacity style={styles.chng_btn}>
+                      <Text style={styles.chngbtn_txt}>Change</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.del_btn}>
+                      <Text style={styles.delbtn_txt}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                  
+
+                  
+                </View>
+              </View>
+
+            </View>
+          )
         </ScrollView>
 
 
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/items_mod/history")}>
           <View style={styles.hisbtn}>
             <Image
               source={require("../../assets/images/icons/gen_icons/history.png")}
