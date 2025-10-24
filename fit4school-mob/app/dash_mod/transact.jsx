@@ -17,7 +17,6 @@ export default function transact() {
 
   const [isChecked, setIsChecked] = useState(false);
   const [activeTab, setActiveTab] = useState("appointments");
-
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFBFB" }}>
       <View style={styles.titlebox}>
@@ -243,9 +242,7 @@ export default function transact() {
                   </TouchableOpacity>
                 </View>
               </View>
-
-
-
+            
             </View>
 
 
@@ -296,78 +293,35 @@ export default function transact() {
                     </TouchableOpacity>
                   </View>
                   
-
-                  
                 </View>
+
               </View>
 
             </View>
-          )} : (
-
-
-            <View style={styles.notif_cont}>
-
-              <View style={styles.notif}>
-
-                <Image
-                  source={require("../../assets/images/b_unif_ex.png")}
-                  style={styles.notif_img}
-                />
-
-                <View style={styles.notif_content}>
-
-                  <View style={styles.rowBetween}>
-                    <View>
-                      <Text style={styles.itemTitle}>
-                        Boy’s Uniform (Pre-school)
-                      </Text>
-                      <Text style={styles.itemSubtitle}>size 8</Text>
-                    </View>
-                    <Checkbox
-                      value={isChecked}
-                      onValueChange={setIsChecked}
-                      color={isChecked ? "#49454F" : undefined}
-                    />
-                  </View>
-
-
-                  <View style={[styles.rowBetween, { marginTop: 6 }]}>
-                    <Text style={styles.itemQuantity}>Quantity 2</Text>
-                    <View style={{ alignItems: "flex-end" }}>
-                      <Text style={styles.toClaim}>To claim</Text>
-                      <Text style={styles.itemPrice}>₱800.00</Text>
-                    </View>
-                  </View>
-
-                  <View style = {{flexDirection: 'row', justifyContent: "flex-end"}}>
-                    <TouchableOpacity style={styles.chng_btn}>
-                      <Text style={styles.chngbtn_txt}>Change</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.del_btn}>
-                      <Text style={styles.delbtn_txt}>Delete</Text>
-                    </TouchableOpacity>
-                  </View>
-                  
-
-                  
-                </View>
-              </View>
-
-            </View>
-          )
+          )}
         </ScrollView>
 
-
-
-        <TouchableOpacity onPress={() => router.push("/items_mod/history")}>
+        <TouchableOpacity 
+          onPress={() =>
+            router.push(
+              activeTab === "appointments"
+                ? "/transact_mod/history"
+                : "/transact_mod/checkout"
+            )
+          }>
           <View style={styles.hisbtn}>
             <Image
-              source={require("../../assets/images/icons/gen_icons/history.png")}
+              source={ 
+                activeTab === "appointments"
+                ? require("../../assets/images/icons/gen_icons/history.png")
+                : require("../../assets/images/icons/gen_icons/checkout-bag.png")
+              }
               style={styles.his_pic}
             />
           </View>
         </TouchableOpacity>
+
+
       </View>
     </View>
   );

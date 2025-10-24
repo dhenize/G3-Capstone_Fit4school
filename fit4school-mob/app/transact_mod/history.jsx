@@ -29,17 +29,17 @@ export default function history() {
 
       {/* Tab Buttons */}
       <View style={styles.tabs_cont}>
-        <View style={styles.srbtn_cont}>
+        <View style={styles.ccr_btn}>
           <TouchableOpacity onPress={() => setActiveTab("completed")}>
             <View
               style={[
-                styles.sysbtn,
+                styles.combtn,
                 activeTab === "completed" && styles.activeBtn,
               ]}
             >
               <Text
                 style={[
-                  styles.sysbtn_txt,
+                  styles.combtn_txt,
                   activeTab === "completed" && styles.activeBtnText,
                 ]}
               >
@@ -51,13 +51,13 @@ export default function history() {
           <TouchableOpacity onPress={() => setActiveTab("cancelled")}>
             <View
               style={[
-                styles.rembtn,
+                styles.canbtn,
                 activeTab === "cancelled" && styles.activeBtn,
               ]}
             >
               <Text
                 style={[
-                  styles.rembtn_txt,
+                  styles.canbtn_txt,
                   activeTab === "cancelled" && styles.activeBtnText,
                 ]}
               >
@@ -69,13 +69,13 @@ export default function history() {
           <TouchableOpacity onPress={() => setActiveTab("returned")}>
             <View
               style={[
-                styles.rembtn,
+                styles.retbtn,
                 activeTab === "returned" && styles.activeBtn,
               ]}
             >
               <Text
                 style={[
-                  styles.rembtn_txt,
+                  styles.retbtn_txt,
                   activeTab === "returned" && styles.activeBtnText,
                 ]}
               >
@@ -113,14 +113,21 @@ export default function history() {
                     <View style={[styles.rowBetween, { marginTop: 6 }]}>
                       <Text style={styles.itemQuantity}>Quantity 2</Text>
                       <View style={{ alignItems: "flex-end" }}>
-                        <Text style={styles.toClaim}>To claim</Text>
+                        <Text style={styles.remarktxt}>Completed</Text>
                         <Text style={styles.itemPrice}>₱800.00</Text>
                       </View>
                     </View>
 
-                    <TouchableOpacity style={styles.ticketBtn}>
-                      <Text style={styles.ticketBtnText}>View Ticket</Text>
-                    </TouchableOpacity>
+                    <View style = {{flexDirection: 'row', justifyContent: "flex-end"}}>
+                      <TouchableOpacity style={styles.rebtn}>
+                        <Text style={styles.rebtnText}>Return</Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity style={styles.ratebtn}>
+                        <Text style={styles.ratebtnText}>Rate</Text>
+                      </TouchableOpacity>
+                    </View>
+                    
                   </View>
                 </View>
               ))}
@@ -149,30 +156,12 @@ export default function history() {
                   <View style={[styles.rowBetween, { marginTop: 6 }]}>
                     <Text style={styles.itemQuantity}>Quantity 2</Text>
                     <View style={{ alignItems: "flex-end" }}>
-                      <Text style={styles.toClaim}>To claim</Text>
-                      <Text style={styles.itemPrice}>₱800.00</Text>
+                      <Text style={styles.remarktxt}>Cancelled</Text>
                     </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                      marginTop: 5,
-                    }}
-                  >
-                    <TouchableOpacity style={styles.chng_btn}>
-                      <Text style={styles.chngbtn_txt}>Change</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={[styles.del_btn, { marginLeft: 8 }]}
-                    >
-                      <Text style={styles.delbtn_txt}>Delete</Text>
-                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
+
             </View>
           )}
 
@@ -181,7 +170,7 @@ export default function history() {
             <View style={styles.notif_cont}>
               <View style={styles.notif}>
                 <Image
-                  source={require("../../assets/images/b_unif_ex.png")}
+                  source={require("../../assets/images/g2_unif_ex.png")}
                   style={styles.notif_img}
                 />
 
@@ -189,22 +178,22 @@ export default function history() {
                   <View style={styles.rowBetween}>
                     <View>
                       <Text style={styles.itemTitle}>
-                        Girl’s Uniform (Grade School)
+                        Girl’s Uniform (Elementary)
                       </Text>
-                      <Text style={styles.itemSubtitle}>size 10</Text>
+                      <Text style={styles.itemSubtitle}>size 14</Text>
                     </View>
                   </View>
 
                   <View style={[styles.rowBetween, { marginTop: 6 }]}>
                     <Text style={styles.itemQuantity}>Quantity 1</Text>
                     <View style={{ alignItems: "flex-end" }}>
-                      <Text style={styles.toClaim}>Returned</Text>
-                      <Text style={styles.itemPrice}>₱400.00</Text>
+                      <Text style={styles.remarktxt}>Returned</Text>
+                      <Text style={styles.itemPrice}>₱500.00</Text>
                     </View>
                   </View>
 
-                  <TouchableOpacity style={styles.ticketBtn}>
-                    <Text style={styles.ticketBtnText}>View Ticket</Text>
+                  <TouchableOpacity style={styles.rebtn}>
+                    <Text style={styles.rebtnText}>View Ticket</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -244,14 +233,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFBFB",
     },
 
-    srbtn_cont: {
+    ccr_btn: {
         flexDirection: "row",
         alignContent: "center",
         justifyContent: "space-between",
-        paddingVertical: "2.5%",
+        paddingVertical: "2%",
     },
 
-    sysbtn: {
+    combtn: {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#D9D9D9",
@@ -264,7 +253,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
 
-    rembtn: {
+    canbtn: {
         alignItems: "center",
         justifyContent: "center",
         alignContent: "center",
@@ -278,11 +267,29 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
 
-    sysbtn_txt: {
+    retbtn: {
+        alignItems: "center",
+        justifyContent: "center",
+        alignContent: "center",
+        backgroundColor: "#D9D9D9",
+        height: 35,
+        width: 100,
+        borderRadius: 5,
+        shadowOpacity: 0.4,
+        shadowRadius: 2,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 3,
+    },
+
+    combtn_txt: {
         fontWeight: "600",
     },
 
-    rembtn_txt: {
+    canbtn_txt: {
+        fontWeight: "600",
+    },
+
+    retbtn_txt: {
         fontWeight: "600",
     },
 
@@ -342,7 +349,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "600",
     },
-    toClaim: {
+    remarktxt: {
         color: "#1F72AD",
         fontSize: 11,
         fontWeight: "400",
@@ -353,7 +360,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
 
-    ticketBtn: {
+    rebtn: {
         alignSelf: "flex-end",
         backgroundColor: "#D9D9D9",
         borderRadius: 5,
@@ -362,38 +369,26 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
 
-    chng_btn: {
+    ratebtn: {
+        alignSelf: "flex-end",
         backgroundColor: "#D9D9D9",
         borderRadius: 5,
         paddingVertical: 8,
-        paddingHorizontal: 15,
-        marginTop: 5,
-    },
-
-    del_btn: {
-        backgroundColor: "#FFD5D5",
-        borderRadius: 5,
-        paddingVertical: 8,
-        paddingHorizontal: 15,
+        paddingHorizontal: 20,
         marginTop: 5,
         marginLeft: '2%',
     },
 
-    ticketBtnText: {
+    rebtnText: {
         color: "black",
         fontSize: 13,
         fontWeight: "600",
     },
 
-    chngbtn_txt: {
+    ratebtnText: {
         color: "black",
         fontSize: 13,
         fontWeight: "600",
     },
 
-    delbtn_txt: {
-        color: "#FF6767",
-        fontSize: 13,
-        fontWeight: "600",
-    },
 });
