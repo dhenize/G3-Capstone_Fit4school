@@ -1,27 +1,21 @@
 // app/ar_mod/ar_height.jsx
 
-//IMPORTS
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Text } from "../../components/globalText";
 
-//For AR Fitting
+// For AR Fitting
 import * as tf from "@tensorflow/tfjs";
 import { Camera } from "expo-camera";
-{/* import CamView from "../../components/ar_com/cam_view"; */}
 import { Picker } from "@react-native-picker/picker";
 import HelpModal from "../../components/ar_com/help_modal";
 
-
-export default function ArStart() {
+export default function ArHeight() {
   const [helpVisible, setHelpVisible] = useState(false);
-
   const [height, setHeight] = useState("");
   const [unit, setUnit] = useState("ft");
-  const [gender, setGender] = useState(null);
-
   const router = useRouter();
   const [hasPermission, setHasPermission] = useState(null);
 
@@ -36,21 +30,19 @@ export default function ArStart() {
     prepare();
   }, []);
 
-  if (hasPermission === null) {
+  if (hasPermission === null)
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.centered}>
         <Text>Requesting for camera permission...</Text>
       </View>
     );
-  }
 
-  if (!hasPermission) {
+  if (!hasPermission)
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.centered}>
         <Text>No access to camera</Text>
       </View>
     );
-  }
 
   //Height Values
   const ftValues = [
@@ -89,27 +81,13 @@ export default function ArStart() {
 
   return (
     <View style={{ flex: 1 }}>
-      
-      {/* <View style={StyleSheet.absoluteFillObject}>
-        <CamView hidden={false} />
-      </View> 
-      */}
-      
-      <View
-        style={{ flex: 1, padding: "8.5%", justifyContent: "space-between" }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            top: "2%",
-          }}
-        >
+      <View style={{ flex: 1, padding: "8.5%", justifyContent: "space-between" }}>
+        {/* Header */}
+        <View style={styles.header}>
           <TouchableOpacity onPress={() => setHelpVisible(true)}>
             <Ionicons name="alert-circle-outline" size={28} color="black" />
           </TouchableOpacity>
-          
+
           <HelpModal visible={helpVisible} onClose={() => setHelpVisible(false)} />
 
           <TouchableOpacity onPress={() => router.push("/dash_mod/home")}>
@@ -117,72 +95,61 @@ export default function ArStart() {
           </TouchableOpacity>
         </View>
 
+        {/* Height Box */}
         <View style={styles.boxcont}>
           <View style={styles.box}>
-            <Text style={{ fontSize: 18, fontWeight: 500 }}>
-              Enter height and gender
-            </Text>
+            <Text style={{ fontSize: 18, fontWeight: 500 }}>Please Enter your Height</Text>
             <Text style={styles.infos}>
-              To get a more accurate size suggestions, please fill up the
-              information below. Gender is required but height is optional but
-              highly encouraged.
+              Height is optional but highly encouraged.
             </Text>
-
 
             {/* Height Picker */}
-            <View style={{ paddingLeft: "4%", paddingRight: "4%" }}>
+            <View>
               <View style={styles.row}>
-                
-                <Text style={{ fontSize: 16, fontWeight: 500 }}>Height</Text>
-                
+                <Text style={{ fontSize: 22, fontWeight: 500 }}>Height</Text>
+
                 <View
                   style={{
-                    width: "50%",
                     alignItems: "center",
-                    borderBottomWidth: 2,
-                    borderColor: "black",
-                    paddingVertical: 0,
                     height: "79%",
+                    width: '45%',
                     bottom: 5,
-                    marginLeft: "4%",
+                    marginLeft: "10%",
                   }}
                 >
                   <Picker
                     selectedValue={height}
-                    style={{
-                      width: "100%",
-                    }}
-                    itemStyle={{
-                      textAlign: "center",
-                    }}
+                    style={{ width: "100%" }}
+                    itemStyle={{ textAlign: "center" }}
                     onValueChange={(val) => setHeight(val)}
                   >
                     {(unit === "ft" ? ftValues : cmValues).map((val) => (
-                      <Picker.Item key={val} label={val} value={val} />
+                      <Picker.Item key={val} label={val} value={val} style = {{ fontSize: 22, fontWeight: "700" }}/>
                     ))}
                   </Picker>
                 </View>
 
-
-                {/* FT / CM */}
+                {/* FT / CM toggle */}
                 <View style={{ flexDirection: "row", marginLeft: 10 }}>
                   <TouchableOpacity onPress={() => setUnit("ft")}>
                     <Text
                       style={{
-                        fontWeight: unit === "ft" ? "700" : "400",
-                        color: unit === "ft" ? "#black" : "gray",
+                        fontSize: 18,
+                        fontWeight: unit === "ft" ? "700" : "200",
                         marginRight: 6,
                       }}
                     >
                       ft
                     </Text>
                   </TouchableOpacity>
-                  <Text>|</Text>
+
+                  <Text style={{ fontSize: 18 }}>|</Text> 
+                  
                   <TouchableOpacity onPress={() => setUnit("cm")}>
                     <Text
                       style={{
-                        fontWeight: unit === "cm" ? "700" : "400",
-                        color: unit === "cm" ? "#black" : "gray",
+                        fontSize: 18, 
+                        fontWeight: unit === "cm" ? "700" : "200",
                         marginLeft: 6,
                       }}
                     >
@@ -191,61 +158,24 @@ export default function ArStart() {
                   </TouchableOpacity>
                 </View>
               </View>
-
-              {/* Gender Selection */}
-              <View style={{ justifyContent: "space-evenly", flexDirection: "row", marginVertical: "5%" }}>
-                <TouchableOpacity
-                  style={styles.radioBtn}
-                  onPress={() => setGender("male")}
-                >
-                  <Ionicons
-                    name={
-                      gender === "male" ? "radio-button-on" : "radio-button-off"
-                    }
-                    size={20}
-                    color={gender === "male" ? "#61C35C" : "black"}
-                  />
-                  <Text
-                    style={{ fontSize: 16, fontWeight: 500, marginLeft: 6 }}
-                  >
-                    Male
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={styles.radioBtn}
-                  onPress={() => setGender("female")}
-                >
-                  <Ionicons
-                    name={
-                      gender === "female"
-                        ? "radio-button-on"
-                        : "radio-button-off"
-                    }
-                    size={20}
-                    color={gender === "female" ? "#61C35C" : "black"}
-                  />
-                  <Text
-                    style={{ fontSize: 16, fontWeight: 500, marginLeft: 6 }}
-                  >
-                    Female
-                  </Text>
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
         </View>
 
-        {/* Enter Button */}
+        {/* Continue Button */}
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <TouchableOpacity
             style={styles.enterBtn}
-            onPress={() => router.push({
-              pathname: "/ar_mod/ar_calc",
-              params: { height, unit, gender },
-            })}
+            onPress={() =>
+              router.push({
+                pathname: "/ar_mod/ar_gender",
+                params: { height, unit },
+              })
+            }
           >
-            <Text style={{ fontSize: 20, fontWeight: "600", color: 'white' }}>Enter</Text>
+            <Text style={{ fontSize: 20, fontWeight: "600", color: "white" }}>
+              Next
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -254,33 +184,41 @@ export default function ArStart() {
 }
 
 const styles = StyleSheet.create({
-  boxcont: {
-    alignItems: "center",
-    top: 180,
+  centered: { 
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center" 
   },
+
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    top: "2%",
+  },
+
+  boxcont: { 
+    alignItems: "center", 
+    justifyContent: 'center'
+  },
+
   box: {
     padding: "6%",
-    backgroundColor: "#BCF0B9",
-    height: "60%",
-    width: "99%",
-    borderRadius: 5,
     justifyContent: "center",
   },
-  infos: {
-    fontSize: 15,
-    textAlign: "justify",
-    marginTop: "3%",
+
+  infos: { 
+    fontSize: 15, 
+    textAlign: "justify", 
+    marginVertical: "7%" 
   },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: "2%",
+
+  row: { 
+    flexDirection: "row", 
+    alignItems: "center", 
+    marginVertical: '5%'
   },
-  radioBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginHorizontal: "7%",
-  },
+
   enterBtn: {
     alignItems: "center",
     backgroundColor: "#61C35C",
@@ -292,8 +230,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     shadowOffset: { width: 0, height: 4 },
-    alignItems: "center",
-    justifyContent: "center",
     bottom: 65,
   },
 });
