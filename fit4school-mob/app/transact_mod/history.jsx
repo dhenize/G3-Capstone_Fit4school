@@ -119,7 +119,7 @@ export default function history() {
                     </View>
 
                     <View style = {{flexDirection: 'row', justifyContent: "flex-end"}}>
-                      <TouchableOpacity style={styles.rebtn}>
+                      <TouchableOpacity style={styles.rebtn} onPress={() => router.push("/transact_mod/his_pt2")}>
                         <Text style={styles.rebtnText}>Return</Text>
                       </TouchableOpacity>
 

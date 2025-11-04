@@ -147,14 +147,14 @@ export default function transact() {
                   <View style={[styles.rowBetween, { marginTop: 6 }]}>
                     <Text style={styles.itemQuantity}>Quantity 2</Text>
                     <View style={{ alignItems: "flex-end" }}>
-                      <Text style={styles.toClaim}>To claim</Text>
+                      <Text style={styles.toClaim}>Pending</Text>
                       <Text style={styles.itemPrice}>₱800.00</Text>
                     </View>
                   </View>
 
 
-                  <TouchableOpacity style={styles.ticketBtn}>
-                    <Text style={styles.ticketBtnText}>View Ticket</Text>
+                  <TouchableOpacity style={styles.ticketBtn} onPress={() => router.push("/transact_mod/cancel")}>
+                    <Text style={styles.ticketBtnText}>Cancel</Text>
                   </TouchableOpacity>
                 </View>
               </View>
