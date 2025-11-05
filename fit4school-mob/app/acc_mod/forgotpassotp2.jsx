@@ -8,8 +8,8 @@ import {
   Alert 
 } from 'react-native';
 
-const SignupOTP = () => {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']); // Changed to 6 digits
+const ForgotpassOTP2 = () => {
+  const [otp, setOtp] = useState(['', '', '', '', '', '']); 
   const [timeLeft, setTimeLeft] = useState(300); 
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef([]);
@@ -40,7 +40,7 @@ const SignupOTP = () => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-  
+    
     if (value && index < 5) { 
       inputRefs.current[index + 1].focus();
     }
@@ -70,6 +70,7 @@ const SignupOTP = () => {
   const handleConfirm = () => {
     const enteredOtp = otp.join('');
     if (enteredOtp.length === 6 && !isExpired) { 
+      
       console.log('OTP submitted:', enteredOtp);
       Alert.alert('Success', 'OTP verified successfully!');
     } else if (isExpired) {
@@ -81,7 +82,7 @@ const SignupOTP = () => {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>← Sign up</Text>
+        <Text style={styles.title}>← Forgot Password</Text>
       <View style={styles.card}>
         
         <Text style={styles.instruction}>Please enter your OTP</Text>
@@ -252,4 +253,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupOTP;
+export default ForgotpassOTP2;

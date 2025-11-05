@@ -30,7 +30,7 @@ export default function SignupForm() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>← Sign in</Text>
+      <Text style={styles.title}>← Sign up</Text>
 
       <View style={styles.form}>
         {/* First Name */}

@@ -23,13 +23,13 @@ export default function Logout() {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button1}>
-                <Text style={styles.buttonText}>Continue with Juan</Text>
+                <Text style={styles.buttonText}>SIGN UP</Text>
             </TouchableOpacity>
             
             <View style={styles.footer}>
                 <Text style={styles.stonText}>Already have an account ?</Text>
             </View>
-            <Text style={styles.upText}>Sign up</Text>
+            <Text style={styles.upText}>Sign in</Text>
         </View>
     )
 }
@@ -37,7 +37,7 @@ export default function Logout() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFBFB',
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
@@ -46,23 +46,25 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 22,
         fontWeight: 'bold',
-        marginBottom: 5,
+        marginBottom: -9,
+        top: 30,
     },
     titleText: {
-        color: '#ff0000',
-        fontSize: 28,
+        color: 'black',
+        fontSize: 36,
         fontWeight: 'bold',
         marginBottom: 20,
+        top: 30,
     },
 
-    login_pic: {
+   login_pic: {
         alignItems: 'center',   
         justifyContent: 'center', 
-        marginVertical: 20,
+        marginVertical: 100,
     },
     image: {
-        width: width * 0.8,  
-        height: width * 0.6,  
+        width: width * 0.9,  
+        height: width * 0.7, 
     },
 
     button: {

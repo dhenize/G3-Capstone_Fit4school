@@ -7,7 +7,7 @@ export default function SignupScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>← Sign in</Text>
+            <Text style={styles.title}>← Sign up</Text>
             
             
             <Text style={styles.label}>Email</Text>

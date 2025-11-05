@@ -9,7 +9,7 @@ import {
   ScrollView
 } from 'react-native';
 
-const SignupForm = () => {
+const ForgotOTP = () => {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -44,7 +44,7 @@ const SignupForm = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>← Sign up</Text>
+      <Text style={styles.title}>← Forgot Password</Text>
 
       <View style={styles.formContainer}>
         <View style={styles.formGroup}>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   title: {
-    fontSize: 28,
+    fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 100,
     color: '#000',
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
   fontSize: 14,
   textAlign: 'center', 
 },
+
   inputContainer: {
     position: 'relative',
   },
@@ -145,4 +146,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupForm;
+export default ForgotOTP;

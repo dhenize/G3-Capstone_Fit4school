@@ -1,7 +1,7 @@
 import { Redirect } from "expo-router";
 
 export default function Index() {
-    return <Redirect href="ar_mod/ar_gender" />; //MAIN SCREEN DISPLAY, just change it when debugging
+    return <Redirect href="acc_mod/signin" />; //MAIN SCREEN DISPLAY, just change it when debugging
     
     //JEANNEN'S DEVELOPMENT PART
     // HOMESCREEN: dash_mod/home | CURRENTLY WORKING: acc_mod/signupstudid

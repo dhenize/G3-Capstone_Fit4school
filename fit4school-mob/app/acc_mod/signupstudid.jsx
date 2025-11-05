@@ -150,19 +150,19 @@ const styles = StyleSheet.create({
     fontFamily: 'System',
     alignSelf: 'flex-start',
     position: 'absolute',
-    top: 0, 
+    top: -150, 
     left: 10, 
   },
   
   sectionContainer: {
-    marginTop: 60, 
+    marginTop: 10, 
     marginBottom: 0,
     alignSelf: 'flex-start', 
   },
   sectionTitle: {
     color: 'black', 
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '200',
     textAlign: 'left', 
   },
   formContainer: {
@@ -171,12 +171,12 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 10,
+    gap: 5,
     marginBottom: 40,
   },
   input: {
-    width: 50,
-    height: 60,
+    width: 38,
+    height: 50,
     borderWidth: 2,
     borderColor: 'black',
     borderRadius: 10,

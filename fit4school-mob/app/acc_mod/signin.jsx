@@ -30,7 +30,7 @@ export default function LoginScreen() {
             
            
             <View style={styles.passwordOptions}>
-                <Text style={styles.rememberText}>Remember pass</Text>
+                <Text style={styles.rememberText}>Remember password</Text>
                 <Text style={styles.forgotText}>Forgot password?</Text>
             </View>
             

@@ -8,8 +8,8 @@ import {
   Alert 
 } from 'react-native';
 
-const SignupOTP = () => {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']); // Changed to 6 digits
+const ChangepassOTP = () => {
+  const [otp, setOtp] = useState(['', '', '', '', '', '']); // 6 digits
   const [timeLeft, setTimeLeft] = useState(300); 
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef([]);
@@ -40,8 +40,7 @@ const SignupOTP = () => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-  
-    if (value && index < 5) { 
+    if (value && index < 5) {
       inputRefs.current[index + 1].focus();
     }
   };
@@ -52,15 +51,11 @@ const SignupOTP = () => {
     }
   };
 
-  const handlePaste = (e) => {
-    // Paste handling for React Native might need different implementation
-  };
-
   const handleResend = () => {
     if (isExpired) {
       setTimeLeft(300);
       setIsExpired(false);
-      setOtp(['', '', '', '', '', '']); 
+      setOtp(['', '', '', '', '', '']);
       if (inputRefs.current[0]) {
         inputRefs.current[0].focus();
       }
@@ -69,7 +64,7 @@ const SignupOTP = () => {
 
   const handleConfirm = () => {
     const enteredOtp = otp.join('');
-    if (enteredOtp.length === 6 && !isExpired) { 
+    if (enteredOtp.length === 6 && !isExpired) {
       console.log('OTP submitted:', enteredOtp);
       Alert.alert('Success', 'OTP verified successfully!');
     } else if (isExpired) {
@@ -81,7 +76,7 @@ const SignupOTP = () => {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>← Sign up</Text>
+      <Text style={styles.title}>← Change Password</Text> 
       <View style={styles.card}>
         
         <Text style={styles.instruction}>Please enter your OTP</Text>
@@ -173,7 +168,7 @@ const styles = StyleSheet.create({
     fontFamily: 'System',
     alignSelf: 'flex-start',
     position: 'absolute',
-    top: 55, 
+    top: 65, 
     left: 30, 
   },
   instruction: {
@@ -185,11 +180,11 @@ const styles = StyleSheet.create({
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 8, 
+    gap: 8,
     marginBottom: 25,
   },
   otpInput: {
-    width: 40, 
+    width: 40,
     height: 55,
     borderWidth: 2,
     borderColor: 'black',
@@ -208,8 +203,6 @@ const styles = StyleSheet.create({
     padding: 1,
     borderRadius: 3,
     width: '100%', 
-  },
-  resendEnabled: {
   },
   resendText: {
     color: '#6c757d',
@@ -252,4 +245,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupOTP;
+export default ChangepassOTP;
