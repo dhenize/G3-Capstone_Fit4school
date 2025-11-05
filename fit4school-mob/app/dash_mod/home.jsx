@@ -93,7 +93,7 @@ export default function Home() {
 
         <ScrollView style={{ flex: 1, marginTop: "7%" }} contentContainerStyle={{ paddingBottom: '5%' }}>
           <View style = {styles.unif_cont}>
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/b_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Boy's Uniform</Text>
@@ -102,7 +102,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/g_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Girl's Uniform</Text>
@@ -111,7 +111,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/b_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Boy's Uniform</Text>
@@ -120,7 +120,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
             
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/g_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Girl's Uniform</Text>
@@ -129,7 +129,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/b_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Boy's Uniform</Text>
@@ -138,7 +138,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
             
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/g_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Girl's Uniform</Text>
@@ -147,7 +147,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/pe_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Pre-School PE</Text>
@@ -156,7 +156,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
             
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/pe_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Primary PE</Text>
@@ -165,7 +165,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/pe_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Junior High</Text>
@@ -174,7 +174,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
             
-            <TouchableOpacity onPress={() => router.push("/items_mod/boys_unif_p")}>
+            <TouchableOpacity onPress={() => router.push("/transact_mod/boys_unif_p")}>
               <View style = {styles.unif_grid}>
                 <Image source={require("../../assets/images/pe_unif_ex.png")} style={styles.unif_pics}/>
                 <Text style = {styles.unif_desc}>Other Item</Text>

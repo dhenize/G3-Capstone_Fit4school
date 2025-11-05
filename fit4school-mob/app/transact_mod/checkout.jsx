@@ -1,12 +1,38 @@
-import { View, StyleSheet, TouchableOpacity, Image, } from 'react-native'
+import React, { useState } from 'react';
+import { View, StyleSheet, TouchableOpacity, Image, Platform, } from 'react-native'
 import { Text } from "../../components/globalText";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, Stack } from "expo-router";
-import React from 'react';
+import DateTimePicker from "@react-native-community/datetimepicker"; 
+import { RadioButton } from "react-native-paper";
+
 
 export default function checkout() {
 
     const router = useRouter();
+
+    const [date, setDate] = useState(new Date());
+    const [showDate, setShowDate] = useState(false);
+    const [showTime, setShowTime] = useState(false);
+
+
+    const onChangeDate = (event, selectedDate) => {
+        setShowDate(false);
+        if (selectedDate) setDate(selectedDate);
+    };
+
+    const onChangeTime = (event, selectedTime) => {
+        setShowTime(false);
+        if (selectedTime) setDate(selectedTime);
+    };
+
+    const formatDate = date.toLocaleDateString();
+    const formatTime = date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"} );
+
+
+
+    const [paymentMethod, setPaymentMethod] = useState("cash");
+
 
     return (
         <View style={{ flex: 1, backgroundColor: "#FFFBFB" }}>
@@ -70,9 +96,41 @@ export default function checkout() {
                     </Text>
 
                     <View>
-                        <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Cash</Text>
-                        <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Bank Method</Text>
-                        <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Online Method</Text>
+                        <View style = {styles.radio_cont}>
+                            <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Cash</Text>
+                            <RadioButton 
+                                value = "cash"
+                                status = {paymentMethod === "cash" ? "checked" : "unchecked"}
+                                onPress={() => setPaymentMethod("cash")}
+                                style = {styles.radiobtn}
+                                color= "#61C35C"
+                                uncheckedColor='#B0B0B0'
+                            />
+                        </View>
+                        
+                        <View style = {styles.radio_cont}>
+                            <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Bank Method</Text>
+                            <RadioButton 
+                                value = "cash"
+                                status = {paymentMethod === "bank" ? "checked" : "unchecked"}
+                                onPress={() => setPaymentMethod("bank")}
+                                style = {styles.radiobtn}
+                                color= "#61C35C"
+                                uncheckedColor='#B0B0B0'
+                            />
+                        </View>
+
+                        <View style = {styles.radio_cont}>
+                            <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Online Method</Text>
+                            <RadioButton 
+                                value = "cash"
+                                status = {paymentMethod === "online" ? "checked" : "unchecked"}
+                                onPress={() => setPaymentMethod("online")}
+                                style = {styles.radiobtn}
+                                color= "#61C35C"
+                                uncheckedColor='#B0B0B0'
+                            />
+                        </View>
                     </View>
                 </View>
 
@@ -88,30 +146,43 @@ export default function checkout() {
                 </View>
 
 
-                <View style = {styles.app_cont}>
-                    <Text style = {{color: "#61C35C", fontSize: 15, fontWeight: "600",}}>
-                        Appointment
-                    </Text>
-
-                    <View>
-                        <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Let me decide</Text>
-                        <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>System/Admin</Text>
-                    </View>
-                </View>
-
-
                 <View style = {styles.dnt_cont}>
                     <Text style = {{color: "#61C35C", fontSize: 15, fontWeight: "600",}}>
                         Set Date & Time
                     </Text>
 
-                    <Text style = {{color: "black", fontSize: 13, fontWeight: "400",}}>
-                        MM/DD/YYYY
+                    <TouchableOpacity onPress={() => setShowDate(true)}>
+                        <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>
+                        {formatDate}
                     </Text>
+                    </TouchableOpacity>
+                    
 
-                    <Text style = {{color: "black", fontSize: 13, fontWeight: "400",}}>
-                        HH:MM am/pm
-                    </Text>
+                    <TouchableOpacity onPress={() => setShowTime(true)}>
+                        <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>
+                            {formatTime}
+                        </Text>
+                    </TouchableOpacity>
+                    
+
+                    {showDate && (
+                        <DateTimePicker 
+                            value = {date}
+                            mode = "date"
+                            display = {Platform.OS === "ios" ? "spinner" : "default"}
+                            onChange = {onChangeDate}
+                        />
+                    )}
+
+                    {showTime && (
+                        <DateTimePicker 
+                            value = {date}
+                            mode = "time"
+                            display = {Platform.OS === "ios" ? "spinner" : "default"}
+                            onChange = {onChangeTime}
+                        />
+                    )}
+
                 </View>
 
 
@@ -122,11 +193,14 @@ export default function checkout() {
                 </View>
                 
 
-                <View style={{ alignItems: "center", justifyContent: "center" }}>
-                    <TouchableOpacity style = {styles.plcordr_btn}>
-                        <Text style={{ fontSize: 20, fontWeight: "600", color: 'white' }}>PLACE ORDER</Text>
-                    </TouchableOpacity>
+                <View style = {styles.pobtncont}>
+                    <View style={{ alignItems: "center", justifyContent: "center" }}>
+                        <TouchableOpacity style = {styles.plcordr_btn}>
+                            <Text style={{ fontSize: 20, fontWeight: "600", color: 'white' }}>PLACE ORDER</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
+                
                 
 
             </View>
@@ -226,7 +300,7 @@ const styles = StyleSheet.create({
     paymet_cont:{
         flexDirection: "row",
         padding: 10,
-        height: '13%',
+        height: '17%',
         borderRadius: 10,
         backgroundColor: "#F4F4F4",
         shadowOpacity: 0.4,
@@ -235,6 +309,13 @@ const styles = StyleSheet.create({
         elevation: 4,
         justifyContent: "space-evenly",
         alignItems: 'center'
+    },
+
+    radio_cont: {
+        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 10
     },
 
     remind_cont: {
@@ -247,20 +328,6 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
 
-    app_cont: {
-        flexDirection: "row",
-        height: '12%',
-        padding: 10,
-        borderRadius: 10,
-        backgroundColor: "#F4F4F4",
-        shadowOpacity: 0.4,
-        shadowRadius: 2,
-        shadowOffset: { width: 0, height: 4 },
-        elevation: 4,
-        justifyContent: "space-evenly",
-        alignItems: 'center'
-    },
-
     dnt_cont: {
         flexDirection: "row",
         height: '7%',
@@ -271,15 +338,27 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         shadowOffset: { width: 0, height: 4 },
         elevation: 4,
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
         alignItems: 'center'
     },
 
+    pobtncont: {
+        position: 'absolute', 
+        bottom: 0,
+        left: 0,
+        right: 0,
+        marginVertical: '9%',
+    },
+
+    radiobtn: {
+        alignItems: 'flex-end'
+    },
+    
     plcordr_btn: {
         alignItems: "center",
         backgroundColor: "#61C35C",
         padding: "4%",
-        width: "100%",
+        width: "85%",
         borderRadius: 5,
         shadowColor: "black",
         elevation: 5,
@@ -288,6 +367,5 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 4 },
         alignItems: "center",
         justifyContent: "center",
-        marginVertical: '9%'
     }
 });
