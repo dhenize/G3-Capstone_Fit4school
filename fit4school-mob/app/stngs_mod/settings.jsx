@@ -38,11 +38,11 @@ export default function settings() {
           {menu === "acc_set" && (
             <>
             <View style={styles.submen_cont}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => router.push("/stngs_mod/prsn_info")}>
                   <Text style={styles.menu_txt}>Personal Information</Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => router.push("/stngs_mod/upd_email")}>
                   <Text style={styles.menu_txt}>Email</Text>
                 </TouchableOpacity>
             </View>
@@ -71,12 +71,12 @@ export default function settings() {
           {menu === "sec_pri" && (
             <>
             <View style={styles.submen_cont}>
-                <TouchableOpacity>
-                  <Text style={styles.menu_txt}>Personal Information</Text>
+                <TouchableOpacity onPress={() => router.push("/acc_mod/changepass")}>
+                  <Text style={styles.menu_txt}>Change Password</Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity>
-                  <Text style={styles.menu_txt}>Email</Text>
+                <TouchableOpacity onPress={() => router.push("/stngs_mod/signlog_his")}>
+                  <Text style={styles.menu_txt}>Sign In/Login History</Text>
                 </TouchableOpacity>
             </View>
             </>
