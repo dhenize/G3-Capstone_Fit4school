@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image, Platform, } from 'react-nati
 import { Text } from "../../components/globalText";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, Stack } from "expo-router";
-import DateTimePicker from "@react-native-community/datetimepicker"; 
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { RadioButton } from "react-native-paper";
 
 
@@ -27,7 +27,7 @@ export default function checkout() {
     };
 
     const formatDate = date.toLocaleDateString();
-    const formatTime = date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"} );
+    const formatTime = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
 
 
@@ -39,8 +39,8 @@ export default function checkout() {
 
             <Stack.Screen
                 options={{
-                animation: "slide_from_right",
-                headerShown: false,
+                    animation: "slide_from_right",
+                    headerShown: false,
                 }}
             />
 
@@ -57,7 +57,7 @@ export default function checkout() {
                 <Text style={styles.title}>Order Summary</Text>
             </View>
 
-            
+
             {/* MAIN CONTAINER */}
             <View style={styles.container}>
 
@@ -90,118 +90,138 @@ export default function checkout() {
                 </View>
 
 
-                <View style = {styles.paymet_cont}>
-                    <Text style = {{color: "#61C35C", fontSize: 15, fontWeight: "600",}}>
+                <View style={styles.paymet_cont}>
+                    <Text style={{ color: "#61C35C", fontSize: 14, fontWeight: "600", }}>
                         Payment Method
                     </Text>
 
                     <View>
-                        <View style = {styles.radio_cont}>
-                            <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Cash</Text>
-                            <RadioButton 
-                                value = "cash"
-                                status = {paymentMethod === "cash" ? "checked" : "unchecked"}
+                        <View style={styles.radio_cont}>
+                            <Text style={{ color: "black", fontSize: 14, fontWeight: "400", }}>Cash</Text>
+                            <RadioButton
+                                value="cash"
+                                status={paymentMethod === "cash" ? "checked" : "unchecked"}
                                 onPress={() => setPaymentMethod("cash")}
-                                style = {styles.radiobtn}
-                                color= "#61C35C"
-                                uncheckedColor='#B0B0B0'
-                            />
-                        </View>
-                        
-                        <View style = {styles.radio_cont}>
-                            <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Bank Method</Text>
-                            <RadioButton 
-                                value = "cash"
-                                status = {paymentMethod === "bank" ? "checked" : "unchecked"}
-                                onPress={() => setPaymentMethod("bank")}
-                                style = {styles.radiobtn}
-                                color= "#61C35C"
+                                style={styles.radiobtn}
+                                color="#61C35C"
                                 uncheckedColor='#B0B0B0'
                             />
                         </View>
 
-                        <View style = {styles.radio_cont}>
-                            <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>Online Method</Text>
-                            <RadioButton 
-                                value = "cash"
-                                status = {paymentMethod === "online" ? "checked" : "unchecked"}
-                                onPress={() => setPaymentMethod("online")}
-                                style = {styles.radiobtn}
-                                color= "#61C35C"
+                        <View style={styles.radio_cont}>
+                            <Text style={{ color: "black", fontSize: 14, fontWeight: "400", }}>Bank Method</Text>
+                            <RadioButton
+                                value="cash"
+                                status={paymentMethod === "bank" ? "checked" : "unchecked"}
+                                onPress={() => setPaymentMethod("bank")}
+                                style={styles.radiobtn}
+                                color="#61C35C"
                                 uncheckedColor='#B0B0B0'
                             />
                         </View>
+
+                        <View style={styles.radio_cont}>
+                            <Text style={{ color: "black", fontSize: 14, fontWeight: "400", }}>Online Method</Text>
+                            <RadioButton
+                                value="cash"
+                                status={paymentMethod === "online" ? "checked" : "unchecked"}
+                                onPress={() => setPaymentMethod("online")}
+                                style={styles.radiobtn}
+                                color="#61C35C"
+                                uncheckedColor='#B0B0B0'
+                            />
+                        </View>
+
+
+                        {paymentMethod === "online" && (
+                            <View style={styles.hlink_cont}>
+                                <TouchableOpacity onPress={() => router.push("/transact_mod/qr_payment")}>
+                                    <Text style={styles.hlink_txt}>Click here to pay online</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+
                     </View>
+
                 </View>
 
+                
+                {paymentMethod === "online" && (
+                    <View style={styles.ss_cont}>
+                        <Text style={styles.vw_txt}>View Image</Text>
 
-                <View style = {styles.remind_cont}>
-                    <Text style = {{color: "#1F72AD", fontSize: 14, fontWeight: "500", marginBottom: '2%'}}>
+                        <Text style={styles.ss_txt}>Screenshot Here</Text>
+                    </View>
+                )}
+
+
+                <View style={styles.remind_cont}>
+                    <Text style={{ color: "#1F72AD", fontSize: 14, fontWeight: "500", marginBottom: '2%' }}>
                         Reminders !
                     </Text>
-                    <Text style = {{color: "#1F72AD", fontSize: 13, fontWeight: "400", textAlign: "justify"}}>
+                    <Text style={{ color: "#1F72AD", fontSize: 13, fontWeight: "400", textAlign: "justify" }}>
                         Tickets will automatically expire after 24 hours if left unpaid. Make sure you pay on time to avoid inconvenience.
                     </Text>
 
                 </View>
 
 
-                <View style = {styles.dnt_cont}>
-                    <Text style = {{color: "#61C35C", fontSize: 15, fontWeight: "600",}}>
+                <View style={styles.dnt_cont}>
+                    <Text style={{ color: "#61C35C", fontSize: 14, fontWeight: "600", }}>
                         Set Date & Time
                     </Text>
 
                     <TouchableOpacity onPress={() => setShowDate(true)}>
-                        <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>
-                        {formatDate}
-                    </Text>
+                        <Text style={{ color: "black", fontSize: 14, fontWeight: "400", }}>
+                            {formatDate}
+                        </Text>
                     </TouchableOpacity>
-                    
+
 
                     <TouchableOpacity onPress={() => setShowTime(true)}>
-                        <Text style = {{color: "black", fontSize: 14, fontWeight: "400",}}>
+                        <Text style={{ color: "black", fontSize: 14, fontWeight: "400", }}>
                             {formatTime}
                         </Text>
                     </TouchableOpacity>
-                    
+
 
                     {showDate && (
-                        <DateTimePicker 
-                            value = {date}
-                            mode = "date"
-                            display = {Platform.OS === "ios" ? "spinner" : "default"}
-                            onChange = {onChangeDate}
+                        <DateTimePicker
+                            value={date}
+                            mode="date"
+                            display={Platform.OS === "ios" ? "spinner" : "default"}
+                            onChange={onChangeDate}
                         />
                     )}
 
                     {showTime && (
-                        <DateTimePicker 
-                            value = {date}
-                            mode = "time"
-                            display = {Platform.OS === "ios" ? "spinner" : "default"}
-                            onChange = {onChangeTime}
+                        <DateTimePicker
+                            value={date}
+                            mode="time"
+                            display={Platform.OS === "ios" ? "spinner" : "default"}
+                            onChange={onChangeTime}
                         />
                     )}
 
                 </View>
 
 
-                <View style = {styles.remind_cont}>
-                    <Text style = {{color: "#1F72AD", fontSize: 13, fontWeight: "400", textAlign: "justify"}}>
+                <View style={styles.remind_cont}>
+                    <Text style={{ color: "#1F72AD", fontSize: 13, fontWeight: "400", textAlign: "justify" }}>
                         You can only update appointment once the uniforms are delivered to your school.
                     </Text>
                 </View>
-                
 
-                <View style = {styles.pobtncont}>
+
+                <View style={styles.pobtncont}>
                     <View style={{ alignItems: "center", justifyContent: "center" }}>
-                        <TouchableOpacity style = {styles.plcordr_btn}>
+                        <TouchableOpacity style={styles.plcordr_btn}>
                             <Text style={{ fontSize: 20, fontWeight: "600", color: 'white' }}>PLACE ORDER</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-                
-                
+
+
 
             </View>
         </View>
@@ -297,10 +317,10 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
 
-    paymet_cont:{
+    paymet_cont: {
         flexDirection: "row",
         padding: 10,
-        height: '17%',
+        height: '20%',
         borderRadius: 10,
         backgroundColor: "#F4F4F4",
         shadowOpacity: 0.4,
@@ -343,7 +363,7 @@ const styles = StyleSheet.create({
     },
 
     pobtncont: {
-        position: 'absolute', 
+        position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
@@ -353,7 +373,7 @@ const styles = StyleSheet.create({
     radiobtn: {
         alignItems: 'flex-end'
     },
-    
+
     plcordr_btn: {
         alignItems: "center",
         backgroundColor: "#61C35C",
@@ -367,5 +387,37 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 4 },
         alignItems: "center",
         justifyContent: "center",
+    },
+
+    hlink_txt: {
+        color: "#61C35C",
+        textDecorationLine: "underline",
+    },
+
+    ss_cont: {
+        flexDirection: "row",
+        height: '7%',
+        padding: 10,
+        borderRadius: 10,
+        backgroundColor: "#F4F4F4",
+        shadowOpacity: 0.4,
+        shadowRadius: 2,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 4,
+        justifyContent: "space-between",
+        alignItems: 'center'
+    },
+
+    vw_txt: {
+        color: "#61C35C", 
+        fontSize: 14, 
+        fontWeight: "600",
+    },
+
+
+    ss_txt: {
+        textDecorationLine: "underline"
     }
+
+
 });
