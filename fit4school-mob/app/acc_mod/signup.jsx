@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import React, { useState } from 'react';
+import { router } from 'expo-router';
 
 export default function SignupScreen() {
     const [email, setEmail] = useState('juandelacruz@email.com');
@@ -7,8 +8,10 @@ export default function SignupScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>← Sign up</Text>
-            
+            <Text 
+                style={styles.title}
+                onPress={() => router.back()}
+            >← Sign up</Text>
             
             <Text style={styles.label}>Email</Text>
             <TextInput
@@ -18,7 +21,6 @@ export default function SignupScreen() {
                 placeholder="Enter your email"
             />
             
-           
             <Text style={styles.label}>Password</Text>
             <TextInput
                 style={styles.input}
@@ -28,22 +30,17 @@ export default function SignupScreen() {
                 secureTextEntry
             />
             
-        
-            
             <View style={styles.divider} />
             
-           
             <TouchableOpacity style={styles.signInButton}>
                 <Text style={styles.signInButtonText}>SIGN IN</Text>
             </TouchableOpacity>
-            
             
             <View style={styles.orContainer}>
                 <View style={styles.line} />
                 <Text style={styles.orText}>or</Text>
                 <View style={styles.line} />
             </View>
-            
             
             <TouchableOpacity style={styles.googleButton}>
                 <Text style={styles.googleButtonText}>Continue with Google</Text>

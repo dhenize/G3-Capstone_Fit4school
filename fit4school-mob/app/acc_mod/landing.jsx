@@ -1,8 +1,9 @@
 import { StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import React from 'react';
-import { Text } from "../../components/globalText"; // keep only your custom Text OR use RN Text
+import { Text } from "../components/globalText";
+import { router } from 'expo-router';
 
-const { width } = Dimensions.get("window"); // device screen width
+const { width } = Dimensions.get("window");
 
 export default function Logout() {
     return (
@@ -12,13 +13,16 @@ export default function Logout() {
 
             <View style={styles.login_pic}>
                 <Image 
-                    source={require("../../assets/images/login.png")} 
+                    source={require("../assets/images/login.png")} 
                     style={styles.image}
                     resizeMode="contain"
                 />
             </View>
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity 
+                style={styles.button}
+                onPress={() => router.push('/signup')}
+            >
                 <Text style={styles.buttonText}>SIGN UP</Text>
             </TouchableOpacity>
             
@@ -30,6 +34,7 @@ export default function Logout() {
     )
 }
 
+// Same styles remain unchanged...
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -52,7 +57,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         top: 30,
     },
-
     login_pic: {
         alignItems: 'center',   
         justifyContent: 'center', 
@@ -62,7 +66,6 @@ const styles = StyleSheet.create({
         width: width * 0.9,  
         height: width * 0.7, 
     },
-
     button: {
         backgroundColor: 'green',
         paddingVertical: 14,
@@ -72,13 +75,11 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         marginTop: 60,
     },
-    
     buttonText: {
         color: 'black',
         fontSize: 16,
         fontWeight: 'bold',
     },
-
     footer: {
         flexDirection: 'row',
         marginTop: 20,
