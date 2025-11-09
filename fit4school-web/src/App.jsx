@@ -13,6 +13,9 @@ import EnterMail from './al_forgotpass/entermail/entermail.jsx';
 import EnterNum from './al_forgotpass/enternum/enternum.jsx';
 import AForgotPass from './al_forgotpass/a_forgotpass/a_forgotpass.jsx';
 import BForgotPass from './al_forgotpass/b_forgotpass/b_forgotpass.jsx';
+import SupAccMod from './sup_ad_pages/sup_acc_mod/sup_acc_mod.jsx';
+import SupAdAdmin from './sup_ad_pages/sup_ad_admin/sup_ad_admin.jsx';
+import SupAdAccountant from './sup_ad_pages/sup_ad_accountant/sup_ad_accountant.jsx';
 
 function App(){
   return(
@@ -33,6 +36,9 @@ function App(){
         <Route path="/enternum" element={<EnterNum />} />
         <Route path="/a_forgotpass" element={<AForgotPass />} />
         <Route path="/b_forgotpass" element={<BForgotPass />} />
+        <Route path="/sup_acc_mod" element={<SupAccMod />} />
+        <Route path="/sup_ad_admin" element={<SupAdAdmin />} />
+        <Route path="/sup_ad_accountant" element={<SupAdAccountant />} />
       </Routes>
     </>
   );
