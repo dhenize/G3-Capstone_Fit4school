@@ -111,7 +111,7 @@ export default function transact() {
                   </View>
 
 
-                  <TouchableOpacity style={styles.ticketBtn}>
+                  <TouchableOpacity style={styles.ticketBtn} onPress={() => router.push("/transact_mod/ticket_gen")}>
                     <Text style={styles.ticketBtnText}>View Ticket</Text>
                   </TouchableOpacity>
                 </View>
@@ -195,7 +195,7 @@ export default function transact() {
                   </View>
 
 
-                  <TouchableOpacity style={styles.ticketBtn}>
+                  <TouchableOpacity style={styles.ticketBtn} onPress={() => router.push("/transact_mod/ticket_gen")}>
                     <Text style={styles.ticketBtnText}>View Ticket</Text>
                   </TouchableOpacity>
                 </View>
@@ -237,7 +237,7 @@ export default function transact() {
                   </View>
 
 
-                  <TouchableOpacity style={styles.ticketBtn}>
+                  <TouchableOpacity style={styles.ticketBtn} onPress={() => router.push("/transact_mod/ticket_gen")}>
                     <Text style={styles.ticketBtnText}>View Ticket</Text>
                   </TouchableOpacity>
                 </View>
