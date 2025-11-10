@@ -7,12 +7,15 @@ import {
   StyleSheet, 
   Alert 
 } from 'react-native';
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const ForgotpassOTP2 = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']); 
   const [timeLeft, setTimeLeft] = useState(300); 
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -52,10 +55,6 @@ const ForgotpassOTP2 = () => {
     }
   };
 
-  const handlePaste = (e) => {
-    // Paste handling for React Native might need different implementation
-  };
-
   const handleResend = () => {
     if (isExpired) {
       setTimeLeft(300);
@@ -73,6 +72,7 @@ const ForgotpassOTP2 = () => {
       
       console.log('OTP submitted:', enteredOtp);
       Alert.alert('Success', 'OTP verified successfully!');
+      router.push('/acc_mod/forgotpassques');
     } else if (isExpired) {
       Alert.alert('Error', 'OTP has expired. Please request a new one.');
     } else {
@@ -82,7 +82,14 @@ const ForgotpassOTP2 = () => {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>← Forgot Password</Text>
+      {/* Header with back button */}
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Ionicons name="arrow-back-outline" size={28} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.header}>Forgot Password</Text>
+      </View>
+      
       <View style={styles.card}>
         
         <Text style={styles.instruction}>Please enter your OTP</Text>
@@ -147,35 +154,36 @@ const ForgotpassOTP2 = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#FFFBFB',
     padding: 20,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 60,
+    marginBottom: 20,
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#000',
+    marginLeft: 10,
   },
   card: {
     backgroundColor: 'white',
-    padding: 10,
+    padding: 20,
     borderRadius: 10,
-    shadowColor: 'white',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
     elevation: 5,
     width: '100%',
-    maxWidth: 400,
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    color: 'black',
-    fontFamily: 'System',
-    alignSelf: 'flex-start',
-    position: 'absolute',
-    top: 55, 
-    left: 30, 
+    marginTop: 50,
   },
   instruction: {
     fontSize: 16,

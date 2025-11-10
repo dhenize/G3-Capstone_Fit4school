@@ -1,16 +1,27 @@
 // AccountRecovery.jsx
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const AccountRecovery = () => {
+  const router = useRouter();
+
   const handleProceed = () => {
     // Handle proceed logic here
     console.log('Proceed button pressed');
+    router.push('/acc_mod/recoveryques');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>← Account Recovery</Text>
+      {/* Header with back button */}
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Ionicons name="arrow-back-outline" size={28} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.header}>Account Recovery</Text>
+      </View>
       
       <View style={styles.content}>
         <Text style={styles.subtitle}>Security Questions</Text>
@@ -26,17 +37,20 @@ const AccountRecovery = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#FFFBFB',
     paddingHorizontal: 40,
     paddingTop: 60,
   },
-  title: {
-    fontSize: 25,
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  header: {
+    fontSize: 28,
     fontWeight: 'bold',
-    color: 'black',
-    fontFamily: 'System',
-    marginBottom: 0,
-    alignSelf: 'flex-start',
+    color: '#000',
+    marginLeft: 10,
   },
   content: {
     flex: 1,
@@ -49,10 +63,10 @@ const styles = StyleSheet.create({
     fontFamily: 'System',
     marginBottom: 450,
     textAlign: 'center',
-    right: 58,
+    alignSelf: 'center',
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#61C35C',
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 8,

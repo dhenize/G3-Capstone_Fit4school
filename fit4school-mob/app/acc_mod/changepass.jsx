@@ -59,7 +59,7 @@ export default function ChangePasswordScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#FFFBFB',
         padding: 40,
         paddingTop: 50,
     },
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         marginVertical: 20,
     },
     confirmButton: {
-        backgroundColor: '#64C97F',
+        backgroundColor: '#61C35C',
         paddingVertical: 15,
         borderRadius: 8,
         alignItems: 'center',

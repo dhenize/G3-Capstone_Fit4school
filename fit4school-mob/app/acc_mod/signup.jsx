@@ -34,7 +34,7 @@ export default function SignupScreen() {
                     placeholder="Enter your email"
                 />
                 
-                <Text style={styles.label}>Password</Text>
+                <Text style={styles.label}>Create Password</Text>
                 <TextInput
                     style={styles.input}
                     value={password}

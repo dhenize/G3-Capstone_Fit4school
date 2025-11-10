@@ -9,10 +9,13 @@ import {
   Alert,
   Keyboard
 } from 'react-native';
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const SignupStudentId = () => {
   const [studentId, setStudentId] = useState(['', '', '', '', '', '', '', '']);
   const inputRefs = useRef(Array(8).fill().map(() => React.createRef()));
+  const router = useRouter();
 
   const handleInputChange = (index, value) => {
     // Allow only numbers and remove non-numeric characters
@@ -70,7 +73,7 @@ const SignupStudentId = () => {
     
     console.log('Student ID submitted:', fullStudentId);
     Alert.alert('Success', `Student ID ${fullStudentId} submitted successfully!`);
-    // Add your submission logic here
+    router.push('/acc_mod/signin');
   };
 
   const renderInputs = () => {
@@ -100,7 +103,13 @@ const SignupStudentId = () => {
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.card}>
-        <Text style={styles.title}>← Sign in</Text>
+        {/* Header with back button */}
+        <View style={styles.headerContainer}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="arrow-back-outline" size={28} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.header}>Sign up</Text>
+        </View>
         
         {/* Student ID text without line, positioned to the left */}
         <View style={styles.sectionContainer}>
@@ -142,18 +151,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 5,
   },
-  title: {
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  header: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 30,
-    color: 'black',
-    fontFamily: 'System',
-    alignSelf: 'flex-start',
-    position: 'absolute',
-    top: -150, 
-    left: 10, 
+    color: '#000',
+    marginLeft: 10,
   },
-  
   sectionContainer: {
     marginTop: 10, 
     marginBottom: 0,

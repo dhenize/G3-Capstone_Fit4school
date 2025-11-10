@@ -10,6 +10,11 @@ export default function SigninScreen() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberPassword, setRememberPassword] = useState(false);
+
+    const toggleRememberPassword = () => {
+        setRememberPassword(!rememberPassword);
+    };
 
     return (
         <View style={styles.container}>
@@ -44,15 +49,28 @@ export default function SigninScreen() {
                 />
                 
                 <View style={styles.passwordOptions}>
-                    <Text style={styles.rememberText}>Remember password</Text>
+                    <TouchableOpacity 
+                        style={styles.rememberContainer}
+                        onPress={toggleRememberPassword}
+                    >
+                        <View style={[
+                            styles.checkbox,
+                            rememberPassword && styles.checkboxChecked
+                        ]}>
+                            {rememberPassword && (
+                                <Ionicons name="checkmark" size={16} color="#fff" />
+                            )}
+                        </View>
+                        <Text style={styles.rememberText}>Remember password</Text>
+                    </TouchableOpacity>
                     
-                    <TouchableOpacity onPress={() => router.push('/acc_mod/forgotpassword')}>
+                    <TouchableOpacity onPress={() => router.push('/acc_mod/forgotpassotp1')}>
                         <Text style={styles.forgotText}>Forgot password?</Text>
                     </TouchableOpacity>
                 </View>
                 
                 <TouchableOpacity style={styles.signInButton}>
-                    <Text style={styles.signInButtonText}>SIGN IN</Text>
+                    <Text style={styles.signInButtonText} onPress={() => router.push('/dash_mod/home')}>SIGN IN</Text>
                 </TouchableOpacity>
             </View>
             
@@ -89,7 +107,26 @@ const styles = StyleSheet.create({
     passwordOptions: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: 20,
+    },
+    rememberContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    checkbox: {
+        width: 20,
+        height: 20,
+        borderWidth: 2,
+        borderColor: '#ccc',
+        borderRadius: 4,
+        marginRight: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    checkboxChecked: {
+        backgroundColor: '#61C35C',
+        borderColor: '#61C35C',
     },
     rememberText: {
         fontSize: 14,
@@ -100,7 +137,6 @@ const styles = StyleSheet.create({
         color: '#007AFF',
         fontWeight: '600',
     },
-
     signInButton: {
         backgroundColor: '#61C35C',
         paddingVertical: 15,

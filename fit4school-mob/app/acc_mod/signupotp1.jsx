@@ -1,148 +1,179 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  SafeAreaView,
   ScrollView
 } from 'react-native';
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
-const SignupForm = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [error, setError] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
+const SignUpScreen = () => {
+  const [selectedOption, setSelectedOption] = useState('mobile'); // 'mobile' or 'email'
+  const router = useRouter();
 
-  const inputRef = useRef(null);
-
-  const validateInput = (value) => {
-    const mobileRegex = /^[0-9]{10}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!value) return 'Email or mobile number is required';
-    if (!mobileRegex.test(value) && !emailRegex.test(value))
-      return 'Enter a valid 10-digit mobile number or a valid email address';
-    return '';
-  };
-
-  const handleInputChange = (value) => {
-    setInputValue(value);
-    if (error) setError('');
-  };
-
-  const handleSubmit = () => {
-    const validationError = validateInput(inputValue);
-    if (validationError) {
-      setError(validationError);
-      return;
+  const handleConfirm = () => {
+    // Handle confirmation logic here
+    console.log(`OTP will be sent to ${selectedOption}`);
+    
+    // Navigate based on selected option
+    if (selectedOption === 'mobile') {
+      router.push('/acc_mod/signupotp1.2');
+    } else if (selectedOption === 'email') {
+      router.push('/acc_mod/signupotp1.1');
     }
-
-    setIsSubmitted(true);
-    Alert.alert('Success', 'OTP has been sent to your mobile or email!');
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>← Sign up</Text>
-
-      <View style={styles.formContainer}>
-        <View style={styles.formGroup}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={[styles.input, error && styles.inputError]}
-              placeholder="Enter Email or Mobile Number"
-              placeholderTextColor="#999"
-              value={inputValue}
-              onChangeText={handleInputChange}
-              keyboardType="default"
-              autoCapitalize="none"
-              ref={inputRef}
-            />
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.content}>
+          {/* Header with back button */}
+          <View style={styles.headerContainer}>
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="arrow-back-outline" size={28} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.header}>Sign up</Text>
           </View>
-          {error ? <Text style={styles.errorMessage}>{error}</Text> : null}
+          
+          {/* Send OTP Text */}
+          <Text style={styles.sendOtpText}>Send OTP to</Text>
+
+          {/* Option Selection */}
+          <View style={styles.optionsContainer}>
+            <TouchableOpacity 
+              style={[
+                styles.optionButton,
+                selectedOption === 'mobile' && styles.optionButtonSelected
+              ]}
+              onPress={() => setSelectedOption('mobile')}
+            >
+              <View style={styles.optionContent}>
+                <Text style={[
+                  styles.optionText,
+                  selectedOption === 'mobile' && styles.optionTextSelected
+                ]}>
+                  Mobile Number
+                </Text>
+                {selectedOption === 'mobile' && (
+                  <Text style={styles.checkmark}>✓</Text>
+                )}
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={[
+                styles.optionButton,
+                selectedOption === 'email' && styles.optionButtonSelected
+              ]}
+              onPress={() => setSelectedOption('email')}
+            >
+              <View style={styles.optionContent}>
+                <Text style={[
+                  styles.optionText,
+                  selectedOption === 'email' && styles.optionTextSelected
+                ]}>
+                  Email
+                </Text>
+                {selectedOption === 'email' && (
+                  <Text style={styles.checkmark}>✓</Text>
+                )}
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {/* Confirm Button */}
+          <TouchableOpacity 
+            style={styles.confirmButton}
+            onPress={handleConfirm}
+          >
+            <Text style={styles.confirmButtonText}>CONFIRM</Text>
+          </TouchableOpacity>
         </View>
-
-        <Text style={styles.label}>Send OTP to Email or Mobile Number</Text>
-
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>CONFIRM</Text>
-        </TouchableOpacity>
-
-        
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
-  title: {
+  scrollView: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  content: {
+    paddingHorizontal: 24,
+    paddingVertical: 40,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  header: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 100,
     color: '#000',
-    fontFamily: 'System',
-    top: 55,
-    left: 20,
+    marginLeft: 10,
   },
-  formContainer: {
-    padding: 35,
-    backgroundColor: 'white',
-  },
-  formGroup: {
+  sendOtpText: {
+    fontSize: 16,
+    textAlign: 'center',
     marginBottom: 20,
+    color: '#333',
   },
- label: {
-  marginBottom: 10,
-  fontWeight: '500',
-  color: 'blue',
-  fontSize: 14,
-  textAlign: 'center', 
-},
-  inputContainer: {
-    position: 'relative',
+  optionsContainer: {
+    marginBottom: 260,
   },
-  input: {
-    width: '100%',
-    padding: 12,
+  optionButton: {
+    backgroundColor: '#f5f5f5',
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 5,
-    fontSize: 16,
-    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    marginBottom: 12,
   },
-  inputError: {
-    borderColor: '#e74c3c',
+  optionButtonSelected: {
+    backgroundColor: '#e8f5e8',
+    borderColor: '#61C35C',
   },
-  errorMessage: {
-    color: '#e74c3c',
-    fontSize: 12,
-    marginTop: 5,
-  },
-  button: {
-    width: '100%',
-    padding: 14,
-    backgroundColor: '#61C35C',
-    borderRadius: 5,
+  optionContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 25,
   },
-  buttonText: {
-    color: 'white',
+  optionText: {
     fontSize: 16,
+    color: '#333',
+    fontWeight: '500',
+  },
+  optionTextSelected: {
+    color: '#61C35C',
     fontWeight: '600',
   },
-  successMessage: {
-    color: '#2ecc71',
-    textAlign: 'center',
-    marginTop: 15,
-    fontWeight: '500',
+  checkmark: {
+    color: '#61C35C',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  confirmButton: {
+    backgroundColor: '#61C35C',
+    borderRadius: 8,
+    paddingVertical: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  confirmButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
-export default SignupForm;
+export default SignUpScreen;

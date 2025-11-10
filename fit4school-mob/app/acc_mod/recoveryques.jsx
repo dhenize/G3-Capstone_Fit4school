@@ -28,7 +28,7 @@ export default function ForgotPasswordScreen() {
       Alert.alert('Error', 'Please provide your answer.');
     } else {
       Alert.alert('Success', 'Your answer has been submitted.');
-      router.push('/acc_mod/forgotpassword');
+      router.push('/acc_mod/successreco');
     }
   };
 
@@ -39,22 +39,19 @@ export default function ForgotPasswordScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.title}>Forgot Password</Text>
+        <Text style={styles.title}>Recovery Question</Text>
       </View>
 
       {/* Security Questions */}
       {questions.map((q) => {
         const isSelected = selectedQuestion === q.id;
-        const isDisabled = selectedQuestion !== null && !isSelected;
 
         return (
           <View key={q.id}>
             <TouchableOpacity
-              disabled={isDisabled}
               style={[
                 styles.questionRow,
                 isSelected && styles.selectedRow,
-                isDisabled && styles.disabledRow,
               ]}
               onPress={() => setSelectedQuestion(q.id)}
             >
@@ -62,7 +59,6 @@ export default function ForgotPasswordScreen() {
                 style={[
                   styles.questionText,
                   isSelected && styles.selectedText,
-                  isDisabled && styles.disabledText,
                 ]}
               >
                 {q.label}
@@ -70,7 +66,7 @@ export default function ForgotPasswordScreen() {
               <Ionicons
                 name="chevron-forward"
                 size={20}
-                color={isDisabled ? '#AAA' : 'black'}
+                color={isSelected ? '#388E3C' : 'black'}
               />
             </TouchableOpacity>
 
@@ -87,16 +83,9 @@ export default function ForgotPasswordScreen() {
         );
       })}
 
-      {/* Error Message */}
-      {!selectedQuestion && (
-        <Text style={styles.errorText}>
-          Please choose one (1) Security Question and answer it correctly.
-        </Text>
-      )}
-
       {/* Confirm Button */}
       <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
-        <Text style={styles.confirmText}>CONFIRM</Text>
+        <Text style={styles.confirmText}>SUBMIT</Text>
       </TouchableOpacity>
     </View>
   );
@@ -132,9 +121,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
   },
-  disabledRow: {
-    opacity: 0.5,
-  },
   questionText: {
     fontSize: 16,
     color: '#000',
@@ -144,9 +130,6 @@ const styles = StyleSheet.create({
   selectedText: {
     fontWeight: '600',
     color: '#388E3C',
-  },
-  disabledText: {
-    color: '#999',
   },
   input: {
     backgroundColor: '#F9F9F9',
@@ -159,19 +142,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 15,
   },
-  errorText: {
-    color: '#E57373',
-    textAlign: 'center',
-    fontSize: 14,
-    marginTop: 370,
-    marginBottom: 15,
-  },
   confirmButton: {
     backgroundColor: '#61C35C',
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 0,
+    marginTop: 400,
   },
   confirmText: {
     color: '#FFF',

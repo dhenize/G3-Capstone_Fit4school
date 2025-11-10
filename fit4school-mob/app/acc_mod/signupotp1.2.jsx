@@ -11,7 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
-const ForgotpassForm = () => {
+const SignupForm = () => {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -20,16 +20,18 @@ const ForgotpassForm = () => {
   const inputRef = useRef(null);
 
   const validateInput = (value) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const mobileRegex = /^[0-9]{10}$/;
 
-    if (!value) return 'Email is required';
-    if (!emailRegex.test(value))
-      return 'Enter a valid email address';
+    if (!value) return 'Mobile number is required';
+    if (!mobileRegex.test(value))
+      return 'Enter a valid 10-digit mobile number';
     return '';
   };
 
   const handleInputChange = (value) => {
-    setInputValue(value);
+    // Allow only numbers and limit to 10 digits
+    const numericValue = value.replace(/[^0-9]/g, '').slice(0, 10);
+    setInputValue(numericValue);
     if (error) setError('');
   };
 
@@ -41,8 +43,7 @@ const ForgotpassForm = () => {
     }
 
     setIsSubmitted(true);
-    Alert.alert('Success', 'OTP has been sent to your email!');
-    router.push('/acc_mod/forgotpassotp2');
+    Alert.alert('Success', 'OTP has been sent to your mobile number!');
   };
 
   return (
@@ -52,20 +53,21 @@ const ForgotpassForm = () => {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back-outline" size={28} color="black" />
         </TouchableOpacity>
-        <Text style={styles.header}>Forgot Password</Text>
+        <Text style={styles.header}>Sign up</Text>
       </View>
 
       <View style={styles.formContainer}>
         <View style={styles.formGroup}>
-          <Text style={styles.labels}>Email</Text>
+          <Text style={styles.labels}>Mobile Number</Text>
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.input, error && styles.inputError]}
-              placeholder="Enter Email"
+              placeholder="Enter Mobile Number"
               placeholderTextColor="#999"
               value={inputValue}
               onChangeText={handleInputChange}
-              keyboardType="email-address"
+              keyboardType="phone-pad"
+              maxLength={10}
               autoCapitalize="none"
               ref={inputRef}
             />
@@ -73,14 +75,16 @@ const ForgotpassForm = () => {
           {error ? <Text style={styles.errorMessage}>{error}</Text> : null}
         </View>
 
-        <Text style={styles.label}>Send OTP to my email</Text>
+        <Text style={styles.label}>Send OTP to my mobile Number</Text>
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>CONFIRM</Text>
+          <Text style={styles.buttonText} onPress={() => router.push('/acc_mod/signupotp2')}>CONFIRM</Text>
         </TouchableOpacity>
 
         {isSubmitted && (
-          <Text style={styles.successMessage}>OTP sent successfully!</Text>
+          <Text style={styles.successMessage}>
+            OTP sent successfully!
+          </Text>
         )}
       </View>
     </ScrollView>
@@ -90,7 +94,7 @@ const ForgotpassForm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFBFB',
+    backgroundColor: 'white',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -167,4 +171,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotpassForm;
+export default SignupForm;

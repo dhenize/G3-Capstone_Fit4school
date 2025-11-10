@@ -7,12 +7,15 @@ import {
   StyleSheet, 
   Alert 
 } from 'react-native';
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const SignupOTP = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']); // Changed to 6 digits
   const [timeLeft, setTimeLeft] = useState(300); 
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -52,10 +55,6 @@ const SignupOTP = () => {
     }
   };
 
-  const handlePaste = (e) => {
-    // Paste handling for React Native might need different implementation
-  };
-
   const handleResend = () => {
     if (isExpired) {
       setTimeLeft(300);
@@ -72,6 +71,7 @@ const SignupOTP = () => {
     if (enteredOtp.length === 6 && !isExpired) { 
       console.log('OTP submitted:', enteredOtp);
       Alert.alert('Success', 'OTP verified successfully!');
+      router.push('/acc_mod/signupfillup');
     } else if (isExpired) {
       Alert.alert('Error', 'OTP has expired. Please request a new one.');
     } else {
@@ -81,7 +81,14 @@ const SignupOTP = () => {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>← Sign up</Text>
+      {/* Header with back button */}
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Ionicons name="arrow-back-outline" size={28} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.header}>Sign up</Text>
+      </View>
+
       <View style={styles.card}>
         
         <Text style={styles.instruction}>Please enter your OTP</Text>
@@ -128,7 +135,7 @@ const SignupOTP = () => {
           style={styles.confirmButton}
           onPress={handleConfirm}
         >
-          <Text style={styles.confirmText}>CONFIRM</Text>
+          <Text style={styles.confirmText} onPress={() => router.push('/acc_mod/signupfillup')}>CONFIRM</Text>
         </TouchableOpacity>
 
         <Text style={styles.timerText}>
@@ -146,35 +153,31 @@ const SignupOTP = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#FFFBFB',
     padding: 20,
   },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 60,
+    marginBottom: 20,
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#000',
+    marginLeft: 10,
+  },
   card: {
-    backgroundColor: 'white',
-    padding: 10,
+    backgroundColor: '#FFFBFB',
+    padding: 20,
     borderRadius: 10,
-    shadowColor: 'white',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOpacity: 0.0,
+    shadowRadius: 3.84,
     elevation: 5,
     width: '100%',
-    maxWidth: 400,
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    color: 'black',
-    fontFamily: 'System',
-    alignSelf: 'flex-start',
-    position: 'absolute',
-    top: 55, 
-    left: 30, 
+    marginTop: 50,
   },
   instruction: {
     fontSize: 16,

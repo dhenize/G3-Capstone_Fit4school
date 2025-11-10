@@ -10,6 +10,8 @@ import {
   ScrollView,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -17,20 +19,34 @@ export default function SignupForm() {
     lastName: '',
     role: 'Parent',
   });
+  const router = useRouter();
 
   const handleChange = (key, value) => {
     setFormData(prev => ({ ...prev, [key]: value }));
   };
 
   const handleSubmit = () => {
+    // Basic validation
+    if (!formData.firstName.trim() || !formData.lastName.trim()) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
     // Handle form submission here
     console.log('Form submitted:', formData);
     Alert.alert('Form Submitted', `Welcome, ${formData.firstName}!`);
+    router.push('/acc_mod/signupstudid');
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>← Sign up</Text>
+      {/* Header with back button */}
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Ionicons name="arrow-back-outline" size={28} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.header}>Sign up</Text>
+      </View>
 
       <View style={styles.form}>
         {/* First Name */}
@@ -73,7 +89,7 @@ export default function SignupForm() {
 
         {/* Button */}
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>CONFIRM</Text>
+          <Text style={styles.buttonText} onPress={() => router.push('/acc_mod/signupstudid')}>CONFIRM</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -84,13 +100,18 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 24,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFBFB',
   },
-  title: {
-    fontSize: 24,
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  header: {
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#000',
-    marginBottom: 40,
+    marginLeft: 10,
   },
   form: {
     gap: 20,
@@ -124,7 +145,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#61C35C',
     borderRadius: 10,
     paddingVertical: 14,
     alignItems: 'center',

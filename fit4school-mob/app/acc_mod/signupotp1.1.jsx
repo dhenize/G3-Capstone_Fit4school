@@ -11,7 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
-const ForgotpassForm = () => {
+const SignupForm = () => {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -42,46 +42,48 @@ const ForgotpassForm = () => {
 
     setIsSubmitted(true);
     Alert.alert('Success', 'OTP has been sent to your email!');
-    router.push('/acc_mod/forgotpassotp2');
   };
 
   return (
     <ScrollView style={styles.container}>
-      {/* Header with back button */}
-      <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back-outline" size={28} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.header}>Forgot Password</Text>
-      </View>
-
-      <View style={styles.formContainer}>
-        <View style={styles.formGroup}>
-          <Text style={styles.labels}>Email</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={[styles.input, error && styles.inputError]}
-              placeholder="Enter Email"
-              placeholderTextColor="#999"
-              value={inputValue}
-              onChangeText={handleInputChange}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              ref={inputRef}
-            />
-          </View>
-          {error ? <Text style={styles.errorMessage}>{error}</Text> : null}
+      <View style={styles.content}>
+        {/* Header with back button */}
+        <View style={styles.headerContainer}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="arrow-back-outline" size={28} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.header}>Sign up</Text>
         </View>
 
-        <Text style={styles.label}>Send OTP to my email</Text>
+        <View style={styles.formContainer}>
+          <View style={styles.formGroup}>
+            <Text style={styles.labels}>Email</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={[styles.input, error && styles.inputError]}
+                placeholder="Enter Email"
+                placeholderTextColor="#999"
+                value={inputValue}
+                onChangeText={handleInputChange}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                ref={inputRef}
+              />
+            </View>
+            {error ? <Text style={styles.errorMessage}>{error}</Text> : null}
+          </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>CONFIRM</Text>
-        </TouchableOpacity>
+          <Text style={styles.label}>Send OTP to my email</Text>
 
-        {isSubmitted && (
-          <Text style={styles.successMessage}>OTP sent successfully!</Text>
-        )}
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText} onPress={() => router.push('/acc_mod/signupotp2')}>CONFIRM</Text>
+            
+          </TouchableOpacity>
+
+          {isSubmitted && (
+            <Text style={styles.successMessage}>OTP sent successfully!</Text>
+          )}
+        </View>
       </View>
     </ScrollView>
   );
@@ -90,7 +92,10 @@ const ForgotpassForm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFBFB',
+    backgroundColor: 'white',
+  },
+  content: {
+    flex: 1,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -167,4 +172,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotpassForm;
+export default SignupForm;

@@ -31,7 +31,7 @@ export default function account(){
         </TouchableOpacity>
 
         <TouchableOpacity style = {styles.btns} onPress={() => router.push("/stngs_mod/acc_rec")}>
-          <Text style = {styles.stng_txt}>Account Recovery</Text>
+          <Text style = {styles.stng_txt} onPress={() => router.push("/acc_mod/accountrecov")}>Account Recovery</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style = {styles.btns} onPress={() => router.push("/stngs_mod/help_cen")}>
@@ -52,7 +52,7 @@ export default function account(){
         
 
         <TouchableOpacity style = {{paddingVertical: '20%'}}>
-          <Text style = {styles.stng_txt}>Logout</Text>
+          <Text style = {styles.stng_txt} onPress={() => router.push("/acc_mod/login")}>Logout</Text>
         </TouchableOpacity>
 
       </View>
