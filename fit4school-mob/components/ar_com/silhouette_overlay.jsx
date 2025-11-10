@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   silhouette: {
-    width: screenWidth * 0.8,
-    height: screenHeight * 0.7,
+    width: screenWidth * 0.9,
+    height: screenHeight * 0.9,
     opacity: 0.8,
   },
   instructionContainer: {
