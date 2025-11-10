@@ -16,6 +16,7 @@ import BForgotPass from './al_forgotpass/b_forgotpass/b_forgotpass.jsx';
 import SupAccMod from './sup_ad_pages/sup_acc_mod/sup_acc_mod.jsx';
 import SupAdAdmin from './sup_ad_pages/sup_ad_admin/sup_ad_admin.jsx';
 import SupAdAccountant from './sup_ad_pages/sup_ad_accountant/sup_ad_accountant.jsx';
+import SupAdUser from './sup_ad_pages/sup_ad_user/sup_ad_user.jsx';
 
 function App(){
   return(
@@ -39,6 +40,7 @@ function App(){
         <Route path="/sup_acc_mod" element={<SupAccMod />} />
         <Route path="/sup_ad_admin" element={<SupAdAdmin />} />
         <Route path="/sup_ad_accountant" element={<SupAdAccountant />} />
+        <Route path="/sup_ad_user" element={<SupAdUser />} />
       </Routes>
     </>
   );

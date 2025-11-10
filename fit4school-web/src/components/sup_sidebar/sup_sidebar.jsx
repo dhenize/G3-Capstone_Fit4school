@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import dashIcon from '../../assets/icons/dash-icon.png';
-import payIcon from '../../assets/icons/pay-icon.png';
-import signoutIcon from '../../assets/icons/signout-icon.png';
+import personIcon from '../../assets/icons/person.png';
 import circleUser from '../../assets/icons/circle-user.svg';
+import signoutIcon from '../../assets/icons/signout-icon.png';
 
 const SupSidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -55,7 +54,7 @@ const SupSidebar = () => {
             } ${isSidebarOpen ? 'justify-start px-4' : 'justify-center'}`}
             title={!isSidebarOpen ? "SupAdAdmin" : ""}
           >
-            <img src={dashIcon} alt="dashIcon" className="w-4 h-4 flex-shrink-0"/>
+            <img src={personIcon} alt="personIcon" className="w-4 h-4 flex-shrink-0"/>
             {isSidebarOpen && <p className="ml-3 text-sm">Admin Accounts</p>}
           </button>
           
@@ -67,8 +66,20 @@ const SupSidebar = () => {
             } ${isSidebarOpen ? 'justify-start px-4' : 'justify-center'}`}
             title={!isSidebarOpen ? "SupAdAccountant" : ""}
           >
-            <img src={payIcon} alt="payIcon" className="w-4 h-4 flex-shrink-0"/>
+            <img src={personIcon} alt="personIcon" className="w-4 h-4 flex-shrink-0"/>
             {isSidebarOpen && <p className="ml-3 text-sm">Accountant Accounts</p>}
+          </button>
+
+          {/* App User Accounts */}
+          <button
+            onClick={() => navigate('/sup_ad_user')}
+            className={`w-full flex items-center p-2 rounded-xl transition ${
+              isActive('/sup_ad_user') ? 'bg-blue-500' : 'hover:bg-blue-600'
+            } ${isSidebarOpen ? 'justify-start px-4' : 'justify-center'}`}
+            title={!isSidebarOpen ? "SupAdUser" : ""}
+          >
+            <img src={personIcon} alt="payIcon" className="w-4 h-4 flex-shrink-0"/>
+            {isSidebarOpen && <p className="ml-3 text-sm">App User Accounts</p>}
           </button>
         </nav>
 
