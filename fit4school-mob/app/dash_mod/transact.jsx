@@ -17,6 +17,10 @@ export default function transact() {
 
   const [isChecked, setIsChecked] = useState(false);
   const [activeTab, setActiveTab] = useState("appointments");
+
+  const [bnModal, setBnModal] = useState(false);
+
+  
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFBFB" }}>
       <View style={styles.titlebox}>
