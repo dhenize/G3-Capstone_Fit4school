@@ -79,13 +79,13 @@ export default function ArGender() {
           style={styles.enterBtn}
           onPress={() =>
             router.push({
-              pathname: "/ar_mod/ar_calc",
+              pathname: "/ar_mod/ar_grdlevel",
               params: { height, unit, gender },
             })
           }
         >
           <Text style={{ fontSize: 20, fontWeight: "600", color: "white" }}>
-            Enter
+            Next
           </Text>
         </TouchableOpacity>
       </View>
