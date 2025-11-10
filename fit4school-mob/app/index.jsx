@@ -6,7 +6,7 @@ export default function Index() {
     //JEANNEN'S DEVELOPMENT PART
     // HOMESCREEN: dash_mod/home | CURRENTLY WORKING: acc_mod/signupstudid
 
-
+  
     //DHENIZE'S DEVELOPMENT PART
     // HOMESCREEN: dash_mod/home
     // CURRENTLY WORKING: ar_mod/ar_height, ar_mod/ar_result, items_mod/boys_unif_p, dash_mod/inbox, dash_mod/account, 
