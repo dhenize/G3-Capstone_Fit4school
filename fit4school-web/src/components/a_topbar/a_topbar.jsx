@@ -4,7 +4,7 @@ import settingsIcon from "../../assets/icons/settings.png";
 import searchIcon from "../../assets/icons/search.png";
 import clockIcon from "../../assets/icons/clock.png";
 
-const TopBar = () => {
+const ATopbar = () => {
   return (
     <div className="w-full h-12 bg-white shadow flex items-center justify-between px-4">
 
@@ -21,13 +21,11 @@ const TopBar = () => {
         </button>
         <button className="p-2 hover:bg-gray-100 rounded-full transition">
           <img src={settingsIcon} alt="Settings" className="w-5 h-5" />
-        </button>
-        
-        
+        </button>      
        
       </div>
     </div>
   );
 };
 
-export default TopBar;
+export default ATopbar;
