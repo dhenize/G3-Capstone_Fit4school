@@ -1,11 +1,14 @@
 import { StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import React from 'react';
-import { Text } from "../components/globalText";
-import { router } from 'expo-router';
+import { Text } from "../../components/globalText";
+import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
 export default function Logout() {
+
+    const router = useRouter();
+
     return (
         <View style={styles.container}>
             <Text style={styles.welcomeText}>WELCOME TO</Text>
@@ -13,7 +16,7 @@ export default function Logout() {
 
             <View style={styles.login_pic}>
                 <Image 
-                    source={require("../assets/images/login.png")} 
+                    source={require("../../assets/images/login.png")} 
                     style={styles.image}
                     resizeMode="contain"
                 />
@@ -21,7 +24,7 @@ export default function Logout() {
 
             <TouchableOpacity 
                 style={styles.button}
-                onPress={() => router.push('/signup')}
+                onPress={() => router.push('/acc_mod/signup')}
             >
                 <Text style={styles.buttonText}>SIGN UP</Text>
             </TouchableOpacity>
@@ -29,7 +32,10 @@ export default function Logout() {
             <View style={styles.footer}>
                 <Text style={styles.stonText}>Already have an account ?</Text>
             </View>
-            <Text style={styles.upText}>Sign in</Text>
+
+            <TouchableOpacity onPress={() => router.push('/acc_mod/signin')}>
+                <Text style={styles.upText}>Sign in</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -38,7 +44,7 @@ export default function Logout() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#FFFBFB',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
@@ -46,14 +52,14 @@ const styles = StyleSheet.create({
     welcomeText: {
         color: 'black',
         fontSize: 22,
-        fontWeight: 'bold',
+        fontWeight: 600,
         marginBottom: -9,
         top: 30,
     },
     titleText: {
         color: 'black',
         fontSize: 36,
-        fontWeight: 'bold',
+        fontWeight: 600,
         marginBottom: 20,
         top: 30,
     },
@@ -67,30 +73,34 @@ const styles = StyleSheet.create({
         height: width * 0.7, 
     },
     button: {
-        backgroundColor: 'green',
+        backgroundColor: '#61C35C',
         paddingVertical: 14,
         borderRadius: 10,
         width: width * 0.85, 
         alignItems: 'center',
         marginBottom: 15,
-        marginTop: 60,
+        marginTop: 50,
+        shadowOpacity: 0.4,
+        shadowRadius: 2,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 4,
     },
     buttonText: {
-        color: 'black',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: 'white',
+        fontSize: 20,
+        fontWeight: 500,
     },
     footer: {
-        flexDirection: 'row',
-        marginTop: 20,
+        marginTop: 7,
     },
     stonText: {
         color: 'black',
-        marginRight: 5,
+        fontSize: 15,
     },
     upText: {
-        color: 'blue',
-        fontWeight: 'bold',
-        marginTop: 10,
+        color: '#3657FF',
+        fontWeight: 600,
+        marginTop: 5,
+        fontSize: 16,
     },
 });

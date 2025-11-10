@@ -1,58 +1,61 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import React, { useState } from 'react';
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { Text } from "../../components/globalText";
 
-export default function LoginScreen() {
-    const [email, setEmail] = useState('juandelacruz@email.com');
-    const [password, setPassword] = useState('**********');
+export default function SigninScreen() {
+
+    const router = useRouter();
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>← Sign in</Text>
             
-            
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-                style={styles.input}
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Enter your email"
-            />
-            
-           
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-                style={styles.input}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Enter your password"
-                secureTextEntry
-            />
-            
-           
-            <View style={styles.passwordOptions}>
-                <Text style={styles.rememberText}>Remember password</Text>
-                <Text style={styles.forgotText}>Forgot password?</Text>
+            <View style = {{flexDirection: 'row', alignItems: 'center', paddingVertical: '2%'}}>
+                <TouchableOpacity onPress={() => router.back()}>
+                    <Ionicons name="arrow-back-outline" size={28} color="black" />
+                </TouchableOpacity>
+                <Text 
+                    style={styles.title}
+                    onPress={() => router.back()}> Sign In
+                </Text>
             </View>
             
             
-            <View style={styles.divider} />
-            
-           
-            <TouchableOpacity style={styles.signInButton}>
-                <Text style={styles.signInButtonText}>SIGN IN</Text>
-            </TouchableOpacity>
-            
-            
-            <View style={styles.orContainer}>
-                <View style={styles.line} />
-                <Text style={styles.orText}>or</Text>
-                <View style={styles.line} />
+            <View style = {{paddingVertical: '25%'}}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                    style={styles.input}
+                    value={email}
+                    onChangeText={setEmail}
+                    placeholder="Enter your email"
+                />
+                
+                <Text style={styles.label}>Password</Text>
+                <TextInput
+                    style={styles.input}
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="Enter your password"
+                    secureTextEntry
+                />
+                
+                <View style={styles.passwordOptions}>
+                    <Text style={styles.rememberText}>Remember password</Text>
+                    
+                    <TouchableOpacity onPress={() => router.push('/acc_mod/forgotpassword')}>
+                        <Text style={styles.forgotText}>Forgot password?</Text>
+                    </TouchableOpacity>
+                </View>
+                
+                <TouchableOpacity style={styles.signInButton}>
+                    <Text style={styles.signInButtonText}>SIGN IN</Text>
+                </TouchableOpacity>
             </View>
             
-            
-            <TouchableOpacity style={styles.googleButton}>
-                <Text style={styles.googleButtonText}>Continue with Google</Text>
-            </TouchableOpacity>
         </View>
     )
 }
@@ -60,23 +63,19 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        padding: 50,
-        paddingTop: 50,
+        backgroundColor: '#FFFBFB',
+        padding: '10%',
     },
     title: {
         fontSize: 28,
-        fontWeight: 'bold',
-        marginBottom: 30,
+        fontWeight: 600,
         color: '#000',
-        fontFamily: 'System',
     },
     label: {
         fontSize: 16,
         fontWeight: '600',
         marginBottom: 8,
         color: '#000',
-        fontFamily: 'System',
     },
     input: {
         borderWidth: 1,
@@ -85,7 +84,6 @@ const styles = StyleSheet.create({
         padding: 12,
         marginBottom: 20,
         fontSize: 16,
-        fontFamily: 'System',
         backgroundColor: '#f9f9f9',
     },
     passwordOptions: {
@@ -96,21 +94,15 @@ const styles = StyleSheet.create({
     rememberText: {
         fontSize: 14,
         color: '#666',
-        fontFamily: 'System',
     },
     forgotText: {
         fontSize: 14,
         color: '#007AFF',
         fontWeight: '600',
-        fontFamily: 'System',
     },
-    divider: {
-        height: 1,
-        backgroundColor: '#ccc',
-        marginVertical: 20,
-    },
+
     signInButton: {
-        backgroundColor: 'green',
+        backgroundColor: '#61C35C',
         paddingVertical: 15,
         borderRadius: 8,
         alignItems: 'center',
@@ -120,7 +112,6 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-        fontFamily: 'System',
     },
     orContainer: {
         flexDirection: 'row',
@@ -136,7 +127,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         color: '#666',
         fontSize: 14,
-        fontFamily: 'System',
     },
     googleButton: {
         borderWidth: 1,
@@ -150,6 +140,5 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         fontWeight: '600',
-        fontFamily: 'System',
     },
 });

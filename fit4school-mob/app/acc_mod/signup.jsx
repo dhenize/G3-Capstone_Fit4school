@@ -1,50 +1,53 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import React, { useState } from 'react';
-import { router } from 'expo-router';
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { Text } from "../../components/globalText";
 
 export default function SignupScreen() {
-    const [email, setEmail] = useState('juandelacruz@email.com');
-    const [password, setPassword] = useState('**********');
+
+    const router = useRouter();
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     return (
         <View style={styles.container}>
-            <Text 
-                style={styles.title}
-                onPress={() => router.back()}
-            >← Sign up</Text>
             
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-                style={styles.input}
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Enter your email"
-            />
-            
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-                style={styles.input}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Enter your password"
-                secureTextEntry
-            />
-            
-            <View style={styles.divider} />
-            
-            <TouchableOpacity style={styles.signInButton}>
-                <Text style={styles.signInButtonText}>SIGN IN</Text>
-            </TouchableOpacity>
-            
-            <View style={styles.orContainer}>
-                <View style={styles.line} />
-                <Text style={styles.orText}>or</Text>
-                <View style={styles.line} />
+            <View style = {{flexDirection: 'row', alignItems: 'center', paddingVertical: '2%'}}>
+                <TouchableOpacity onPress={() => router.back()}>
+                    <Ionicons name="arrow-back-outline" size={28} color="black" />
+                </TouchableOpacity>
+                <Text 
+                    style={styles.title}
+                    onPress={() => router.back()}> Sign up
+                </Text>
             </View>
             
-            <TouchableOpacity style={styles.googleButton}>
-                <Text style={styles.googleButtonText}>Continue with Google</Text>
-            </TouchableOpacity>
+            
+            <View style = {{paddingVertical: '25%'}}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                    style={styles.input}
+                    value={email}
+                    onChangeText={setEmail}
+                    placeholder="Enter your email"
+                />
+                
+                <Text style={styles.label}>Password</Text>
+                <TextInput
+                    style={styles.input}
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="Enter your password"
+                    secureTextEntry
+                />
+                
+                <TouchableOpacity style={styles.signInButton} onPress={() => router.push('/acc_mod/signupotp1')}>
+                    <Text style={styles.signInButtonText}>SIGN UP</Text>
+                </TouchableOpacity>
+            </View>
+            
         </View>
     )
 }
@@ -52,23 +55,19 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        padding: 50,
-        paddingTop: 50,
+        backgroundColor: '#FFFBFB',
+        padding: '10%',
     },
     title: {
         fontSize: 28,
-        fontWeight: 'bold',
-        marginBottom: 30,
+        fontWeight: 600,
         color: '#000',
-        fontFamily: 'System',
     },
     label: {
         fontSize: 16,
         fontWeight: '600',
         marginBottom: 8,
         color: '#000',
-        fontFamily: 'System',
     },
     input: {
         borderWidth: 1,
@@ -77,7 +76,6 @@ const styles = StyleSheet.create({
         padding: 12,
         marginBottom: 20,
         fontSize: 16,
-        fontFamily: 'System',
         backgroundColor: '#f9f9f9',
     },
     passwordOptions: {
@@ -88,60 +86,25 @@ const styles = StyleSheet.create({
     rememberText: {
         fontSize: 14,
         color: '#666',
-        fontFamily: 'System',
     },
     forgotText: {
         fontSize: 14,
         color: '#007AFF',
         fontWeight: '600',
-        fontFamily: 'System',
     },
-    divider: {
-        height: 1,
-        backgroundColor: '#ccc',
-        marginVertical: 20,
-    },
+
     signInButton: {
-        backgroundColor: 'green',
+        backgroundColor: '#61C35C',
         paddingVertical: 15,
         borderRadius: 8,
         alignItems: 'center',
-        marginBottom: 20,
+        marginVertical: '5%'
     },
+
     signInButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-        fontFamily: 'System',
+        color: 'white',
+        fontSize: 20,
+        fontWeight: 600,
     },
-    orContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    line: {
-        flex: 1,
-        height: 1,
-        backgroundColor: '#ccc',
-    },
-    orText: {
-        marginHorizontal: 10,
-        color: '#666',
-        fontSize: 14,
-        fontFamily: 'System',
-    },
-    googleButton: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        paddingVertical: 15,
-        borderRadius: 8,
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-    googleButtonText: {
-        color: '#000',
-        fontSize: 16,
-        fontWeight: '600',
-        fontFamily: 'System',
-    },
+
 });
