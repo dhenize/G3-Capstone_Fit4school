@@ -1,43 +1,69 @@
 // components/ar_com/silhouette_overlay.jsx
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import { View, Image, StyleSheet, Dimensions, Text } from 'react-native';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const SilhouetteOverlay = ({ type = 'front', isActive = false }) => {
+  if (!isActive) return null;
 
-  const frontSilhouette = "M50,20 C60,10 90,10 100,20 C110,30 110,180 100,190 C90,200 60,200 50,190 C40,180 40,30 50,20 Z";
-  const sideSilhouette = "M50,20 C60,15 90,15 95,20 C100,25 100,180 95,185 C90,190 60,190 55,185 C50,180 50,25 50,20 Z";
+  const silhouetteSource = type === 'front' 
+    ? require('../../assets/images/silhouette/front_sil.png')
+    : require('../../assets/images/silhouette/side_sil.png');
 
   return (
-    <View style={[styles.container, isActive ? styles.active : styles.inactive]}>
-      <Svg height="100%" width="100%" viewBox="0 0 150 200">
-        <Path
-          d={type === 'front' ? frontSilhouette : sideSilhouette}
-          fill="none"
-          stroke={isActive ? "#61C35C" : "rgba(255,255,255,0.5)"}
-          strokeWidth="2"
-        />
-      </Svg>
+    <View style={styles.container}>
+      <Image 
+        source={silhouetteSource} 
+        style={styles.silhouette}
+        resizeMode="contain"
+      />
+      <View style={styles.instructionContainer}>
+        <View style={styles.instructionBox}>
+          <Text style={styles.instructionText}>
+            {type === 'front' ? 'Align with FRONT silhouette' : 'Turn SIDEWAYS and align'}
+          </Text>
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'transparent',
   },
-  active: {
-    opacity: 1,
+  silhouette: {
+    width: screenWidth * 0.8,
+    height: screenHeight * 0.7,
+    opacity: 0.8,
   },
-  inactive: {
-    opacity: 0.3,
-  }
+  instructionContainer: {
+    position: 'absolute',
+    top: 60,
+    width: '100%',
+    alignItems: 'center',
+  },
+  instructionBox: {
+    backgroundColor: 'rgba(97, 195, 92, 0.9)',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  instructionText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
 export default SilhouetteOverlay;

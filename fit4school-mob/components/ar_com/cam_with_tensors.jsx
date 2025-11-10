@@ -19,6 +19,7 @@ export default function CameraWithTensors({
   useEffect(() => {
     (async () => {
       await tf.ready();
+      console.log("✅ TensorFlow ready in camera");
     })();
   }, []);
 
@@ -38,22 +39,40 @@ export default function CameraWithTensors({
 
           const photo = await cameraRef.current.takePictureAsync({
             base64: true,
-            quality: 0.8,
+            quality: 0.7, // Reduced quality for faster processing
             skipProcessing: true,
+            exif: false, // Disable EXIF for faster capture
             ...opts,
           });
           return photo;
         },
-        photoToTensor: async (base64) => {
-          let b64 = base64;
-          if (b64.startsWith("data:")) {
-            b64 = b64.split(",")[1];
+        photoToTensor: async (base64, targetSize = 256) => {
+          try {
+            let b64 = base64;
+            if (b64.startsWith("data:")) {
+              b64 = b64.split(",")[1];
+            }
+            const raw = tf.util.encodeString(b64, "base64").buffer;
+            const u8 = new Uint8Array(raw);
+            
+            // Decode and resize for faster processing
+            let imageTensor = decodeJpeg(u8);
+            
+            // Resize to smaller dimensions for faster processing
+            if (targetSize) {
+              imageTensor = tf.image.resizeBilinear(imageTensor, [targetSize, targetSize]);
+            }
+            
+            return imageTensor;
+          } catch (error) {
+            console.error("Error converting photo to tensor:", error);
+            throw error;
           }
-          const raw = tf.util.encodeString(b64, "base64").buffer;
-          const u8 = new Uint8Array(raw);
-          const imageTensor = decodeJpeg(u8);
-          return imageTensor;
         },
+        // Add method to check camera status
+        isReady: () => isReady,
+        // Add method to get camera reference
+        getNativeCamera: () => cameraRef.current,
       });
     }
   };
@@ -81,10 +100,14 @@ export default function CameraWithTensors({
         style={styles.camera}
         facing={facing}
         onCameraReady={handleCameraReady}
+        // Optimize camera settings for faster performance
+        ratio="16:9"
       />
       {isReady && (
         <View style={styles.debugBadge}>
-          <Text style={{ fontSize: 12 }}>Back Camera Running</Text>
+          <Text style={{ fontSize: 10, color: 'green', fontWeight: 'bold' }}>
+            ✓ CAMERA READY
+          </Text>
         </View>
       )}
     </View>
@@ -96,10 +119,15 @@ const styles = StyleSheet.create({
   camera: { flex: 1 },
   debugBadge: {
     position: "absolute",
-    top: 8,
-    left: 8,
-    backgroundColor: "rgba(255,255,255,0.75)",
-    padding: 4,
-    borderRadius: 4,
+    top: 12,
+    left: 12,
+    backgroundColor: "rgba(255,255,255,0.9)",
+    padding: 6,
+    borderRadius: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
   },
 });

@@ -104,13 +104,13 @@ const styles = StyleSheet.create({
   },
 
   title:{
-    fontWeight: '700',
+    fontWeight: 600,
     fontSize: 20,
     marginBottom: '8%',
   },
 
   desc_step:{
-    fontWeight: '700',
+    fontWeight: 600,
     fontSize: 18,
     marginVertical: '3%',
     justifyContent: 'space-evenly',
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   desc:{
     fontSize: 14,
     marginBottom: "12%",
-    fontWeight: '700',
+    fontWeight: 600,
     textAlign: "justify",
   },
 

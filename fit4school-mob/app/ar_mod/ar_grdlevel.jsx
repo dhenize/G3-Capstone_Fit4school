@@ -1,3 +1,4 @@
+// app/ar_mod/ar_grdlevel.jsx
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -5,10 +6,10 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Text } from "../../components/globalText";
 import { Picker } from "@react-native-picker/picker";
 
-export default function ar_grdlevel() {
+export default function ArGrdLevel() {
   const router = useRouter();
   const [grlevel, setGrLevel] = useState("");
-  const { height, unit, gender, grade } = useLocalSearchParams();
+  const { height, unit, gender } = useLocalSearchParams();
 
   // Grade Levels
   const grValues = ["Pre-School", "Elementary", "Junior High"];
@@ -76,12 +77,17 @@ export default function ar_grdlevel() {
           onPress={() =>
             router.push({
               pathname: "/ar_mod/ar_calc",
-              params: { height, unit, gender, grade },
+              params: { 
+                height, 
+                unit, 
+                gender, 
+                grade: grlevel
+              },
             })
           }
         >
           <Text style={{ fontSize: 20, fontWeight: "600", color: "white" }}>
-           Enter
+            Enter
           </Text>
         </TouchableOpacity>
       </View>
@@ -98,6 +104,10 @@ const styles = StyleSheet.create({
   },
   boxcont: {
     alignItems: "center",
+    justifyContent: "center",
+  },
+  box: {
+    padding: "6%",
     justifyContent: "center",
   },
   infos: {

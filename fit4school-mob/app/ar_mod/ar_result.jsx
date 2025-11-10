@@ -23,11 +23,10 @@ export default function ArResult() {
     bottomSize,
     shoulderCm,
     hipCm,
-    torsoCm,
-    legCm,
     userHeight,
     userUnit,
     gender,
+    grade,
   } = useLocalSearchParams();
 
   const router = useRouter();
@@ -40,7 +39,7 @@ export default function ArResult() {
   // Buy Now Modal
   const [bnModal, setBnModal] = useState(false);
 
-  // Uniform Sizes
+  // Uniform Sizes - Using your original format
   const sizes = [
     "small",
     "medium",
@@ -60,12 +59,12 @@ export default function ArResult() {
     {
       title: "Top Size",
       size: topSize || "Unknown",
-      subtitle: `Shoulder: ${shoulderCm || "N/A"} cm | Torso: ${torsoCm || "N/A"} cm`,
+      subtitle: `Shoulder: ${shoulderCm || "N/A"} cm`,
     },
     {
       title: "Bottom Size",
       size: bottomSize || "Unknown",
-      subtitle: `Hip: ${hipCm || "N/A"} cm | Leg: ${legCm || "N/A"} cm`,
+      subtitle: `Hip: ${hipCm || "N/A"} cm`,
     },
   ];
 
@@ -96,7 +95,14 @@ export default function ArResult() {
           />
         </View>
 
-        <Text style={styles.sizeLabel}>Your sizes</Text>
+        <Text style={styles.sizeLabel}>Your Recommended Sizes</Text>
+
+        {/* User Information Display */}
+        <View style={styles.userInfo}>
+          <Text style={styles.userInfoText}>
+            {gender} | {grade} | Height: {userHeight} {userUnit}
+          </Text>
+        </View>
 
         {/* Carousel for Top & Bottom results */}
         <Carousel
@@ -106,28 +112,10 @@ export default function ArResult() {
           autoPlay={false}
           data={resultSlides}
           renderItem={({ item }) => (
-            <View
-              style={{
-                backgroundColor: "#fff",
-                borderRadius: 10,
-                padding: 20,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowOpacity: 0.15,
-                shadowRadius: 4,
-                elevation: 2,
-              }}
-            >
-              <Text style={{ fontSize: 18, fontWeight: "600" }}>
-                {item.title}
-              </Text>
+            <View style={styles.resultCard}>
+              <Text style={styles.cardTitle}>{item.title}</Text>
               <Text style={styles.size}>{item.size}</Text>
-              <Text style={{ color: "#757575", marginTop: 8 }}>
-                {item.subtitle}
-              </Text>
-              <Text style={{ color: "#757575", marginTop: 8 }}>
-                {gender} | Height: {userHeight} {userUnit}
-              </Text>
+              <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
             </View>
           )}
         />
@@ -180,7 +168,7 @@ export default function ArResult() {
                   <View style={styles.matc_desc}>
                     <Text style={styles.matc_prc}>₱400.00</Text>
                     <Text style={styles.matc_item_desc}>
-                      Boy’s Uniform (Pre-school)
+                      {gender === 'male' ? "Boy's" : "Girl's"} Uniform ({grade})
                     </Text>
                   </View>
                 </View>
@@ -296,7 +284,7 @@ export default function ArResult() {
                   <View style={styles.matc_desc}>
                     <Text style={styles.matc_prc}>₱400.00</Text>
                     <Text style={styles.matc_item_desc}>
-                      Boy’s Uniform (Pre-school)
+                      {gender === 'male' ? "Boy's" : "Girl's"} Uniform ({grade})
                     </Text>
                   </View>
                 </View>
@@ -408,17 +396,46 @@ const styles = StyleSheet.create({
   },
   sizeLabel: {
     fontSize: 22,
-    fontWeight: "400",
+    fontWeight: "600",
     marginBottom: 12,
+    textAlign: "center",
+  },
+  userInfo: {
+    alignItems: "center",
+    marginBottom: 20,
+    paddingHorizontal: 20,
+  },
+  userInfoText: {
+    fontSize: 16,
+    color: "#666",
+    fontWeight: "500",
+    textAlign: "center",
+  },
+  resultCard: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 8,
   },
   size: {
     fontSize: 44,
     color: "#61C35C",
     fontWeight: "400",
+    marginBottom: 8,
   },
-  sub: {
+  cardSubtitle: {
     color: "#757575",
-    marginTop: 8,
+    fontSize: 14,
+    textAlign: "center",
   },
   buy_cont: {
     flexDirection: "row",
@@ -466,7 +483,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     paddingVertical: "7%",
     paddingHorizontal: "10%",
-    height: "63%",
+    height: "65%",
   },
   matc_cont: {
     justifyContent: "space-between",
@@ -543,4 +560,3 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
 });
-
