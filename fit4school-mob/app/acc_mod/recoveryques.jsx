@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     top: 30,
   },
   title: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: '700',
     marginLeft: 10,
   },
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 18,
+    paddingVertical: 25,
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
   },
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 400,
+    marginTop: 360,
   },
   confirmText: {
     color: '#FFF',
