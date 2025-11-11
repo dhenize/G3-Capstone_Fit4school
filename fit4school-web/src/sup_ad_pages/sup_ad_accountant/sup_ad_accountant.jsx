@@ -19,7 +19,7 @@ const SupAdAccountant = () => {
   ]);
 
   useEffect(() => {
-    document.title = "Super Accountant | Accountants - Fit4School";
+    document.title = "Super Admin | Accountants - Fit4School";
 
     const handleResize = () => {
       if (window.innerWidth >= 768) {
