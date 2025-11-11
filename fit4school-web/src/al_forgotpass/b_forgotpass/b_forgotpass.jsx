@@ -111,7 +111,7 @@ const BForgotPass = () => {
 
           <button
             type="button"
-            className="w-full mt-6 font-semibold text-blue-500 hover:underline"
+            className="w-full mt-6 font-semibold text-cyan-500 hover:underline"
             onClick={() => navigate('/a_acc_mod/')}
           >
             Back to Sign in

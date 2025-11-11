@@ -267,7 +267,7 @@ const AcArchives = () => {
                   onClick={() => setFilterStatus(status)}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
                     filterStatus === status
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-cyan-500 text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -282,7 +282,7 @@ const AcArchives = () => {
             <div className="overflow-x-auto">
               <table className="w-full">
                 {/* Table Header */}
-                <thead className="bg-blue-500 text-white">
+                <thead className="bg-cyan-500 text-white">
                   <tr>
                     <th className="px-4 py-3 text-left">
                       <input
@@ -293,7 +293,7 @@ const AcArchives = () => {
                       />
                     </th>
                     <th 
-                      className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-600 transition"
+                      className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-500 transition"
                       onClick={() => handleSort('orderId')}
                     >
                       <div className="flex items-center gap-1">
@@ -304,7 +304,7 @@ const AcArchives = () => {
                       </div>
                     </th>
                     <th 
-                      className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-600 transition"
+                      className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-500 transition"
                       onClick={() => handleSort('studentId')}
                     >
                       <div className="flex items-center gap-1">
@@ -315,7 +315,7 @@ const AcArchives = () => {
                       </div>
                     </th>
                     <th 
-                      className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-600 transition"
+                      className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-500 transition"
                       onClick={() => handleSort('orderedTime')}
                     >
                       <div className="flex items-center gap-1">
@@ -329,7 +329,7 @@ const AcArchives = () => {
                     <th className="px-4 py-3 text-left text-sm font-semibold">Appointment Time</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold">Quantity</th>
                     <th 
-                      className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-600 transition"
+                      className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-500 transition"
                       onClick={() => handleSort('status')}
                     >
                       <div className="flex items-center gap-1">
@@ -393,7 +393,7 @@ const AcArchives = () => {
                 <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 text-sm">
                   Previous
                 </button>
-                <button className="px-3 py-1 bg-blue-500 text-white rounded text-sm">
+                <button className="px-3 py-1 bg-cyan-500 text-white rounded text-sm">
                   1
                 </button>
                 <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 text-sm">

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import AcSidebar from '../../components/ac_sidebar/ac_sidebar.jsx';
 import AcTopbar from '../../components/ac_topbar/ac_topbar.jsx';
+import calendarGIcon from '../../assets/icons/calendar-g.png';
+import clockGIcon from '../../assets/icons/clock-g.png';
 
 const AcDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -145,6 +147,40 @@ const AcDashboard = () => {
         />
         
         <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+
+                   {/* Top Info Bar */}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                        <h3 className="text-xs sm:text-sm font-medium text-gray-700 flex items-center gap-2">
+                          <img
+                            src={calendarGIcon}
+                            alt="Calendar Green"
+                            className="w-4 h-4 sm:w-5 sm:h-5"
+                          />
+                          Today is Monday, August 18, 2025
+                        </h3>
+                        <h3 className="text-xs sm:text-sm font-medium text-gray-700 flex items-center gap-2">
+                          <img
+                            src={clockGIcon}
+                            alt="Clock Green"
+                            className="w-4 h-4 sm:w-5 sm:h-5"
+                          />
+                          10:00:00 AM
+                        </h3>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2 sm:gap-3 sm:ml-auto">
+                        <button className="bg-white rounded-lg shadow px-3 sm:px-4 py-2 hover:bg-gray-300 transition cursor-pointer">
+                          <p className="text-xs sm:text-sm font-medium whitespace-nowrap">
+                            📊 Aug 18 - Aug 30, 2025
+                          </p>
+                        </button>
+                        <button className="bg-white rounded-lg shadow px-3 sm:px-4 py-2 hover:bg-gray-300 transition">
+                          <p className="text-xs sm:text-sm font-medium">📋 Audit Log</p>
+                        </button>
+                      </div>
+                    </div>
+
           {/* Top Stats Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6 mb-6">
             {/* Confirmed Payments */}

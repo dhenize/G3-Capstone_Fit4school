@@ -255,7 +255,7 @@ const APayments = () => {
                     onChange={handleImageUpload}
                     className="hidden"
                   />
-                  <span className="block w-full bg-cyan-500 text-white py-2 px-3 rounded-lg hover:bg-cyan-600 transition cursor-pointer text-xs font-semibold">
+                  <span className="block w-full bg-cyan-500 text-white py-2 px-3 rounded-lg hover:bg-blue-500 transition cursor-pointer text-xs font-semibold">
                     {qrCodeImage ? 'Change Image' : 'Upload QR Code'}
                   </span>
                 </label>

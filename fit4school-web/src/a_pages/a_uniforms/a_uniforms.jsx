@@ -150,7 +150,7 @@ const AUniforms = () => {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => navigate('/a_uniforms_add')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-colors flex items-center gap-2 shadow-md"
+                className="bg-cyan-500 hover:bg-blue-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-colors flex items-center gap-2 shadow-md"
               >
                 <span className="text-lg">+</span>
                 <span>Add New Item</span>
@@ -164,7 +164,7 @@ const AUniforms = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Items</p>
-                  <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">{uniforms.length}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-800 mt-1">{uniforms.length}</p>
                 </div>
                 <div className="p-2 sm:p-3 bg-blue-100 rounded-lg">
                   <span className="text-blue-600 text-lg sm:text-xl">👕</span>
@@ -176,7 +176,7 @@ const AUniforms = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Low Stock</p>
-                  <p className="text-xl sm:text-2xl font-bold text-red-600 mt-1">
+                  <p className="text-xl sm:text-2xl font-bold text-red-500 mt-1">
                     {uniforms.filter(u => u.stock_level < 20).length}
                   </p>
                 </div>
@@ -190,7 +190,7 @@ const AUniforms = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">In Stock</p>
-                  <p className="text-xl sm:text-2xl font-bold text-green-600 mt-1">
+                  <p className="text-xl sm:text-2xl font-bold text-green-500 mt-1">
                     {uniforms.filter(u => u.stock_level >= 20).length}
                   </p>
                 </div>
@@ -204,7 +204,7 @@ const AUniforms = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Categories</p>
-                  <p className="text-xl sm:text-2xl font-bold text-purple-600 mt-1">4</p>
+                  <p className="text-xl sm:text-2xl font-bold text-blue-400 mt-1">4</p>
                 </div>
                 <div className="p-2 sm:p-3 bg-purple-100 rounded-lg">
                   <span className="text-purple-600 text-lg sm:text-xl">🏷️</span>
@@ -457,13 +457,13 @@ const AUniforms = () => {
                           <div className="flex gap-1 sm:gap-2">
                             <button
                               onClick={() => startEdit(item)}
-                              className="bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors"
+                              className="bg-cyan-500 hover:bg-blue-500 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors"
                             >
                               Edit
                             </button>
                             <button
                               onClick={() => deleteItem(item.item_id)}
-                              className="bg-red-600 hover:bg-red-700 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors"
+                              className="bg-red-500 hover:bg-red-600 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors"
                             >
                               Delete
                             </button>
@@ -502,7 +502,7 @@ const AUniforms = () => {
                 <button className="px-2 sm:px-4 py-1 sm:py-2 border border-gray-300 rounded-lg hover:bg-gray-100 text-xs sm:text-sm font-medium text-gray-700 transition-colors">
                   Previous
                 </button>
-                <button className="px-2 sm:px-4 py-1 sm:py-2 bg-blue-600 text-white rounded-lg text-xs sm:text-sm font-medium">
+                <button className="px-2 sm:px-4 py-1 sm:py-2 bg-cyan-500 text-white rounded-lg text-xs sm:text-sm font-medium">
                   1
                 </button>
                 <button className="px-2 sm:px-4 py-1 sm:py-2 border border-gray-300 rounded-lg hover:bg-gray-100 text-xs sm:text-sm font-medium text-gray-700 transition-colors">

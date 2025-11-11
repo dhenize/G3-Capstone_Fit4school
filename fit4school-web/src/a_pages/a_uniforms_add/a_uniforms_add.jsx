@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ASidebar from '../../components/a_sidebar/a_sidebar.jsx';
 import ATopbar from '../../components/a_topbar/a_topbar.jsx';
+import '../../App.css';
 
 const AUniformsAdd = () => {
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ const AUniformsAdd = () => {
                     </label>
                     <select
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      
                       value={formData.uniform_type}
                       onChange={(e) => setFormData({ ...formData, uniform_type: e.target.value })}
                       required
@@ -126,8 +128,9 @@ const AUniformsAdd = () => {
                       onChange={(e) => setSchoolLevel(e.target.value)}
                       required
                     >
-                      <option value="HS">High School</option>
+                      <option value="JHS">Junior High School</option>
                       <option value="Elem">Elementary</option>
+                      <option value="Pres">Preschool</option>
                     </select>
                   </div>
 
@@ -269,7 +272,7 @@ const AUniformsAdd = () => {
               <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors shadow-md"
+                  className="flex-1 bg-cyan-500 hover:bg-blue-500 text-white px-8 py-4 rounded-lg font-semibold transition-colors shadow-md"
                 >
                   Save Uniform Item
                 </button>

@@ -69,7 +69,7 @@ const SupAccMod = () => {
                 </label>
                 <button
                   type="button"
-                  className="text-blue-500 hover:underline"
+                  className="text-cyan-500 hover:underline"
                   onClick={() => navigate('/entermail')}
                 >
                   Forgot Password?
@@ -78,7 +78,7 @@ const SupAccMod = () => {
     
               <button
                 type="submit"
-                className="font-bold w-full bg-blue-400 text-white p-2 rounded-lg hover:bg-blue-600 transition-all"
+                className="font-bold w-full bg-cyan-500 text-white p-2 rounded-lg hover:bg-blue-500 transition-all"
               >
                 SIGN IN
               </button>

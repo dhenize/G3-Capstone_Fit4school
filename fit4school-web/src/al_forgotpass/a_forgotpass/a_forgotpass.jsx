@@ -169,7 +169,7 @@ const AForgotPass = () => {
               className={`w-full text-sm transition ${
                 resendCooldown > 0
                   ? 'text-gray-400 cursor-not-allowed' 
-                  : 'text-blue-500 hover:underline cursor-pointer'
+                  : 'text-cyan-500 hover:underline cursor-pointer'
               }`}
             >
               Resend OTP
@@ -185,7 +185,7 @@ const AForgotPass = () => {
 
           <button
             type="button"
-            className="w-full mt-6 font-semibold text-blue-500 hover:underline"
+            className="w-full mt-6 font-semibold text-cyan-500 hover:underline"
             onClick={() => navigate('/a_acc_mod/')}
           >
             Back to Sign in

@@ -117,16 +117,17 @@ const ADashboard = () => {
             </div>
             
             <div className="flex flex-wrap gap-2 sm:gap-3 sm:ml-auto">
-              <div className="bg-white rounded-lg shadow px-3 sm:px-4 py-2 hover:shadow-md transition cursor-pointer">
+               <div className="bg-white rounded-lg shadow px-3 sm:px-4 py-2 hover:shadow-md transition cursor-pointer">
                 <p className="text-xs sm:text-sm font-medium whitespace-nowrap">
                   📊 Aug 18 - Aug 30, 2025
                 </p>
               </div>
-              <button className="bg-white rounded-lg shadow px-3 sm:px-4 py-2 hover:bg-gray-300 transition">
+              <button className="bg-white rounded-lg shadow px-3 sm:px-4 py-2 hover:bg-gray-300 transition flex flex-col items-center">
                 <p className="text-xs sm:text-sm font-medium">➕ New Item</p>
               </button>
-              <button className="bg-white rounded-lg shadow px-3 sm:px-4 py-2 hover:bg-gray-300 transition">
-                <p className="text-xs sm:text-sm font-medium">📋 Audit Log</p>
+              <button className="bg-white rounded-lg shadow px-3 sm:px-4 py-2 hover:bg-gray-300 transition flex flex-col items-center">
+                <p className="text-xs sm:text-sm font-medium">
+                  📝Audit Log</p>
               </button>
             </div>
           </div>
@@ -144,7 +145,7 @@ const ADashboard = () => {
                   className="w-6 h-6 opacity-80"
                 />
               </div>
-              <p className="text-2xl text-blue-500 sm:text-3xl md:text-4xl font-bold">1,050</p>
+              <p className="text-2xl text-cyan-500 sm:text-3xl md:text-4xl font-bold">1,050</p>
               <p className="text-xs text-gray-500 opacity-80 mt-1">↑ 12% from last week</p>
             </div>
             
@@ -158,7 +159,7 @@ const ADashboard = () => {
                   className="w-6 h-6 opacity-80"
                 />
               </div>
-              <p className="text-2xl text-blue-500 sm:text-3xl md:text-4xl font-bold">950</p>
+              <p className="text-2xl text-cyan-500 sm:text-3xl md:text-4xl font-bold">950</p>
               <p className="text-xs text-gray-500 opacity-80 mt-1">↑ 8% from last week</p>
             </div>
             
@@ -172,7 +173,7 @@ const ADashboard = () => {
                   className="w-6 h-6 opacity-80"
                 />
               </div>
-              <p className="text-2xl text-blue-500 sm:text-3xl md:text-4xl font-bold">580</p>
+              <p className="text-2xl text-cyan-500 sm:text-3xl md:text-4xl font-bold">580</p>
               <p className="text-xs text-gray-500 opacity-80 mt-1">55% completion rate</p>
             </div>
             
@@ -214,8 +215,8 @@ const ADashboard = () => {
                 {/* Doughnut Chart */}
                 <div className="relative w-40 h-40 md:w-48 md:h-48">
                   <svg viewBox="0 0 100 100" className="transform -rotate-90">
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" strokeWidth="20" strokeDasharray="167.55 83.78" strokeDashoffset="0" />
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" strokeWidth="20" strokeDasharray="50.27 201.06" strokeDashoffset="-167.55" />
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="#00C951" strokeWidth="20" strokeDasharray="167.55 83.78" strokeDashoffset="0" />
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="#0FAFFF" strokeWidth="20" strokeDasharray="50.27 201.06" strokeDashoffset="-167.55" />
                     <circle cx="50" cy="50" r="40" fill="none" stroke="#ef4444" strokeWidth="20" strokeDasharray="32.67 218.66" strokeDashoffset="-217.82" />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -233,7 +234,7 @@ const ADashboard = () => {
                     <span className="text-sm text-gray-700">Junior High - 136 (13%)</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 bg-blue-500 rounded"></div>
+                    <div className="w-4 h-4 bg-cyan-500 rounded"></div>
                     <span className="text-sm text-gray-700">Primary - 210 (20%)</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -252,7 +253,7 @@ const ADashboard = () => {
                   onClick={() => setActiveQueueTab('current')}
                   className={`flex-1 py-3 px-4 text-sm rounded-tl-lg font-semibold transition ${
                     activeQueueTab === 'current'
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-cyan-500 text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -262,7 +263,7 @@ const ADashboard = () => {
                   onClick={() => setActiveQueueTab('queue')}
                   className={`flex-1 py-3 px-4 text-sm font-semibold transition ${
                     activeQueueTab === 'queue'
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-cyan-500 text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -272,7 +273,7 @@ const ADashboard = () => {
                   onClick={() => setActiveQueueTab('recent')}
                   className={`flex-1 py-3 px-4 text-sm rounded-tr-lg font-semibold transition ${
                     activeQueueTab === 'recent'
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-cyan-500 text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -291,7 +292,7 @@ const ADashboard = () => {
                         <p className="text-xs text-gray-500">Queue #{currentCustomer.queueNo} • {currentCustomer.totalOrders} orders</p>
                       </div>
                       <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center">
-                        <span className="text-3xl font-bold text-blue-600">{currentCustomer.queueNo}</span>
+                        <span className="text-3xl font-bold text-blue-500">{currentCustomer.queueNo}</span>
                       </div>
                     </div>
 
@@ -333,7 +334,7 @@ const ADashboard = () => {
                       <button className="flex-1 bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition text-sm font-bold">
                         ✓ Complete
                       </button>
-                      <button className="flex-1 bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition text-sm font-bold">
+                      <button className="flex-1 bg-cyan-500 text-white py-3 rounded-lg hover:bg-blue-500 transition text-sm font-bold">
                         📞 Call
                       </button>
                       <button className="flex-1 bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition text-sm font-bold">
@@ -363,7 +364,7 @@ const ADashboard = () => {
                                 <p className="text-xs text-gray-500">{customer.orders} orders • Est. wait: {customer.waitTime}</p>
                               </div>
                             </div>
-                            <button className="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">
+                            <button className="bg-cyan-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-500">
                               Call Now
                             </button>
                           </div>
@@ -458,7 +459,7 @@ const ADashboard = () => {
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b bg-gray-50">
                 <h4 className="text-sm md:text-base font-bold text-gray-800">📢 Announcements</h4>
-                <button className="bg-blue-500 text-white px-3 py-1.5 rounded-lg hover:bg-blue-600 transition text-xs font-semibold flex items-center gap-1">
+                <button className="bg-cyan-500 text-white px-3 py-1.5 rounded-lg hover:bg-blue-500 transition text-xs font-semibold flex items-center gap-1">
                   <span>➕</span> New
                 </button>
               </div>

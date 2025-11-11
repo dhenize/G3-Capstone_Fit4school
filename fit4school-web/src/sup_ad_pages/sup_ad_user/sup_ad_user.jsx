@@ -176,7 +176,7 @@ const SupAdUser = () => {
                   onClick={() => setFilterStatus(status)}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
                     filterStatus === status
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-cyan-500 text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -190,7 +190,7 @@ const SupAdUser = () => {
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-blue-500 text-white">
+                <thead className="bg-cyan-500 text-white">
                   <tr>
                     <th className="px-4 py-3 text-left">
                       <input
@@ -200,13 +200,13 @@ const SupAdUser = () => {
                         className="w-4 h-4 rounded cursor-pointer"
                       />
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-600 transition" onClick={() => handleSort('userId')}>
+                    <th className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-500 transition" onClick={() => handleSort('userId')}>
                       <div className="flex items-center gap-1">
                         User ID
                         {sortConfig.key === 'userId' && <span>{sortConfig.direction === 'asc' ? '▲' : '▼'}</span>}
                       </div>
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-600 transition" onClick={() => handleSort('studentId')}>
+                    <th className="px-4 py-3 text-left text-sm font-semibold cursor-pointer hover:bg-blue-500 transition" onClick={() => handleSort('studentId')}>
                       <div className="flex items-center gap-1">
                         Student ID
                         {sortConfig.key === 'studentId' && <span>{sortConfig.direction === 'asc' ? '▲' : '▼'}</span>}
@@ -263,7 +263,7 @@ const SupAdUser = () => {
                 <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 text-sm">
                   Previous
                 </button>
-                <button className="px-3 py-1 bg-blue-500 text-white rounded text-sm">
+                <button className="px-3 py-1 bg-cyan-500 text-white rounded text-sm">
                   1
                 </button>
                 <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 text-sm">

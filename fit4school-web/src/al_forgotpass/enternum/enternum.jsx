@@ -52,7 +52,7 @@ const EnterNum = () => {
 
           <button
             type="button"
-            className="text-sm mb-6 text-blue-500 hover:underline"
+            className="text-sm mb-6 text-cyan-500 hover:underline"
             onClick={() => navigate('/entermail')}
           >
             Send OTP to email
@@ -67,7 +67,7 @@ const EnterNum = () => {
           
           <button
             type="button"
-            className="w-full mt-12 font-semibold text-blue-500 hover:underline"
+            className="w-full mt-12 font-semibold text-cyan-500 hover:underline"
             onClick={() => navigate('/a_acc_mod/')}
           >
             Back to Sign in
