@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  StyleSheet, 
-  Alert 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert
 } from 'react-native';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 const SignupOTP = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']); // Changed to 6 digits
-  const [timeLeft, setTimeLeft] = useState(300); 
+  const [timeLeft, setTimeLeft] = useState(300);
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef([]);
   const router = useRouter();
@@ -43,8 +43,8 @@ const SignupOTP = () => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-  
-    if (value && index < 5) { 
+
+    if (value && index < 5) {
       inputRefs.current[index + 1].focus();
     }
   };
@@ -59,26 +59,43 @@ const SignupOTP = () => {
     if (isExpired) {
       setTimeLeft(300);
       setIsExpired(false);
-      setOtp(['', '', '', '', '', '']); 
+      setOtp(['', '', '', '', '', '']);
       if (inputRefs.current[0]) {
         inputRefs.current[0].focus();
       }
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const enteredOtp = otp.join('');
-    if (enteredOtp.length === 6 && !isExpired) { 
-      console.log('OTP submitted:', enteredOtp);
-      Alert.alert('Success', 'OTP verified successfully!');
-      router.push('/acc_mod/signupfillup');
-    } else if (isExpired) {
-      Alert.alert('Error', 'OTP has expired. Please request a new one.');
-    } else {
-      Alert.alert('Error', 'Please enter the complete OTP.');
+
+    try {
+      const response = await fetch('http://localhost:3000/auth/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'user@example.com', // Get from previous screen
+          code: enteredOtp,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Success', 'OTP verified successfully!');
+        router.push('/acc_mod/signupfillup');
+      } else {
+        Alert.alert('Error', data.message || 'OTP verification failed');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Network error. Please try again.');
     }
   };
 
+
+  
   return (
     <View style={styles.container}>
       {/* Header with back button */}
@@ -90,9 +107,9 @@ const SignupOTP = () => {
       </View>
 
       <View style={styles.card}>
-        
+
         <Text style={styles.instruction}>Please enter your OTP</Text>
-        
+
         <View style={styles.otpContainer}>
           {otp.map((digit, index) => (
             <TextInput
@@ -183,16 +200,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
     marginBottom: 25,
-    alignSelf: 'flex-start', 
+    alignSelf: 'flex-start',
   },
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 8, 
+    gap: 8,
     marginBottom: 25,
   },
   otpInput: {
-    width: 40, 
+    width: 40,
     height: 55,
     borderWidth: 2,
     borderColor: 'black',
@@ -210,7 +227,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     padding: 1,
     borderRadius: 3,
-    width: '100%', 
+    width: '100%',
   },
   resendEnabled: {
   },

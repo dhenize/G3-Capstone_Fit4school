@@ -11,21 +11,51 @@ export default function SignupScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const handleSignup = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fname: 'John',
+                    lname: 'Doe',
+                    email: email,
+                    password: password,
+                    contact_number: '1234567890',
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                router.push('/acc_mod/signupotp1');
+            } else {
+                Alert.alert('Error', data.message || 'Signup failed');
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Network error. Please try again.');
+        }
+    };
+
+
+
     return (
         <View style={styles.container}>
-            
-            <View style = {{flexDirection: 'row', alignItems: 'center', paddingVertical: '2%'}}>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: '2%' }}>
                 <TouchableOpacity onPress={() => router.back()}>
                     <Ionicons name="arrow-back-outline" size={28} color="black" />
                 </TouchableOpacity>
-                <Text 
+                <Text
                     style={styles.title}
                     onPress={() => router.back()}> Sign up
                 </Text>
             </View>
-            
-            
-            <View style = {{paddingVertical: '25%'}}>
+
+
+            <View style={{ paddingVertical: '25%' }}>
                 <Text style={styles.label}>Email</Text>
                 <TextInput
                     style={styles.input}
@@ -33,7 +63,7 @@ export default function SignupScreen() {
                     onChangeText={setEmail}
                     placeholder="Enter your email"
                 />
-                
+
                 <Text style={styles.label}>Create Password</Text>
                 <TextInput
                     style={styles.input}
@@ -42,12 +72,12 @@ export default function SignupScreen() {
                     placeholder="Enter your password"
                     secureTextEntry
                 />
-                
+
                 <TouchableOpacity style={styles.signInButton} onPress={() => router.push('/acc_mod/signupotp1')}>
                     <Text style={styles.signInButtonText}>SIGN UP</Text>
                 </TouchableOpacity>
             </View>
-            
+
         </View>
     )
 }

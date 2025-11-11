@@ -73,7 +73,7 @@ const SignupStudentId = () => {
     
     console.log('Student ID submitted:', fullStudentId);
     Alert.alert('Success', `Student ID ${fullStudentId} submitted successfully!`);
-    router.push('/acc_mod/signin');
+    router.push('/dash_mod/home');
   };
 
   const renderInputs = () => {

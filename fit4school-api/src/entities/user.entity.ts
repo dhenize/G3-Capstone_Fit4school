@@ -18,7 +18,7 @@ export class User {
   })
   roles: string;
 
-  @Column()
+  @Column({ length: 150 })
   password: string;
 
   @Column({ length: 20 })
@@ -37,7 +37,10 @@ export class User {
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @OneToOne(() => Student, (student) => student.user, { nullable: true })
+  @Column({ nullable: true })
+  student_id: number;
+
+  @OneToOne(() => Student, { nullable: true })
   @JoinColumn({ name: 'student_id' })
   student?: Student;
 }
