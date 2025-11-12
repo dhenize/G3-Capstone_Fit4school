@@ -18,14 +18,12 @@ const SignupStudentId = () => {
   const router = useRouter();
 
   const handleInputChange = (index, value) => {
-    // Allow only numbers and remove non-numeric characters
     const numericValue = value.replace(/[^0-9]/g, '');
 
     if (numericValue === '' && value !== '') return;
 
     const newStudentId = [...studentId];
 
-    // Handle multiple digits (from paste)
     if (numericValue.length > 1) {
       const digits = numericValue.split('').slice(0, 8);
       digits.forEach((digit, digitIndex) => {
@@ -35,7 +33,6 @@ const SignupStudentId = () => {
       });
       setStudentId(newStudentId);
 
-      // Focus on the next empty input or last one
       const nextEmptyIndex = newStudentId.findIndex((val, i) => val === '' && i >= index);
       if (nextEmptyIndex !== -1 && nextEmptyIndex < 8) {
         inputRefs.current[nextEmptyIndex]?.focus();
@@ -45,18 +42,15 @@ const SignupStudentId = () => {
       return;
     }
 
-    // Single digit input
     newStudentId[index] = numericValue;
     setStudentId(newStudentId);
 
-    // Auto-focus to next input
     if (numericValue !== '' && index < 7) {
       inputRefs.current[index + 1]?.focus();
     }
   };
 
   const handleKeyPress = (index, e) => {
-    // Handle backspace to move to previous input
     if (e.nativeEvent.key === 'Backspace' && studentId[index] === '' && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
@@ -72,25 +66,25 @@ const SignupStudentId = () => {
     }
 
     try {
-        console.log('🔄 Checking student ID:', fullStudentId);
+        console.log('Checking student ID:', fullStudentId);
         
         const studentIdNum = parseInt(fullStudentId);    
         
         const BASE_URL = 'http://192.168.1.50:3000';
         
 
-        console.log('📡 Checking student existence...');
+        console.log('Checking student existence...');
         const checkResponse = await fetch(`${BASE_URL}/auth/student/${studentIdNum}`);
         const checkData = await checkResponse.json();
         
-        console.log('📦 Student check response:', checkData);
+        console.log('Student check response:', checkData);
 
         if (checkData.exists) {
             console.log('✅ Student found:', checkData.student);
             
             const userId = 2;
             
-            console.log('👤 Using user ID:', userId);
+            console.log('Using user ID:', userId);
             
             const verifyResponse = await fetch(`${BASE_URL}/auth/verify-student`, {
                 method: 'POST',
@@ -149,7 +143,6 @@ const SignupStudentId = () => {
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.card}>
-        {/* Header with back button */}
         <View style={styles.headerContainer}>
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back-outline" size={28} color="black" />
@@ -157,7 +150,6 @@ const SignupStudentId = () => {
           <Text style={styles.header}>Sign up</Text>
         </View>
 
-        {/* Student ID text without line, positioned to the left */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Student ID</Text>
         </View>

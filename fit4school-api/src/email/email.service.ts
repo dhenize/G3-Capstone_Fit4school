@@ -18,10 +18,8 @@ export class EmailService {
 
 
   async sendOtpEmail(email: string, otpCode: string): Promise<boolean> {
-    console.log('========== OTP FOR MOCK DEFENSE ==========');
     console.log(`Email: ${email}`);
     console.log(`OTP CODE: ${otpCode}`);
-    console.log('==========================================');
 
     return true;
   }

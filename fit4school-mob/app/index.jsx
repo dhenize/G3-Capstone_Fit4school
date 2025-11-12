@@ -1,7 +1,7 @@
 import { Redirect } from "expo-router";
 
 export default function Index() {
-    return <Redirect href="acc_mod/signupotp1" />; //MAIN SCREEN DISPLAY, just change it when debugging
+    return <Redirect href="acc_mod/signin" />; //MAIN SCREEN DISPLAY, just change it when debugging
 
 
 

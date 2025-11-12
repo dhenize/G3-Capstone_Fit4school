@@ -11,14 +11,12 @@ import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 const SignUpScreen = () => {
-  const [selectedOption, setSelectedOption] = useState('mobile'); // 'mobile' or 'email'
+  const [selectedOption, setSelectedOption] = useState('mobile');
   const router = useRouter();
 
   const handleConfirm = () => {
-    // Handle confirmation logic here
     console.log(`OTP will be sent to ${selectedOption}`);
     
-    // Navigate based on selected option
     if (selectedOption === 'mobile') {
       router.push('/acc_mod/signupotp1.2');
     } else if (selectedOption === 'email') {

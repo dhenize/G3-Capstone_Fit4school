@@ -13,9 +13,8 @@ export default function SignupScreen() {
 
 const handleSignup = async () => {
     try {
-        console.log('🔄 Starting signup process...');
-        console.log('📧 Email:', email);
-        console.log('🔐 Password:', password);
+        console.log('Email:', email);
+        console.log('Password:', password);
         
         const response = await fetch('http://192.168.1.50:3000/auth/signup', {
             method: 'POST',
@@ -31,14 +30,14 @@ const handleSignup = async () => {
             }),
         });
 
-        console.log('📡 Response status:', response.status);
+        console.log('Response status:', response.status);
         
         const data = await response.json();
-        console.log('📦 Response data:', data);
+        console.log('Response data:', data);
         
         if (response.ok) {
-            console.log('✅ Signup successful! User ID:', data.user_id);
-            console.log('🔢 OTP:', data.test_otp);
+            console.log('Signup successful! User ID:', data.user_id);
+            console.log('OTP:', data.test_otp);
             router.push('/acc_mod/signupotp1');
         } else {
             Alert.alert('Error', data.message || 'Signup failed');

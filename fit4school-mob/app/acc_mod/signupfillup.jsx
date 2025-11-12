@@ -1,4 +1,3 @@
-// signupfillup.jsx
 import React, { useState } from 'react';
 import {
   View,
@@ -26,13 +25,11 @@ export default function SignupForm() {
   };
 
   const handleSubmit = () => {
-    // Basic validation
     if (!formData.firstName.trim() || !formData.lastName.trim()) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
-    // Handle form submission here
     console.log('Form submitted:', formData);
     Alert.alert('Form Submitted', `Welcome, ${formData.firstName}!`);
     router.push('/acc_mod/signupstudid');

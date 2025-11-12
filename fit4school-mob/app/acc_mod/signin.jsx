@@ -1,4 +1,4 @@
-import { StyleSheet, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,9 +11,66 @@ export default function SigninScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberPassword, setRememberPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const toggleRememberPassword = () => {
         setRememberPassword(!rememberPassword);
+    };
+
+    const handleSignIn = async () => {
+        if (!email || !password) {
+            Alert.alert('Error', 'Please enter both email and password');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            console.log('🔄 Attempting login...');
+            console.log('📧 Email:', email);
+            
+            
+            const BASE_URL = 'http://192.168.1.50:3000';
+            
+            const response = await fetch(`${BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                }),
+            });
+
+            console.log('📡 Response status:', response.status);
+            
+            const data = await response.json();
+            console.log('📦 Response data:', data);
+
+            if (response.ok) {
+                console.log('Login successful!');
+                console.log('User:', data.user);
+                
+                if (rememberPassword) {
+                    console.log('💾 Remember password enabled');
+                }
+                
+                Alert.alert('Success', `Welcome back, ${data.user.fname}!`);
+                router.push('/dash_mod/home');
+            } else {
+                Alert.alert('Error', data.message || 'Login failed');
+            }
+        } catch (error) {
+            console.log('❌ Login error:', error);
+            Alert.alert(
+                'Connection Error', 
+                'Cannot reach server. For demo, we\'ll proceed to dashboard.',
+                [{ text: 'Continue Demo', onPress: () => router.push('/dash_mod/home') }]
+            );
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -37,6 +94,8 @@ export default function SigninScreen() {
                     value={email}
                     onChangeText={setEmail}
                     placeholder="Enter your email"
+                    autoCapitalize="none"
+                    keyboardType="email-address"
                 />
                 
                 <Text style={styles.label}>Password</Text>
@@ -69,8 +128,14 @@ export default function SigninScreen() {
                     </TouchableOpacity>
                 </View>
                 
-                <TouchableOpacity style={styles.signInButton}>
-                    <Text style={styles.signInButtonText} onPress={() => router.push('/dash_mod/home')}>SIGN IN</Text>
+                <TouchableOpacity 
+                    style={[styles.signInButton, isLoading && styles.signInButtonDisabled]}
+                    onPress={handleSignIn}
+                    disabled={isLoading}
+                >
+                    <Text style={styles.signInButtonText}>
+                        {isLoading ? 'SIGNING IN...' : 'SIGN IN'}
+                    </Text>
                 </TouchableOpacity>
             </View>
             
@@ -144,37 +209,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20,
     },
+    signInButtonDisabled: {
+        backgroundColor: '#cccccc',
+    },
     signInButtonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-    },
-    orContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    line: {
-        flex: 1,
-        height: 1,
-        backgroundColor: '#ccc',
-    },
-    orText: {
-        marginHorizontal: 10,
-        color: '#666',
-        fontSize: 14,
-    },
-    googleButton: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        paddingVertical: 15,
-        borderRadius: 8,
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-    googleButtonText: {
-        color: '#000',
-        fontSize: 16,
-        fontWeight: '600',
     },
 });

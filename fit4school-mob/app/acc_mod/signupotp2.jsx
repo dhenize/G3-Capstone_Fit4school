@@ -11,7 +11,7 @@ import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 const SignupOTP = () => {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']); // Changed to 6 digits
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timeLeft, setTimeLeft] = useState(300);
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef([]);
