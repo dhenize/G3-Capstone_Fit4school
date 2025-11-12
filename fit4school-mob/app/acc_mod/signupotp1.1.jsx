@@ -40,9 +40,15 @@ const SignupForm = () => {
       return;
     }
 
+    console.log('Email for OTP:', inputValue);
+
     setIsSubmitted(true);
     Alert.alert('Success', 'OTP has been sent to your email!');
+
+    router.push('/acc_mod/signupotp2');
   };
+
+
 
   return (
     <ScrollView style={styles.container}>
@@ -77,7 +83,7 @@ const SignupForm = () => {
 
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText} onPress={() => router.push('/acc_mod/signupotp2')}>CONFIRM</Text>
-            
+
           </TouchableOpacity>
 
           {isSubmitted && (
@@ -128,7 +134,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: 'blue',
     fontSize: 14,
-    textAlign: 'center', 
+    textAlign: 'center',
   },
   inputContainer: {
     position: 'relative',

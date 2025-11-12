@@ -66,22 +66,38 @@ const SignupOTP = () => {
     }
   };
 
+
+
   const handleConfirm = async () => {
     const enteredOtp = otp.join('');
 
+    if (enteredOtp.length !== 6) {
+      Alert.alert('Error', 'Please enter complete 6-digit OTP');
+      return;
+    }
+
     try {
-      const response = await fetch('http://localhost:3000/auth/verify-otp', {
+      console.log('🔄 Verifying OTP...');
+      console.log('🔢 OTP entered:', enteredOtp);
+
+      const userEmail = 'test@gmail.com';
+      console.log('📧 Using email:', userEmail);
+
+      const response = await fetch('http://192.168.1.50:3000/auth/verify-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: 'user@example.com', // Get from previous screen
+          email: userEmail,
           code: enteredOtp,
         }),
       });
 
+      console.log('📡 Response status:', response.status);
+
       const data = await response.json();
+      console.log('📦 Response data:', data);
 
       if (response.ok) {
         Alert.alert('Success', 'OTP verified successfully!');
@@ -90,12 +106,13 @@ const SignupOTP = () => {
         Alert.alert('Error', data.message || 'OTP verification failed');
       }
     } catch (error) {
+      console.log('❌ Full error:', error);
       Alert.alert('Error', 'Network error. Please try again.');
     }
   };
 
 
-  
+
   return (
     <View style={styles.container}>
       {/* Header with back button */}

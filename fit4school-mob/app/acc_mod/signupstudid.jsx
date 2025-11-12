@@ -20,11 +20,11 @@ const SignupStudentId = () => {
   const handleInputChange = (index, value) => {
     // Allow only numbers and remove non-numeric characters
     const numericValue = value.replace(/[^0-9]/g, '');
-    
+
     if (numericValue === '' && value !== '') return;
 
     const newStudentId = [...studentId];
-    
+
     // Handle multiple digits (from paste)
     if (numericValue.length > 1) {
       const digits = numericValue.split('').slice(0, 8);
@@ -34,7 +34,7 @@ const SignupStudentId = () => {
         }
       });
       setStudentId(newStudentId);
-      
+
       // Focus on the next empty input or last one
       const nextEmptyIndex = newStudentId.findIndex((val, i) => val === '' && i >= index);
       if (nextEmptyIndex !== -1 && nextEmptyIndex < 8) {
@@ -62,19 +62,65 @@ const SignupStudentId = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     Keyboard.dismiss();
     const fullStudentId = studentId.join('');
-    
+
     if (fullStudentId.length !== 8) {
-      Alert.alert('Incomplete ID', 'Please enter a complete 8-digit Student ID');
-      return;
+        Alert.alert('Incomplete ID', 'Please enter complete 8-digit Student ID');
+        return;
     }
-    
-    console.log('Student ID submitted:', fullStudentId);
-    Alert.alert('Success', `Student ID ${fullStudentId} submitted successfully!`);
-    router.push('/dash_mod/home');
-  };
+
+    try {
+        console.log('🔄 Checking student ID:', fullStudentId);
+        
+        const studentIdNum = parseInt(fullStudentId);    
+        
+        const BASE_URL = 'http://192.168.1.50:3000';
+        
+
+        console.log('📡 Checking student existence...');
+        const checkResponse = await fetch(`${BASE_URL}/auth/student/${studentIdNum}`);
+        const checkData = await checkResponse.json();
+        
+        console.log('📦 Student check response:', checkData);
+
+        if (checkData.exists) {
+            console.log('✅ Student found:', checkData.student);
+            
+            const userId = 2;
+            
+            console.log('👤 Using user ID:', userId);
+            
+            const verifyResponse = await fetch(`${BASE_URL}/auth/verify-student`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    studentId: studentIdNum,
+                    role: 'Parent',
+                }),
+            });
+
+            const verifyData = await verifyResponse.json();
+            console.log('Verification response:', verifyData);
+
+            if (verifyResponse.ok) {
+                Alert.alert('Success', `Verified! Welcome ${verifyData.student_name}'s parent!`);
+                router.push('/dash_mod/home');
+            } else {
+                Alert.alert('Error', verifyData.message || 'Verification failed');
+            }
+        } else {
+            Alert.alert('Error', 'Student ID not found in our system');
+        }
+    } catch (error) {
+        console.log('❌ Full error:', error);
+        Alert.alert('Error', 'Network error. Please try again. Check console for details.');
+    }
+};
 
   const renderInputs = () => {
     return studentId.map((digit, index) => (
@@ -98,7 +144,7 @@ const SignupStudentId = () => {
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
     >
@@ -110,7 +156,7 @@ const SignupStudentId = () => {
           </TouchableOpacity>
           <Text style={styles.header}>Sign up</Text>
         </View>
-        
+
         {/* Student ID text without line, positioned to the left */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Student ID</Text>
@@ -121,8 +167,8 @@ const SignupStudentId = () => {
             {renderInputs()}
           </View>
 
-          <TouchableOpacity 
-            style={styles.submitButton} 
+          <TouchableOpacity
+            style={styles.submitButton}
             onPress={handleSubmit}
           >
             <Text style={styles.submitButtonText}>SUBMIT</Text>
@@ -130,8 +176,8 @@ const SignupStudentId = () => {
         </View>
 
         <Text style={styles.instructionText}>
-          Kindly enter your child's student ID no. in the designated number field above. 
-          This will be used to verify user's identity and to avoid fake or fraudulent 
+          Kindly enter your child's student ID no. in the designated number field above.
+          This will be used to verify user's identity and to avoid fake or fraudulent
           activities in the future.
         </Text>
       </View>
@@ -163,15 +209,15 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   sectionContainer: {
-    marginTop: 10, 
+    marginTop: 10,
     marginBottom: 0,
-    alignSelf: 'flex-start', 
+    alignSelf: 'flex-start',
   },
   sectionTitle: {
-    color: 'black', 
+    color: 'black',
     fontSize: 18,
     fontWeight: '200',
-    textAlign: 'left', 
+    textAlign: 'left',
   },
   formContainer: {
     marginVertical: 30,

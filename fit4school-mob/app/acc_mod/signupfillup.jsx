@@ -81,8 +81,10 @@ export default function SignupForm() {
               style={styles.picker}
             >
               <Picker.Item label="Parent" value="Parent" />
+              <Picker.Item label="Legal Guardian" value="Legal Guardian" />
+              <Picker.Item label="Grandparent" value="Grandparent" />
+              <Picker.Item label="Older Sibling" value="Older Sibling" />
               <Picker.Item label="Student" value="Student" />
-              <Picker.Item label="Teacher" value="Teacher" />
             </Picker>
           </View>
         </View>

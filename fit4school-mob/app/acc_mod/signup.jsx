@@ -11,33 +11,44 @@ export default function SignupScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSignup = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/auth/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    fname: 'John',
-                    lname: 'Doe',
-                    email: email,
-                    password: password,
-                    contact_number: '1234567890',
-                }),
-            });
+const handleSignup = async () => {
+    try {
+        console.log('🔄 Starting signup process...');
+        console.log('📧 Email:', email);
+        console.log('🔐 Password:', password);
+        
+        const response = await fetch('http://192.168.1.50:3000/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                fname: 'John',
+                lname: 'Doe', 
+                email: email,
+                password: password,
+                contact_number: '09123456789',
+            }),
+        });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                router.push('/acc_mod/signupotp1');
-            } else {
-                Alert.alert('Error', data.message || 'Signup failed');
-            }
-        } catch (error) {
-            Alert.alert('Error', 'Network error. Please try again.');
+        console.log('📡 Response status:', response.status);
+        
+        const data = await response.json();
+        console.log('📦 Response data:', data);
+        
+        if (response.ok) {
+            console.log('✅ Signup successful! User ID:', data.user_id);
+            console.log('🔢 OTP:', data.test_otp);
+            router.push('/acc_mod/signupotp1');
+        } else {
+            Alert.alert('Error', data.message || 'Signup failed');
         }
-    };
+    } catch (error) {
+        console.log('❌ Error details:', error);
+        Alert.alert('Error', 'Network error. Please try again. Check console for details.');
+    }
+};
+
 
 
 
@@ -73,7 +84,7 @@ export default function SignupScreen() {
                     secureTextEntry
                 />
 
-                <TouchableOpacity style={styles.signInButton} onPress={() => router.push('/acc_mod/signupotp1')}>
+                <TouchableOpacity style={styles.signInButton} onPress={handleSignup}>
                     <Text style={styles.signInButtonText}>SIGN UP</Text>
                 </TouchableOpacity>
             </View>
