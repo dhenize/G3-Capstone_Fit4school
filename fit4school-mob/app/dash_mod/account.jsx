@@ -1,13 +1,31 @@
 //../../dash_mod/account
 import React from 'react';
 
-import { StyleSheet, View, Image, Touchable, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Touchable, TouchableOpacity, Alert } from 'react-native';
 import { Text } from "../../components/globalText";
 import { useRouter } from "expo-router";
 
 export default function account(){
 
   const router = useRouter();
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        { 
+          text: "Logout", 
+          onPress: () => router.push("/acc_mod/login"),
+          style: "destructive"
+        }
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -51,8 +69,8 @@ export default function account(){
         </TouchableOpacity>
         
 
-        <TouchableOpacity style = {{paddingVertical: '20%'}}>
-          <Text style = {styles.stng_txt} onPress={() => router.push("/acc_mod/login")}>Logout</Text>
+        <TouchableOpacity style = {{paddingVertical: '20%'}} onPress={handleLogout}>
+          <Text style = {styles.stng_txt}>Logout</Text>
         </TouchableOpacity>
 
       </View>

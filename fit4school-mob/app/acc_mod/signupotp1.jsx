@@ -113,10 +113,11 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 150,
+    marginTop: 10,
   },
   header: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#000',
     marginLeft: 10,
@@ -124,8 +125,9 @@ const styles = StyleSheet.create({
   sendOtpText: {
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
     color: '#333',
+    left: -110,
   },
   optionsContainer: {
     marginBottom: 260,

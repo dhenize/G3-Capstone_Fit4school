@@ -1,6 +1,6 @@
 // AccountRecovery.jsx
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -24,7 +24,16 @@ const AccountRecovery = () => {
       </View>
       
       <View style={styles.content}>
-        <Text style={styles.subtitle}>Security Questions</Text>
+        <View style={styles.titleContainer}>
+          <View style={styles.imageContainer}>
+            <Image 
+              source={require("../../assets/images/icons/gen_icons/shield.png")} 
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </View>
+          <Text style={styles.subtitle}>Security Questions</Text>
+        </View>
         
         <TouchableOpacity style={styles.button} onPress={handleProceed}>
           <Text style={styles.buttonText}>PROCEED</Text>
@@ -38,40 +47,60 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFBFB',
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
     paddingTop: 60,
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
   },
   header: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#000',
-    marginLeft: 10,
+    marginLeft: 5,
   },
   content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 40,
+  },
   subtitle: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'black',
     fontFamily: 'System',
-    marginBottom: 450,
+    textAlign: 'center',
+    marginLeft: 10,
+    marginBottom: 500,
     textAlign: 'center',
     alignSelf: 'center',
+    left: -50, // Space between image and text
+  },
+  imageContainer: {
+    marginBottom: 500,
+    textAlign: 'center',
+    alignSelf: 'center',
+    left: -50,
+  },
+  image: {
+    width: 30, // Smaller width
+    height: 30, // Smaller height
   },
   button: {
     backgroundColor: '#61C35C',
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 8,
-    minWidth: 200,
+    minWidth: 300,
     alignItems: 'center',
+    marginTop: 20,
   },
   buttonText: {
     color: 'white',
@@ -80,5 +109,6 @@ const styles = StyleSheet.create({
     fontFamily: 'System',
   },
 });
+
 
 export default AccountRecovery;

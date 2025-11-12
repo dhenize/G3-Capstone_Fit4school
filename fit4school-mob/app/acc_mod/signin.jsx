@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         padding: '10%',
     },
     title: {
-        fontSize: 28,
+        fontSize: 26,
         fontWeight: 600,
         color: '#000',
     },
@@ -115,12 +115,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     checkbox: {
-        width: 20,
-        height: 20,
+        width: 18,
+        height: 18,
         borderWidth: 2,
         borderColor: '#ccc',
         borderRadius: 4,
-        marginRight: 8,
+        marginRight: 4,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -129,11 +129,11 @@ const styles = StyleSheet.create({
         borderColor: '#61C35C',
     },
     rememberText: {
-        fontSize: 14,
+        fontSize: 13,
         color: '#666',
     },
     forgotText: {
-        fontSize: 14,
+        fontSize: 12,
         color: '#007AFF',
         fontWeight: '600',
     },

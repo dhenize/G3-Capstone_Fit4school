@@ -97,10 +97,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#FFFBFB',
-        padding: '10%',
+        padding: '9%',
     },
     title: {
-        fontSize: 28,
+        fontSize: 26,
         fontWeight: 600,
         color: '#000',
     },
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
 
     signInButton: {
         backgroundColor: '#61C35C',
-        paddingVertical: 15,
+        paddingVertical: 10,
         borderRadius: 8,
         alignItems: 'center',
         marginVertical: '5%'
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
 
     signInButtonText: {
         color: 'white',
-        fontSize: 20,
+        fontSize: 19,
         fontWeight: 600,
     },
 
