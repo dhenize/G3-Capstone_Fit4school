@@ -6,8 +6,13 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
-  async signup(@Body() body: any) {
-    return this.authService.signup(body);
+  async signup(@Body() signupData: any) {
+    return this.authService.initiateSignup(signupData);
+  }
+
+  @Post('login')
+  async login(@Body() loginData: { email: string; password: string }) {
+    return this.authService.login(loginData.email, loginData.password);
   }
 
   @Post('verify-otp')
@@ -20,28 +25,18 @@ export class AuthController {
     return this.authService.resendOtp(body.email);
   }
 
-  @Post('verify-student')
-  async verifyStudent(@Body() body: { userId: number; studentId: number; role: string }) {
-    return this.authService.verifyStudentAndCompleteProfile(body.userId, body.studentId, body.role);
-  }
-
-  @Post('login')
-  async login(@Body() body: { email: string; password: string }) {
-    return this.authService.login(body.email, body.password);
+  @Post('complete-profile')
+  async completeProfile(@Body() body: any) {
+    return this.authService.completeProfile(body);
   }
 
   @Get('student/:studentId')
-  async getStudent(@Param('studentId') studentId: number) {
-    const student = await this.authService.verifyStudentExists(studentId);
-    return { 
-      exists: !!student, 
-      student: student || null 
-    };
+  async checkStudent(@Param('studentId') studentId: number) {
+    return this.authService.checkStudent(studentId);
   }
 
-  @Get('check-email/:email')
-  async checkEmail(@Param('email') email: string) {
-    const user = await this.authService.checkEmailExists(email);
-    return { exists: !!user };
+  @Post('verify-student')
+  async verifyStudent(@Body() body: { userId: string; studentId: number; role: string }) {
+    return this.authService.verifyStudent(body.userId, body.studentId, body.role);
   }
 }

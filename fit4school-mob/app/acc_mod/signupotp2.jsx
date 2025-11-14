@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Alert
 } from 'react-native';
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 const SignupOTP = () => {
@@ -16,6 +16,9 @@ const SignupOTP = () => {
   const [isExpired, setIsExpired] = useState(false);
   const inputRefs = useRef([]);
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const userEmail = params.email;
+  const userId = params.user_id;
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -43,7 +46,6 @@ const SignupOTP = () => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-
     if (value && index < 5) {
       inputRefs.current[index + 1].focus();
     }
@@ -55,18 +57,38 @@ const SignupOTP = () => {
     }
   };
 
-  const handleResend = () => {
-    if (isExpired) {
-      setTimeLeft(300);
-      setIsExpired(false);
-      setOtp(['', '', '', '', '', '']);
-      if (inputRefs.current[0]) {
-        inputRefs.current[0].focus();
+  const handleResend = async () => {
+    try {
+      const response = await fetch('http://192.168.1.50:3000/auth/resend-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: userEmail,
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        setTimeLeft(300);
+        setIsExpired(false);
+        setOtp(['', '', '', '', '', '']);
+        if (inputRefs.current[0]) {
+          inputRefs.current[0].focus();
+        }
+        Alert.alert('Success', 'New OTP sent to your email!');
+        if (data.test_otp) {
+          console.log('New Test OTP:', data.test_otp);
+        }
+      } else {
+        Alert.alert('Error', data.message || 'Failed to resend OTP');
       }
+    } catch (error) {
+      Alert.alert('Error', 'Network error. Please try again.');
     }
   };
-
-
 
   const handleConfirm = async () => {
     const enteredOtp = otp.join('');
@@ -79,8 +101,6 @@ const SignupOTP = () => {
     try {
       console.log('🔄 Verifying OTP...');
       console.log('🔢 OTP entered:', enteredOtp);
-
-      const userEmail = 'test@gmail.com';
       console.log('📧 Using email:', userEmail);
 
       const response = await fetch('http://192.168.1.50:3000/auth/verify-otp', {
@@ -101,7 +121,13 @@ const SignupOTP = () => {
 
       if (response.ok) {
         Alert.alert('Success', 'OTP verified successfully!');
-        router.push('/acc_mod/signupfillup');
+        router.push({
+          pathname: '/acc_mod/signupfillup',
+          params: { 
+            email: userEmail, 
+            user_id: userId 
+          }
+        });
       } else {
         Alert.alert('Error', data.message || 'OTP verification failed');
       }
@@ -111,11 +137,8 @@ const SignupOTP = () => {
     }
   };
 
-
-
   return (
     <View style={styles.container}>
-      {/* Header with back button */}
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back-outline" size={28} color="black" />
@@ -124,7 +147,6 @@ const SignupOTP = () => {
       </View>
 
       <View style={styles.card}>
-
         <Text style={styles.instruction}>Please enter your OTP</Text>
 
         <View style={styles.otpContainer}>
@@ -166,18 +188,22 @@ const SignupOTP = () => {
         <View style={styles.divider} />
 
         <TouchableOpacity
-          style={styles.confirmButton}
+          style={[
+            styles.confirmButton,
+            isExpired && styles.disabledButton
+          ]}
           onPress={handleConfirm}
+          disabled={isExpired}
         >
-          <Text style={styles.confirmText} onPress={() => router.push('/acc_mod/signupfillup')}>CONFIRM</Text>
+          <Text style={styles.confirmText}>CONFIRM</Text>
         </TouchableOpacity>
 
         <Text style={styles.timerText}>
-          will expire after {formatTime(timeLeft)}
+          {isExpired ? 'OTP Expired' : `Expires in ${formatTime(timeLeft)}`}
         </Text>
 
         <Text style={styles.infoText}>
-          Kindly check your email/message.
+          Kindly check your email for the OTP.
         </Text>
       </View>
     </View>
@@ -215,6 +241,7 @@ const styles = StyleSheet.create({
     color: 'black',
     marginBottom: 25,
     alignSelf: 'flex-start',
+    fontWeight: '600',
   },
   otpContainer: {
     flexDirection: 'row',
@@ -235,7 +262,7 @@ const styles = StyleSheet.create({
   },
   disabledInput: {
     backgroundColor: '#f8f9fa',
-    color: '#6c757d',
+    borderColor: '#6c757d',
   },
   resendButton: {
     marginBottom: 5,
@@ -252,7 +279,7 @@ const styles = StyleSheet.create({
     padding: 1,
   },
   resendEnabledText: {
-    color: 'black',
+    color: '#61C35C',
     fontWeight: 'bold',
   },
   divider: {
@@ -268,6 +295,10 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginBottom: 15,
+    marginTop: 15,
+  },
+  disabledButton: {
+    backgroundColor: '#6c757d',
   },
   confirmText: {
     color: 'white',

@@ -9,13 +9,15 @@ import {
   Alert,
   Keyboard
 } from 'react-native';
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 const SignupStudentId = () => {
   const [studentId, setStudentId] = useState(['', '', '', '', '', '', '', '']);
   const inputRefs = useRef(Array(8).fill().map(() => React.createRef()));
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const userId = params.user_id;
 
   const handleInputChange = (index, value) => {
     const numericValue = value.replace(/[^0-9]/g, '');
@@ -71,7 +73,6 @@ const SignupStudentId = () => {
         const studentIdNum = parseInt(fullStudentId);    
         
         const BASE_URL = 'http://192.168.1.50:3000';
-        
 
         console.log('Checking student existence...');
         const checkResponse = await fetch(`${BASE_URL}/auth/student/${studentIdNum}`);
@@ -82,31 +83,49 @@ const SignupStudentId = () => {
         if (checkData.exists) {
             console.log('✅ Student found:', checkData.student);
             
-            const userId = 2;
-            
-            console.log('Using user ID:', userId);
-            
-            const verifyResponse = await fetch(`${BASE_URL}/auth/verify-student`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: userId,
-                    studentId: studentIdNum,
-                    role: 'Parent',
-                }),
-            });
+            Alert.alert(
+                'Confirm Student',
+                `Is this your child?\n\nName: ${checkData.student.full_name}\nBirthdate: ${new Date(checkData.student.birthdate).toLocaleDateString()}\nGender: ${checkData.student.gender}`,
+                [
+                    {
+                        text: 'No, Cancel',
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Yes, Confirm',
+                        onPress: async () => {
+                            try {
+                                console.log('Using user ID:', userId);
+                                
+                                const verifyResponse = await fetch(`${BASE_URL}/auth/verify-student`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        userId: userId,
+                                        studentId: studentIdNum,
+                                        role: 'parent',
+                                    }),
+                                });
 
-            const verifyData = await verifyResponse.json();
-            console.log('Verification response:', verifyData);
+                                const verifyData = await verifyResponse.json();
+                                console.log('Verification response:', verifyData);
 
-            if (verifyResponse.ok) {
-                Alert.alert('Success', `Verified! Welcome ${verifyData.student_name}'s parent!`);
-                router.push('/dash_mod/home');
-            } else {
-                Alert.alert('Error', verifyData.message || 'Verification failed');
-            }
+                                if (verifyResponse.ok) {
+                                    Alert.alert('Success', `Verified! Welcome ${verifyData.student_name}'s parent!`);
+                                    router.push('/dash_mod/home');
+                                } else {
+                                    Alert.alert('Error', verifyData.message || 'Verification failed');
+                                }
+                            } catch (error) {
+                                console.log('❌ Verification error:', error);
+                                Alert.alert('Error', 'Verification failed. Please try again.');
+                            }
+                        }
+                    }
+                ]
+            );
         } else {
             Alert.alert('Error', 'Student ID not found in our system');
         }
@@ -114,7 +133,7 @@ const SignupStudentId = () => {
         console.log('❌ Full error:', error);
         Alert.alert('Error', 'Network error. Please try again. Check console for details.');
     }
-};
+  };
 
   const renderInputs = () => {
     return studentId.map((digit, index) => (
@@ -151,10 +170,11 @@ const SignupStudentId = () => {
         </View>
 
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Student ID</Text>
+          <Text style={styles.sectionTitle}>Student ID Verification</Text>
         </View>
 
         <View style={styles.formContainer}>
+          <Text style={styles.label}>Enter Student ID</Text>
           <View style={styles.inputContainer}>
             {renderInputs()}
           </View>
@@ -181,18 +201,18 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'white',
-    padding: 10,
+    padding: 20,
     justifyContent: 'center',
   },
   card: {
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 5,
+    padding: 10,
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 30,
   },
   header: {
     fontSize: 28,
@@ -202,54 +222,62 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     marginTop: 10,
-    marginBottom: 0,
+    marginBottom: 10,
     alignSelf: 'flex-start',
   },
   sectionTitle: {
     color: 'black',
-    fontSize: 18,
-    fontWeight: '200',
+    fontSize: 20,
+    fontWeight: 'bold',
     textAlign: 'left',
   },
   formContainer: {
     marginVertical: 30,
   },
+  label: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 15,
+    color: '#333',
+    textAlign: 'center',
+  },
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 5,
+    gap: 8,
     marginBottom: 40,
   },
   input: {
-    width: 38,
+    width: 40,
     height: 50,
     borderWidth: 2,
-    borderColor: 'black',
-    borderRadius: 10,
-    fontSize: 24,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    fontSize: 18,
     fontWeight: 'bold',
     backgroundColor: 'white',
+    color: '#000',
   },
   filledInput: {
-    borderColor: '#4CAF50',
+    borderColor: '#61C35C',
     backgroundColor: '#f8fff8',
   },
   submitButton: {
     backgroundColor: '#61C35C',
     paddingVertical: 16,
     paddingHorizontal: 40,
-    borderRadius: 16,
+    borderRadius: 12,
     marginHorizontal: 'auto',
     width: '100%',
     maxWidth: 400,
-    shadowColor: '#667eea',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 2,
     },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
   },
   submitButtonText: {
     color: 'white',
@@ -258,11 +286,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   instructionText: {
-    color: 'red',
+    color: '#666',
     fontSize: 14,
     lineHeight: 20,
     textAlign: 'center',
     marginTop: 25,
+    fontStyle: 'italic',
   },
 });
 

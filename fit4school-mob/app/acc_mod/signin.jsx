@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Text } from "../../components/globalText";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SigninScreen() {
-
     const router = useRouter();
 
     const [email, setEmail] = useState('');
@@ -29,7 +29,6 @@ export default function SigninScreen() {
             console.log('🔄 Attempting login...');
             console.log('📧 Email:', email);
             
-            
             const BASE_URL = 'http://192.168.1.50:3000';
             
             const response = await fetch(`${BASE_URL}/auth/login`, {
@@ -49,11 +48,25 @@ export default function SigninScreen() {
             console.log('📦 Response data:', data);
 
             if (response.ok) {
-                console.log('Login successful!');
-                console.log('User:', data.user);
+                console.log('✅ Login successful!');
+                console.log('👤 User:', data.user);
+                
+                try {
+                    await AsyncStorage.setItem('lastUser', JSON.stringify(data.user));
+                    console.log('💾 User data stored for quick login');
+                } catch (storageError) {
+                    console.log('❌ Error storing user data:', storageError);
+                }
                 
                 if (rememberPassword) {
                     console.log('💾 Remember password enabled');
+                    try {
+                        await AsyncStorage.setItem('rememberedCredentials', JSON.stringify({
+                            email: email,
+                        }));
+                    } catch (credentialError) {
+                        console.log('❌ Error storing credentials:', credentialError);
+                    }
                 }
                 
                 Alert.alert('Success', `Welcome back, ${data.user.fname}!`);
@@ -65,8 +78,8 @@ export default function SigninScreen() {
             console.log('❌ Login error:', error);
             Alert.alert(
                 'Connection Error', 
-                'Cannot reach server. For demo, we\'ll proceed to dashboard.',
-                [{ text: 'Continue Demo', onPress: () => router.push('/dash_mod/home') }]
+                'Cannot reach server. Please check:\n\n1. Server is running\n2. Correct IP address\n3. Network connection',
+                [{ text: 'OK' }]
             );
         } finally {
             setIsLoading(false);
@@ -75,7 +88,6 @@ export default function SigninScreen() {
 
     return (
         <View style={styles.container}>
-            
             <View style = {{flexDirection: 'row', alignItems: 'center', paddingVertical: '2%'}}>
                 <TouchableOpacity onPress={() => router.back()}>
                     <Ionicons name="arrow-back-outline" size={28} color="black" />
@@ -86,7 +98,6 @@ export default function SigninScreen() {
                 </Text>
             </View>
             
-            
             <View style = {{paddingVertical: '25%'}}>
                 <Text style={styles.label}>Email</Text>
                 <TextInput
@@ -96,6 +107,7 @@ export default function SigninScreen() {
                     placeholder="Enter your email"
                     autoCapitalize="none"
                     keyboardType="email-address"
+                    autoComplete="email"
                 />
                 
                 <Text style={styles.label}>Password</Text>
@@ -105,6 +117,7 @@ export default function SigninScreen() {
                     onChangeText={setPassword}
                     placeholder="Enter your password"
                     secureTextEntry
+                    autoComplete="password"
                 />
                 
                 <View style={styles.passwordOptions}>
@@ -138,7 +151,6 @@ export default function SigninScreen() {
                     </Text>
                 </TouchableOpacity>
             </View>
-            
         </View>
     )
 }
@@ -151,8 +163,9 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 26,
-        fontWeight: 600,
+        fontWeight: '600',
         color: '#000',
+        marginLeft: 10,
     },
     label: {
         fontSize: 16,
@@ -185,7 +198,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#ccc',
         borderRadius: 4,
-        marginRight: 4,
+        marginRight: 8,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -194,11 +207,11 @@ const styles = StyleSheet.create({
         borderColor: '#61C35C',
     },
     rememberText: {
-        fontSize: 13,
+        fontSize: 14,
         color: '#666',
     },
     forgotText: {
-        fontSize: 12,
+        fontSize: 14,
         color: '#007AFF',
         fontWeight: '600',
     },

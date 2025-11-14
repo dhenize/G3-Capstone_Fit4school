@@ -1,214 +1,241 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, BadRequestException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
-import { Student } from '../entities/student.entity';
-import { Otp } from '../entities/otp.entity';
-import { EmailService } from '../email/email.service';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
+import { User } from './entities/user.entity';
+import { Student } from './entities/student.entity';
+import { OTP } from './entities/otp.entity';
+import { EmailService } from './email.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
-    private userRepo: Repository<User>,
+    private userRepository: Repository<User>,
+    
     @InjectRepository(Student)
-    private studentRepo: Repository<Student>,
-    @InjectRepository(Otp)
-    private otpRepo: Repository<Otp>,
+    private studentRepository: Repository<Student>,
+    
+    @InjectRepository(OTP)
+    private otpRepository: Repository<OTP>,
+    
     private emailService: EmailService,
   ) {}
 
-  async signup(data: any) {
-    const { fname, lname, email, password, contact_number } = data;
-
-    const exists = await this.userRepo.findOne({ where: { email } });
-    if (exists) throw new BadRequestException('Email already registered');
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = this.userRepo.create({
-      fname,
-      lname,
-      email,
-      password: hashedPassword,
-      contact_number,
-      roles: 'user_pr',
-      status: 'unverified',
-    });
-
-    const savedUser = await this.userRepo.save(newUser);
-
-    const otpResult = await this.sendOtp(email);
-
-    return {
-      message: 'Signup successful. OTP sent to your email.',
-      user_id: savedUser.user_id,
-      email: savedUser.email,
-      expires_at: otpResult.expires_at,
-      test_otp: otpResult.test_otp,
-    };
-  }
-
-  async sendOtp(email: string) {
-    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-    
-    const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 5);
-
-    const otp = this.otpRepo.create({
-      email,
-      code: otpCode,
-      expires_at: expiresAt,
-    });
-    await this.otpRepo.save(otp);
-
-    await this.emailService.sendOtpEmail(email, otpCode);
-
-    const result: any = { 
-      message: 'OTP sent to email',
-      expires_at: expiresAt,
-    };
-
-    if (process.env.NODE_ENV === 'development') {
-      result.test_otp = otpCode;
-    }
-
-    return result;
-  }
-
-  async verifyOtp(email: string, code: string) {
-    const otp = await this.otpRepo.findOne({
-      where: { email, code, used: false },
-      order: { created_at: 'DESC' },
-    });
-
-    if (!otp) {
-      throw new BadRequestException('Invalid OTP');
-    }
-
-    if (new Date() > otp.expires_at) {
-      throw new BadRequestException('OTP has expired');
-    }
-
-
-    otp.used = true;
-    await this.otpRepo.save(otp);
-
-    await this.userRepo.update({ email }, { status: 'active' });
-
-    const user = await this.userRepo.findOne({ 
+  async login(email: string, password: string) {
+    const user = await this.userRepository.findOne({
       where: { email },
-      select: ['user_id', 'fname', 'lname', 'email', 'status']
+      relations: ['student']
     });
 
     if (!user) {
-      throw new NotFoundException('User not found after OTP verification');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
-    return { 
-      message: 'Email verified successfully',
-      user: user
+    if (user.status !== 'active') {
+      throw new UnauthorizedException('Account is not active. Please complete your registration.');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid email or password');
+    }
+
+    const { password: _, ...userWithoutPassword } = user;
+    
+    return {
+      success: true,
+      message: 'Login successful',
+      user: userWithoutPassword,
     };
   }
 
-  async verifyStudentExists(studentId: number) {
-    const student = await this.studentRepo.findOne({
-      where: { student_id: studentId },
+  async initiateSignup(signupData: {
+    email: string;
+    password: string;
+  }) {
+    const existingUser = await this.userRepository.findOne({
+      where: { email: signupData.email }
     });
-    return student;
+
+    if (existingUser) {
+      throw new ConflictException('Email already registered');
+    }
+
+    const hashedPassword = await bcrypt.hash(signupData.password, 12);
+    const userId = 'USR' + Date.now();
+
+    const user = this.userRepository.create({
+      user_id: userId,
+      fname: 'Pending',
+      lname: 'Pending',
+      email: signupData.email,
+      password: hashedPassword,
+      contact_number: 'Pending',
+      status: 'inactive',
+      roles: 'parent',
+    });
+
+    await this.userRepository.save(user);
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+    await this.otpRepository.delete({ email: signupData.email });
+
+    const otpRecord = this.otpRepository.create({
+      email: signupData.email,
+      code: otp,
+      expires_at: expiresAt,
+      used: false,
+    });
+
+    await this.otpRepository.save(otpRecord);
+
+    const emailSent = await this.emailService.sendOtpEmail(signupData.email, otp);
+
+    return {
+      success: true,
+      message: emailSent ? 'OTP sent to your email' : 'Signup initiated but email failed',
+      user_id: userId,
+      email: signupData.email,
+      test_otp: process.env.NODE_ENV === 'development' ? otp : undefined,
+    };
   }
 
-  async verifyStudentAndCompleteProfile(userId: number, studentId: number, role: string) {
-    const student = await this.studentRepo.findOne({
-      where: { student_id: studentId },
+  async verifyOtp(email: string, code: string) {
+    const otpRecord = await this.otpRepository.findOne({
+      where: { email, code, used: false }
+    });
+
+    if (!otpRecord) {
+      throw new BadRequestException('Invalid OTP');
+    }
+
+    if (new Date() > otpRecord.expires_at) {
+      throw new BadRequestException('OTP expired');
+    }
+
+    otpRecord.used = true;
+    await this.otpRepository.save(otpRecord);
+
+    return {
+      success: true,
+      message: 'OTP verified successfully',
+    };
+  }
+
+  async resendOtp(email: string) {
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+    await this.otpRepository.delete({ email });
+
+    const otpRecord = this.otpRepository.create({
+      email,
+      code: otp,
+      expires_at: expiresAt,
+      used: false,
+    });
+
+    await this.otpRepository.save(otpRecord);
+
+    const emailSent = await this.emailService.sendOtpEmail(email, otp);
+
+    return {
+      success: true,
+      message: emailSent ? 'New OTP sent to your email' : 'Failed to send OTP',
+      test_otp: process.env.NODE_ENV === 'development' ? otp : undefined,
+    };
+  }
+
+  async completeProfile(profileData: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    contactNumber: string;
+    role: string;
+  }) {
+    const user = await this.userRepository.findOne({
+      where: { email: profileData.email }
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    user.fname = profileData.firstName;
+    user.lname = profileData.lastName;
+    user.contact_number = profileData.contactNumber;
+    user.roles = profileData.role;
+    user.status = 'active';
+
+    await this.userRepository.save(user);
+
+    return {
+      success: true,
+      message: 'Profile completed',
+      user_id: user.user_id,
+    };
+  }
+
+  async checkStudent(studentId: number) {
+    const student = await this.studentRepository.findOne({
+      where: { student_id: studentId }
     });
 
     if (!student) {
       throw new NotFoundException('Student not found');
     }
 
-    const roleMap = {
-      'Parent': 'user_pr',
-      'Guardian': 'user_gp',
-      'Student': 'user_std'
-    };
-
-    const dbRole = roleMap[role] || 'user_pr';
-
-    await this.userRepo.update(userId, {
-      student_id: studentId,
-      roles: dbRole,
-    });
-
-    const updatedUser = await this.userRepo.findOne({
-      where: { user_id: userId },
-      relations: ['student'],
-    });
-
-    if (!updatedUser) {
-      throw new NotFoundException('User not found after update');
-    }
+    const fullName = `${student.fname} ${student.midname} ${student.lname}`.trim();
 
     return {
-      message: 'Student verified and profile completed successfully',
-      student_name: student.full_name,
-      user: {
-        user_id: updatedUser.user_id,
-        fname: updatedUser.fname,
-        lname: updatedUser.lname,
-        email: updatedUser.email,
-        role: updatedUser.roles,
-        student_id: updatedUser.student_id,
-        student_name: student.full_name,
+      exists: true,
+      student: {
+        id: student.student_id,
+        full_name: fullName,
+        first_name: student.fname,
+        middle_name: student.midname,
+        last_name: student.lname,
+        birthdate: student.birthdate,
+        gender: student.gender,
       },
     };
   }
 
-  async login(email: string, password: string) {
-    const user = await this.userRepo.findOne({
-      where: { email },
-      relations: ['student'],
+  async verifyStudent(userId: string, studentId: number, role: string) {
+    const student = await this.studentRepository.findOne({
+      where: { student_id: studentId }
+    });
+
+    if (!student) {
+      throw new NotFoundException('Student not found');
+    }
+
+    const user = await this.userRepository.findOne({
+      where: { user_id: userId }
     });
 
     if (!user) {
-      throw new BadRequestException('Invalid credentials');
+      throw new NotFoundException('User not found');
     }
-
-    if (user.status !== 'active') {
-      throw new BadRequestException('Account not verified. Please verify your email first.');
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new BadRequestException('Invalid credentials');
-    }
+    
+    await this.userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({ 
+        student_id: studentId,
+        roles: role 
+      })
+      .where("user_id = :userId", { userId })
+      .execute();
 
     return {
-      message: 'Login successful',
-      user: {
-        user_id: user.user_id,
-        fname: user.fname,
-        lname: user.lname,
-        email: user.email,
-        role: user.roles,
-        student_name: user.student?.full_name,
-        student_id: user.student_id,
-      },
+      success: true,
+      message: 'Student verification successful',
+      student_name: student.fname + ' ' + student.lname,
     };
-  }
-
-  async resendOtp(email: string) {
-    const user = await this.userRepo.findOne({ where: { email } });
-    if (!user) {
-      throw new BadRequestException('Email not found');
-    }
-
-    return await this.sendOtp(email);
-  }
-
-  async checkEmailExists(email: string) {
-    const user = await this.userRepo.findOne({ where: { email } });
-    return user;
   }
 }

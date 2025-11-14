@@ -1,22 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('tbl_otp')
-export class Otp {
+export class OTP {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   email: string;
 
-  @Column({ length: 6 })
+  @Column()
   code: string;
 
-  @Column({ type: 'datetime' })
+  @Column()
   expires_at: Date;
 
   @Column({ default: false })
   used: boolean;
 
-  @CreateDateColumn()
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP(6)' })
   created_at: Date;
 }
