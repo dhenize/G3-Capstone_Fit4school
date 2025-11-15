@@ -6,6 +6,8 @@ import { User } from './entities/user.entity';
 import { Student } from './entities/student.entity';
 import { OTP } from './entities/otp.entity';
 import { EmailService } from './email.service';
+import { Uniform } from './entities/uniform.entity';
+import { Measurement } from './entities/measurement.entity'; 
 
 @Injectable()
 export class AuthService {
@@ -18,6 +20,12 @@ export class AuthService {
     
     @InjectRepository(OTP)
     private otpRepository: Repository<OTP>,
+
+    @InjectRepository(Uniform)
+    private uniformRepository: Repository<Uniform>,
+  
+    @InjectRepository(Measurement)
+    private measurementRepository: Repository<Measurement>,
     
     private emailService: EmailService,
   ) {}
@@ -237,5 +245,96 @@ export class AuthService {
       message: 'Student verification successful',
       student_name: student.fname + ' ' + student.lname,
     };
+  }
+
+  async getUniformsByGrade(grade?: string) {
+  try {
+    console.log('🔍 Getting uniforms with grade:', grade || 'all');
+    
+    // SIMPLE FIX - Just get basic uniform groups
+    let query = `
+      SELECT DISTINCT 
+        m.gender,
+        m.grade,
+        i.uniform_type as uniformType,
+        i.image_path as imagePath,
+        -- Use average price for display
+        AVG(i.price) as price,
+        -- Create display name
+        CONCAT(
+          CASE WHEN m.gender = 'male' THEN 'Boy''s ' ELSE 'Girl''s ' END,
+          CASE 
+            WHEN i.uniform_type = 'polo' THEN 'Uniform'
+            WHEN i.uniform_type = 'blouse' THEN 'Uniform'
+            WHEN i.uniform_type = 'pants' THEN 'Pants'
+            WHEN i.uniform_type = 'skirt' THEN 'Skirt'
+            ELSE 'Uniform'
+          END,
+          ' (', 
+          CASE m.grade
+            WHEN 'preschool' THEN 'Preschool'
+            WHEN 'elementary' THEN 'Elementary'
+            WHEN 'junior high' THEN 'Junior High'
+            ELSE m.grade
+          END,
+          ')'
+        ) as displayName
+      FROM tbl_measure m
+      INNER JOIN tbl_itemlist i ON m.item_id = i.item_id
+      WHERE m.grade IS NOT NULL 
+        AND m.gender IS NOT NULL
+      `;
+      
+      const params: string[] = [];
+      if (grade && grade !== 'all') {
+        query += ' AND m.grade = ?';
+        params.push(grade);
+      }
+      
+      query += ' GROUP BY m.gender, m.grade, i.uniform_type';
+      query += ' ORDER BY m.gender, m.grade';
+      
+      console.log('📋 Executing simple query');
+      const result = await this.uniformRepository.query(query, params);
+      console.log('✅ Query result:', result);
+      
+      return result;
+    } catch (error) {
+      console.error('❌ Error in getUniformsByGrade:', error);
+      return [];
+    }
+  }
+
+  async getUniformDetails(itemId: string) {
+    try {
+      console.log('🔍 Getting uniform details for:', itemId);
+      const uniform = await this.uniformRepository.findOne({
+        where: { itemId },
+        relations: ['measurements']
+      });
+      console.log('📦 Found uniform details:', uniform);
+      return uniform;
+    } catch (error) {
+      console.error('❌ Error in getUniformDetails:', error);
+      return null;
+    }
+  }
+
+  async getAvailableSizes(itemId: string, gender: string) {
+    try {
+      console.log('🔍 Getting sizes for:', itemId, 'gender:', gender);
+      const sizes = await this.measurementRepository.find({
+        where: { 
+          itemId,
+          gender 
+        },
+        select: ['measureId', 'chest', 'shoulder', 'sleeve', 'hips', 'overallHeight']
+      });
+      console.log('📐 Found sizes:', sizes.length, sizes);
+      return sizes;
+    } catch (error) {
+      console.error('❌ Error in getAvailableSizes:', error);
+      return [];
+    }
   }
 }

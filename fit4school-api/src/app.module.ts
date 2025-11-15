@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entities/user.entity';
 import { Student } from './auth/entities/student.entity';
 import { OTP } from './auth/entities/otp.entity';
+import { Uniform } from './auth/entities/uniform.entity'; // ADD THIS
+import { Measurement } from './auth/entities/measurement.entity'; // ADD THIS
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { OTP } from './auth/entities/otp.entity';
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || '',
       database: process.env.DB_NAME || 'cap_fit4school',
-      entities: [User, Student, OTP],
+      entities: [User, Student, OTP, Uniform, Measurement], // ADD Uniform and Measurement
       synchronize: false,
     }),
     AuthModule,

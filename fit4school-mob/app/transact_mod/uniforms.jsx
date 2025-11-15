@@ -1,4 +1,4 @@
-//../../items_mod/boys_unif
+//../../items_mod/uniforms
 
 import React, { useState } from "react";
 import {
@@ -12,16 +12,45 @@ import {
     ScrollView
 } from "react-native";
 import { Text } from "../../components/globalText";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Carousel from "react-native-reanimated-carousel";
 import ImageZoom from "react-native-image-pan-zoom";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-export default function boys_unif() {
+export default function Uniforms() {
     //Router
     const router = useRouter();
+    
+    // FIX: Use expo-router's useLocalSearchParams instead of URLSearchParams
+    const params = useLocalSearchParams();
+    const type = params.type || 'boy';
+    const grade = params.grade || 'preschool';
+    
+    // Define uniform data FIRST
+    const uniformData = {
+        boy: {
+            title: "Boy's Uniform",
+            image: require("../../assets/images/b_unif_ex.png"),
+            price: "₱400.00"
+        },
+        girl: {
+            title: "Girl's Uniform", 
+            image: require("../../assets/images/g_unif_ex.png"),
+            price: "₱400.00"
+        }
+    };
+    
+    const currentUniform = uniformData[type] || uniformData.boy;
+
+    // NOW define carouselItems AFTER currentUniform is defined
+    //Uniform Pictures
+    const carouselItems = [
+        { id: 1, image: currentUniform.image },
+        { id: 2, image: currentUniform.image },
+        { id: 3, image: currentUniform.image },
+    ];
 
     //Carousel and Zoom Function
     const [activeIndex, setActiveIndex] = useState(0);
@@ -35,15 +64,6 @@ export default function boys_unif() {
 
     //Buy Now Modal
     const [bnModal, setBnModal] = useState(false);
-
-    //Uniform Pictures
-    const carouselItems = [
-        { id: 1, image: require("../../assets/images/b_unif_ex.png") },
-        { id: 2, image: require("../../assets/images/b_unif_ex.png") },
-        { id: 3, image: require("../../assets/images/b_unif_ex.png") },
-        { id: 4, image: require("../../assets/images/b_unif_ex.png") },
-        { id: 5, image: require("../../assets/images/b_unif_ex.png") },
-    ];
 
     //Uniform Sizes
     const sizes = ["small", "medium", "large", "size 6", "size 7", "size 8", "size 9", "size 10", "size 11", "size 12", "size 13", "size 14"];
@@ -82,8 +102,6 @@ export default function boys_unif() {
         );
     };
 
-
-
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => router.push("/dash_mod/home")}>
@@ -115,8 +133,8 @@ export default function boys_unif() {
 
             <View style={styles.prc_cont}>
                 <View>
-                    <Text style={styles.prc}>₱400.00</Text>
-                    <Text style={styles.item_desc}>Boy’s Uniform (Pre-school)</Text>
+                    <Text style={styles.prc}>{currentUniform.price}</Text>
+                    <Text style={styles.item_desc}>{currentUniform.title} ({grade})</Text>
                 </View>
 
                 <View>
@@ -209,14 +227,14 @@ export default function boys_unif() {
                             <View style={styles.modal_cont}>
                                 <View style={styles.matc_cont}>
                                     <View style={styles.matc_pic_cont}>
-                                        <Image source={require("../../assets/images/b_unif_ex.png")}
+                                        <Image source={currentUniform.image}
                                         style={styles.matc_pic}
                                         />
                                     </View>
 
                                     <View style={styles.matc_desc}>
-                                        <Text style={styles.matc_prc}>₱400.00</Text>
-                                        <Text style={styles.matc_item_desc}>Boy’s Uniform (Pre-school)</Text>
+                                        <Text style={styles.matc_prc}>{currentUniform.price}</Text>
+                                        <Text style={styles.matc_item_desc}>{currentUniform.title} ({grade})</Text>
                                     </View>
                                 </View>
 
@@ -301,14 +319,14 @@ export default function boys_unif() {
                             <View style={styles.modal_cont}>
                                 <View style={styles.matc_cont}>
                                     <View style={styles.matc_pic_cont}>
-                                        <Image source={require("../../assets/images/b_unif_ex.png")}
+                                        <Image source={currentUniform.image}
                                         style={styles.matc_pic}
                                         />
                                     </View>
 
                                     <View style={styles.matc_desc}>
-                                        <Text style={styles.matc_prc}>₱400.00</Text>
-                                        <Text style={styles.matc_item_desc}>Boy’s Uniform (Pre-school)</Text>
+                                        <Text style={styles.matc_prc}>{currentUniform.price}</Text>
+                                        <Text style={styles.matc_item_desc}>{currentUniform.title} ({grade})</Text>
                                     </View>
                                 </View>
 
@@ -383,8 +401,6 @@ export default function boys_unif() {
         </View>
     );
 }
-
-
 
 const styles = StyleSheet.create({
     container: {

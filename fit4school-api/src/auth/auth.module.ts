@@ -6,10 +6,12 @@ import { EmailService } from './email.service';
 import { User } from './entities/user.entity';
 import { Student } from './entities/student.entity';
 import { OTP } from './entities/otp.entity';
+import { Uniform } from './entities/uniform.entity';
+import { Measurement } from './entities/measurement.entity'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Student, OTP]),
+    TypeOrmModule.forFeature([User, Student, OTP, Uniform, Measurement]),
   ],
   controllers: [AuthController],
   providers: [AuthService, EmailService],

@@ -1,5 +1,7 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Uniform } from './entities/uniform.entity';
+import { Measurement } from './entities/measurement.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -39,4 +41,23 @@ export class AuthController {
   async verifyStudent(@Body() body: { userId: string; studentId: number; role: string }) {
     return this.authService.verifyStudent(body.userId, body.studentId, body.role);
   }
+
+  @Get('uniforms')
+  async getUniforms(@Query('grade') grade?: string) {
+    return this.authService.getUniformsByGrade(grade);
+  }
+
+  @Get('uniforms/:itemId')
+  async getUniformDetails(@Param('itemId') itemId: string) {
+    return this.authService.getUniformDetails(itemId);
+  }
+
+  @Get('uniforms/:itemId/sizes')
+  async getAvailableSizes(
+    @Param('itemId') itemId: string,
+    @Query('gender') gender: string
+  ) {
+    return this.authService.getAvailableSizes(itemId, gender);
+  }
+
 }
